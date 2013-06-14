@@ -4,8 +4,9 @@ namespace Mantle.Storage
 {
     public interface IFileStorage
     {
-        bool Exists(string fileName);
-        Stream Load(string fileName);
-        void Save(Stream fileContents, string fileName);
+        bool DoesFileExist(string fileName);
+        string[] ListFiles();
+        Stream LoadFile(string fileName);
+        void SaveFile(Stream fileContents, string fileName);
     }
 }
