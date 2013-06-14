@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage", "Mantle.Storage\Mantle.Storage.csproj", "{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration", "Mantle.Configuration\Mantle.Configuration.csproj", "{F705D018-F04E-4274-8BC9-DA9B190E134F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage.FileSystem", "Mantle.Storage.FileSystem\Mantle.Storage.FileSystem.csproj", "{D942D524-2163-4213-B12E-4CBC6437175D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage.Azure", "Mantle.Storage.Azure\Mantle.Storage.Azure.csproj", "{4AFB1635-7AB1-4575-BA28-24A95BD2749C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Azure", "Mantle.Azure\Mantle.Azure.csproj", "{021EB10A-59A7-4D8C-9BEF-D35A8C672479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage.Aws", "Mantle.Storage.Aws\Mantle.Storage.Aws.csproj", "{E17BEDC3-E514-4B54-B716-408007DD5C8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F705D018-F04E-4274-8BC9-DA9B190E134F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F705D018-F04E-4274-8BC9-DA9B190E134F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F705D018-F04E-4274-8BC9-DA9B190E134F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F705D018-F04E-4274-8BC9-DA9B190E134F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D942D524-2163-4213-B12E-4CBC6437175D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D942D524-2163-4213-B12E-4CBC6437175D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D942D524-2163-4213-B12E-4CBC6437175D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D942D524-2163-4213-B12E-4CBC6437175D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AFB1635-7AB1-4575-BA28-24A95BD2749C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AFB1635-7AB1-4575-BA28-24A95BD2749C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AFB1635-7AB1-4575-BA28-24A95BD2749C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AFB1635-7AB1-4575-BA28-24A95BD2749C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{021EB10A-59A7-4D8C-9BEF-D35A8C672479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{021EB10A-59A7-4D8C-9BEF-D35A8C672479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{021EB10A-59A7-4D8C-9BEF-D35A8C672479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{021EB10A-59A7-4D8C-9BEF-D35A8C672479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17BEDC3-E514-4B54-B716-408007DD5C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17BEDC3-E514-4B54-B716-408007DD5C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E17BEDC3-E514-4B54-B716-408007DD5C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E17BEDC3-E514-4B54-B716-408007DD5C8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
