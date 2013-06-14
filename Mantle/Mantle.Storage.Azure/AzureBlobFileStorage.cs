@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Mantle.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -22,33 +21,37 @@ namespace Mantle.Storage.Azure
 
         public bool Exists(string fileName)
         {
-            BlobLocation blobLocation = BuildLocation(fileName);
-            CloudBlobContainer containerReference = cloudBlobClient.GetContainerReference(blobLocation.ContainerName);
+            if (String.IsNullOrEmpty(fileName))
+                throw new ArgumentException("File name is required.", "fileName");
+
+            CloudBlobContainer containerReference = cloudBlobClient.GetContainerReference(ContainerName.ToLower());
 
             if (containerReference.Exists() == false)
                 return false;
 
-            CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(blobLocation.BlobName);
+            CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(fileName);
 
             return blobReference.Exists();
         }
 
         public Stream Load(string fileName)
         {
-            BlobLocation blobLocation = BuildLocation(fileName);
-            CloudBlobContainer containerReference = cloudBlobClient.GetContainerReference(blobLocation.ContainerName);
+            if (String.IsNullOrEmpty(fileName))
+                throw new ArgumentException("fileName");
+
+            CloudBlobContainer containerReference = cloudBlobClient.GetContainerReference(ContainerName.ToLower());
 
             if (containerReference.Exists() == false)
                 throw new InvalidOperationException(
                     String.Format("Azure blob container [{0}] does not exist. File not found.",
-                                  blobLocation.ContainerName));
+                                  ContainerName));
 
-            CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(blobLocation.BlobName);
+            CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(fileName);
 
             if (blobReference.Exists() == false)
-                throw new InvalidOperationException(String.Format(
-                    "Azure blob [{0}/{1}] does not exist. File not found.", blobLocation.ContainerName,
-                    blobLocation.BlobName));
+                throw new InvalidOperationException(
+                    String.Format("Azure blob [{0}/{1}] does not exist. File not found.",
+                                  ContainerName, fileName));
 
             var outputStream = new MemoryStream();
 
@@ -59,46 +62,19 @@ namespace Mantle.Storage.Azure
 
         public void Save(Stream fileContents, string fileName)
         {
+            if (String.IsNullOrEmpty(fileName))
+                throw new ArgumentException("File name is required.");
+
             if (fileContents == null)
                 throw new ArgumentNullException("fileContents");
 
-            BlobLocation blobLocation = BuildLocation(fileName);
-            CloudBlobContainer containerReference = cloudBlobClient.GetContainerReference(blobLocation.ContainerName);
+            CloudBlobContainer containerReference = cloudBlobClient.GetContainerReference(ContainerName.ToLower());
 
             containerReference.CreateIfNotExists();
 
-            CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(blobLocation.BlobName);
+            CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(fileName);
 
             blobReference.UploadFromStream(fileContents);
-        }
-
-        private BlobLocation BuildLocation(string fileName)
-        {
-            if (String.IsNullOrEmpty(fileName))
-                throw new ArgumentException("File name is required.", "fileName");
-
-            fileName = fileName.Replace('\\', '/');
-
-            if (String.IsNullOrEmpty(ContainerName) == false)
-                return new BlobLocation {ContainerName = ContainerName.ToLower(), BlobName = fileName};
-
-            string[] fileNameParts = fileName.Split('/').Where(p => (p.Trim().Length > 0)).ToArray();
-
-            if (fileNameParts.Length == 1)
-                throw new ArgumentException(
-                    "Container name not specified. The expected format is [{Container Name}/{Blob Name}].", "fileName");
-
-            return new BlobLocation
-                {
-                    ContainerName = ContainerName.ToLower(),
-                    BlobName = String.Join("/", fileNameParts.Skip(1))
-                };
-        }
-
-        private class BlobLocation
-        {
-            public string ContainerName { get; set; }
-            public string BlobName { get; set; }
         }
     }
 }

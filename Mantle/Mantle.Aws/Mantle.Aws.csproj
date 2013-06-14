@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E17BEDC3-E514-4B54-B716-408007DD5C8C}</ProjectGuid>
+    <ProjectGuid>{40C79336-1432-4656-B75A-D37D9524F662}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Storage.Aws</RootNamespace>
-    <AssemblyName>Mantle.Storage.Aws</AssemblyName>
+    <RootNamespace>Mantle.Aws</RootNamespace>
+    <AssemblyName>Mantle.Aws</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AWSSDK">
-      <HintPath>..\packages\AWSSDK.1.5.23.1\lib\AWSSDK.dll</HintPath>
-    </Reference>
+    <Reference Include="AWSSDK, Version=1.5.23.1, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,21 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AwsS3FileStorage.cs" />
+    <Compile Include="AwsConfiguration.cs" />
+    <Compile Include="IAwsConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
-      <Project>{40C79336-1432-4656-B75A-D37D9524F662}</Project>
-      <Name>Mantle.Aws</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mantle.Storage\Mantle.Storage.csproj">
-      <Project>{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}</Project>
-      <Name>Mantle.Storage</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
