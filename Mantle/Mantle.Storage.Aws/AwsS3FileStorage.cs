@@ -87,7 +87,7 @@ namespace Mantle.Storage.Aws
                         throw new StorageException(String.Format("AWS S3 bucket [{0}] does not exist. File not found.",
                                                                  BucketName));
 
-                    if (DoesObjectExist(client, fileName))
+                    if (DoesObjectExist(client, fileName) == false)
                         throw new StorageException(
                             String.Format("AWS S3 object [{0}/{1}] does not exist. File not found.", BucketName,
                                           fileName));
