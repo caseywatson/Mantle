@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D24E2319-5795-402E-817B-7213E308B301}</ProjectGuid>
+    <ProjectGuid>{94C89754-1E27-40C7-AC06-093C8FA3D259}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle</RootNamespace>
-    <AssemblyName>Mantle</AssemblyName>
+    <RootNamespace>Mantle.Messaging.Azure</RootNamespace>
+    <AssemblyName>Mantle.Messaging.Azure</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.ServiceBus, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.ServiceBus.2.1.0.0\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,10 +48,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DependencyResolutionException.cs" />
-    <Compile Include="IDependencyResolver.cs" />
-    <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="AzureServiceBusClient.cs" />
+    <Compile Include="AzureServiceBusMessage.cs" />
+    <Compile Include="AzureServiceBusQueueClient.cs" />
+    <Compile Include="AzureServiceBusQueueEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueuePublisherClient.cs" />
+    <Compile Include="AzureServiceBusQueuePublisherEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueueSubscriberClient.cs" />
+    <Compile Include="AzureServiceBusQueueSubscriberEndpoint.cs" />
+    <Compile Include="AzureServiceBusSubscriptionSubscriberClient.cs" />
+    <Compile Include="AzureServiceBusSubscriptionSubscriberEndpoint.cs" />
+    <Compile Include="AzureServiceBusTopicPublisherClient.cs" />
+    <Compile Include="AzureServiceBusTopicPublisherEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Azure\Mantle.Azure.csproj">
+      <Project>{021EB10A-59A7-4D8C-9BEF-D35A8C672479}</Project>
+      <Name>Mantle.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Msmq", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle", "Mantle\Mantle.csproj", "{D24E2319-5795-402E-817B-7213E308B301}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Azure", "Mantle.Messaging.Azure\Mantle.Messaging.Azure.csproj", "{94C89754-1E27-40C7-AC06-093C8FA3D259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Ninject", "Mantle.Ninject\Mantle.Ninject.csproj", "{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +71,14 @@ Global
 		{D24E2319-5795-402E-817B-7213E308B301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D24E2319-5795-402E-817B-7213E308B301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D24E2319-5795-402E-817B-7213E308B301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C89754-1E27-40C7-AC06-093C8FA3D259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C89754-1E27-40C7-AC06-093C8FA3D259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C89754-1E27-40C7-AC06-093C8FA3D259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C89754-1E27-40C7-AC06-093C8FA3D259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

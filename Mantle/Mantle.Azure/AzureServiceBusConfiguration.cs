@@ -3,14 +3,14 @@ using System.Configuration;
 
 namespace Mantle.Azure
 {
-    public class AzureStorageConfiguration : IAzureStorageConfiguration
+    public class AzureServiceBusConfiguration : IAzureServiceBusConfiguration
     {
         public string ConnectionString { get; set; }
 
         public void Validate()
         {
             if (String.IsNullOrEmpty(ConnectionString))
-                throw new ConfigurationErrorsException("Azure storage connection string is required.");
+                throw new ConfigurationErrorsException("Azure service bus connection string is required.");
         }
     }
 }
