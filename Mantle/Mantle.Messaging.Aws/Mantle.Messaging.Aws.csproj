@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3E255166-1290-4034-B269-937DA2F3AB43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mantle.Messaging.Aws</RootNamespace>
+    <AssemblyName>Mantle.Messaging.Aws</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK, Version=1.5.23.1, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqsClient.cs" />
+    <Compile Include="SqsEndpoint.cs" />
+    <Compile Include="SqsMessage.cs" />
+    <Compile Include="SqsPublisherClient.cs" />
+    <Compile Include="SqsPublisherEndpoint.cs" />
+    <Compile Include="SqsSubscriberClient.cs" />
+    <Compile Include="SqsSubscriberEndpoint.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
+      <Project>{40C79336-1432-4656-B75A-D37D9524F662}</Project>
+      <Name>Mantle.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{d24e2319-5795-402e-817b-7213e308b301}</Project>
+      <Name>Mantle</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

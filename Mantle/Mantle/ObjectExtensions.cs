@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Mantle
 {
@@ -24,6 +25,19 @@ namespace Mantle
             return new MemoryStream(inputBytes).Deserialize<T>();
         }
 
+        public static T DeserializeString<T>(this string source)
+        {
+            if (String.IsNullOrEmpty(source))
+                throw new ArgumentException("Source is required.");
+
+            var inputStream = new MemoryStream();
+
+            using (var streamWriter = new StreamWriter(inputStream, Encoding.UTF8))
+                streamWriter.Write(source);
+
+            return inputStream.Deserialize<T>();
+        }
+
         public static MemoryStream Serialize<T>(this T obj)
         {
             var outputStream = new MemoryStream();
@@ -34,6 +48,16 @@ namespace Mantle
             outputStream.Position = 0;
 
             return outputStream;
+        }
+
+        public static string SerializeToString<T>(this T obj)
+        {
+            MemoryStream inputStream = Serialize(obj);
+
+            inputStream.Position = 0;
+
+            using (var streamReader = new StreamReader(inputStream, Encoding.UTF8))
+                return streamReader.ReadToEnd();
         }
 
         public static byte[] SerializeToBytes<T>(this T obj)
