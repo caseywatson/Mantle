@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Ninject", "Mantle.Ni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Aws", "Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj", "{3E255166-1290-4034-B269-937DA2F3AB43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting", "Mantle.Hosting\Mantle.Hosting.csproj", "{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{3E255166-1290-4034-B269-937DA2F3AB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E255166-1290-4034-B269-937DA2F3AB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E255166-1290-4034-B269-937DA2F3AB43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ninject;
+using Ninject.Modules;
 
 namespace Mantle.Ninject
 {
@@ -13,6 +14,14 @@ namespace Mantle.Ninject
                 throw new ArgumentNullException("kernel");
 
             this.kernel = kernel;
+        }
+
+        public NinjectDependencyResolver(params INinjectModule[] modules)
+        {
+            if (modules == null)
+                throw new ArgumentNullException("modules");
+
+            kernel = new StandardKernel(modules);
         }
 
         public T Get<T>()
