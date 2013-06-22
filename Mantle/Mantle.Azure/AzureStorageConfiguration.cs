@@ -7,6 +7,13 @@ namespace Mantle.Azure
     {
         public string ConnectionString { get; set; }
 
+        public void Setup(string connectionString)
+        {
+            ConnectionString = connectionString;
+
+            Validate();
+        }
+
         public void Validate()
         {
             if (String.IsNullOrEmpty(ConnectionString))

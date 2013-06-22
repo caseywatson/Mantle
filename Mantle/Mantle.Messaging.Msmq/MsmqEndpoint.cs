@@ -6,8 +6,18 @@ namespace Mantle.Messaging.Msmq
     {
         public string QueuePath { get; set; }
 
-        public virtual void Validate()
+        public void Setup(string name, string queuePath)
         {
+            Name = name;
+            QueuePath = queuePath;
+
+            Validate();
+        }
+
+        public override void Validate()
+        {
+            base.Validate();
+
             if (String.IsNullOrEmpty(QueuePath))
                 throw new MessagingException("MSMQ queue path is required.");
         }

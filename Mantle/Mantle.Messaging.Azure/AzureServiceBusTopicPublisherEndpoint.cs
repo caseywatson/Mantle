@@ -31,5 +31,13 @@ namespace Mantle.Messaging.Azure
             if (String.IsNullOrEmpty(TopicName))
                 throw new MessagingException("Azure service bus topic name is required.");
         }
+
+        public void Setup(string name, string topicName)
+        {
+            Name = name;
+            TopicName = topicName;
+
+            Validate();
+        }
     }
 }

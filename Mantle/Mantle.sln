@@ -37,6 +37,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{A744
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Samples.Simple.Worker", "Mantle.Samples.Simple.Worker\Mantle.Samples.Simple.Worker.csproj", "{8EBA1968-E0F0-468E-9E37-F0784E122581}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Mantle.Samples.Simple.Host.Services", "Mantle.Samples.Simple.Host.Services\Mantle.Samples.Simple.Host.Services.ccproj", "{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.Simple.Host.Role", "Mantle.Sample.Simple.Host.Role\Mantle.Sample.Simple.Host.Role.csproj", "{70F7C653-339A-487E-8D93-1DB04C345DDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.Simple.Host.Console", "Mantle.Sample.Simple.Host.Console\Mantle.Sample.Simple.Host.Console.csproj", "{EC72FA8F-BB66-4278-8960-D52A21B06DA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.Simple.Host.WindowsService", "Mantle.Sample.Simple.Host.WindowsService\Mantle.Sample.Simple.Host.WindowsService.csproj", "{4142FD91-6D43-45DD-9599-E605091FD000}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A4BCE229-B924-4362-BDEE-96E32BBEEF1E}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,11 +126,31 @@ Global
 		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70F7C653-339A-487E-8D93-1DB04C345DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70F7C653-339A-487E-8D93-1DB04C345DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70F7C653-339A-487E-8D93-1DB04C345DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70F7C653-339A-487E-8D93-1DB04C345DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC72FA8F-BB66-4278-8960-D52A21B06DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC72FA8F-BB66-4278-8960-D52A21B06DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC72FA8F-BB66-4278-8960-D52A21B06DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC72FA8F-BB66-4278-8960-D52A21B06DA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4142FD91-6D43-45DD-9599-E605091FD000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4142FD91-6D43-45DD-9599-E605091FD000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4142FD91-6D43-45DD-9599-E605091FD000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4142FD91-6D43-45DD-9599-E605091FD000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8EBA1968-E0F0-468E-9E37-F0784E122581} = {A7443224-9BC6-404D-8278-010A88E40FEB}
+		{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6} = {A7443224-9BC6-404D-8278-010A88E40FEB}
+		{70F7C653-339A-487E-8D93-1DB04C345DDE} = {A7443224-9BC6-404D-8278-010A88E40FEB}
+		{EC72FA8F-BB66-4278-8960-D52A21B06DA2} = {A7443224-9BC6-404D-8278-010A88E40FEB}
+		{4142FD91-6D43-45DD-9599-E605091FD000} = {A7443224-9BC6-404D-8278-010A88E40FEB}
 	EndGlobalSection
 EndGlobal

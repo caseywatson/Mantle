@@ -1,4 +1,5 @@
-﻿using Mantle.Hosting;
+﻿using System;
+using Mantle.Hosting;
 using Mantle.Messaging;
 using Mantle.Storage;
 
@@ -6,8 +7,8 @@ namespace Mantle.Samples.Simple.Worker
 {
     public class SimpleWorker : BaseWorker
     {
-        // This very simple worker class processes a message from the "Input" subscriber endpoint,
-        // saves the message to "Storage" storage then forwards the message to the "Output" publisher endpoint.
+        // This very simple worker class processes a message from the "SimpleWorkerInput" subscriber endpoint,
+        // saves the message to "SimpleStorage" storage then forwards the message to the "SimpleWorkerOutput" publisher endpoint.
 
         private readonly IPublisherEndpointDirectory publisherDirectory;
         private readonly IStorageClientDirectory storageDirectory;
@@ -23,10 +24,10 @@ namespace Mantle.Samples.Simple.Worker
 
         public override void Start()
         {
-            IStorageClient storageClient = storageDirectory["Storage"];
+            IStorageClient storageClient = storageDirectory["SimpleStorage"];
 
-            IPublisherClient publisherClient = publisherDirectory["Output"].GetClient();
-            ISubscriberClient subscriberClient = subscriberDirectory["Input"].GetClient();
+            IPublisherClient publisherClient = publisherDirectory["SimpleWorkerOutput"].GetClient();
+            ISubscriberClient subscriberClient = subscriberDirectory["SimpleWorkerInput"].GetClient();
 
             while (true)
             {
@@ -55,7 +56,11 @@ namespace Mantle.Samples.Simple.Worker
 
                     // Serialize the customer object and save it to storage.
 
-                    storageClient.SaveFile(customer.Serialize(), customer.Id);
+                    storageClient.SaveObject(customer.Serialize(), customer.Id);
+
+                    // Indicate that the customer has been saved.
+
+                    OnMessageOccurred("Customer [{0}] has been saved.", customer.Id);
 
                     // Forward the message to the publisher queue.
 
@@ -66,13 +71,20 @@ namespace Mantle.Samples.Simple.Worker
 
                     incomingMessage.Complete();
                 }
-                catch
+                catch (Exception ex)
                 {
                     // If something went wrong, abandon the message. Abandoning the
                     // message returns it to the subscriber queue where it will potentially
                     // be picked up by another subscriber.
 
                     incomingMessage.Abandon();
+
+                    // Indicate that a problem has occurred...
+
+                    OnErrorOccurred(
+                        "An error occurred while attempting to process a Customer. See below for additional details:\n\n{0}",
+                        ex.Message);
+
                     throw;
                 }
             }

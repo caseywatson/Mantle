@@ -16,5 +16,13 @@ namespace Mantle.Aws
             if (String.IsNullOrEmpty(SecretKey))
                 throw new ConfigurationErrorsException("AWS secret key is required.");
         }
+
+        public void Setup(string accessKey, string secretKey)
+        {
+            AccessKey = accessKey;
+            SecretKey = secretKey;
+
+            Validate();
+        }
     }
 }

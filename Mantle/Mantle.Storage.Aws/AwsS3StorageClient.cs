@@ -21,7 +21,7 @@ namespace Mantle.Storage.Aws
 
         public string BucketName { get; set; }
 
-        public bool DoesFileExist(string fileName)
+        public bool DoesObjectExist(string fileName)
         {
             if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentException("File name is required.", "fileName");
@@ -46,7 +46,7 @@ namespace Mantle.Storage.Aws
             }
         }
 
-        public string[] ListFiles()
+        public string[] ListObjects()
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Mantle.Storage.Aws
             }
         }
 
-        public Stream LoadFile(string fileName)
+        public Stream LoadObject(string fileName)
         {
             if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentException("File name is required.", "fileName");
@@ -104,7 +104,7 @@ namespace Mantle.Storage.Aws
             }
         }
 
-        public void SaveFile(Stream fileContents, string fileName)
+        public void SaveObject(Stream fileContents, string fileName)
         {
             if (fileContents == null)
                 throw new ArgumentNullException("fileContents");
@@ -167,6 +167,14 @@ namespace Mantle.Storage.Aws
 
             if ((BucketName.Length < 3) || (BucketName.Length > 63))
                 throw new StorageException("Bucket name must be between 3 and 63 characters in length.");
+        }
+
+        public void Setup(string name, string bucketName)
+        {
+            Name = name;
+            BucketName = bucketName;
+
+            Validate();
         }
 
         private bool DoesObjectExist(AmazonS3 client, string objectName)

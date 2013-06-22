@@ -6,6 +6,14 @@ namespace Mantle.Messaging.Aws
     {
         public string QueueUrl { get; set; }
 
+        public void Setup(string name, string queueUrl)
+        {
+            Name = name;
+            QueueUrl = queueUrl;
+
+            Validate();
+        }
+
         public override void Validate()
         {
             base.Validate();

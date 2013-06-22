@@ -22,7 +22,7 @@ namespace Mantle.Storage.Azure
 
         public string ContainerName { get; set; }
 
-        public bool DoesFileExist(string fileName)
+        public bool DoesObjectExist(string fileName)
         {
             if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentException("File name is required.", "fileName");
@@ -44,7 +44,7 @@ namespace Mantle.Storage.Azure
             }
         }
 
-        public Stream LoadFile(string fileName)
+        public Stream LoadObject(string fileName)
         {
             if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentException("fileName");
@@ -75,7 +75,7 @@ namespace Mantle.Storage.Azure
             }
         }
 
-        public void SaveFile(Stream fileContents, string fileName)
+        public void SaveObject(Stream fileContents, string fileName)
         {
             if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentException("File name is required.");
@@ -99,7 +99,7 @@ namespace Mantle.Storage.Azure
             }
         }
 
-        public string[] ListFiles()
+        public string[] ListObjects()
         {
             try
             {
@@ -148,6 +148,14 @@ namespace Mantle.Storage.Azure
 
             if ((ContainerName.Length < 3) || (ContainerName.Length > 63))
                 throw new StorageException("Container name must be between 3 and 63 characters in length.");
+        }
+
+        public void Setup(string name, string containerName)
+        {
+            Name = name;
+            ContainerName = containerName;
+
+            Validate();
         }
     }
 }

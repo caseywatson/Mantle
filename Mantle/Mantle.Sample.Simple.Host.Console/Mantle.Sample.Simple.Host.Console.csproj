@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E17BEDC3-E514-4B54-B716-408007DD5C8C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{EC72FA8F-BB66-4278-8960-D52A21B06DA2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Storage.Aws</RootNamespace>
-    <AssemblyName>Mantle.Storage.Aws</AssemblyName>
+    <RootNamespace>Mantle.Sample.Simple.Host.Console</RootNamespace>
+    <AssemblyName>Mantle.Sample.Simple.Host.Console</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AWSSDK">
-      <HintPath>..\packages\AWSSDK.1.5.23.1\lib\AWSSDK.dll</HintPath>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,16 +46,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AwsS3StorageClient.cs" />
+    <Compile Include="FileSystemStorageModule.cs" />
+    <Compile Include="MsmqModule.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkerModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
-      <Project>{40C79336-1432-4656-B75A-D37D9524F662}</Project>
-      <Name>Mantle.Aws</Name>
+    <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
+      <Project>{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}</Project>
+      <Name>Mantle.Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Msmq\Mantle.Messaging.Msmq.csproj">
+      <Project>{0A66FD59-6B05-452C-8CA0-A91D006CDD01}</Project>
+      <Name>Mantle.Messaging.Msmq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Samples.Simple.Worker\Mantle.Samples.Simple.Worker.csproj">
+      <Project>{8EBA1968-E0F0-468E-9E37-F0784E122581}</Project>
+      <Name>Mantle.Samples.Simple.Worker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Storage.FileSystem\Mantle.Storage.FileSystem.csproj">
+      <Project>{D942D524-2163-4213-B12E-4CBC6437175D}</Project>
+      <Name>Mantle.Storage.FileSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Storage\Mantle.Storage.csproj">
       <Project>{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}</Project>

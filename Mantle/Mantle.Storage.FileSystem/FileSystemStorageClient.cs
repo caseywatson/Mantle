@@ -8,7 +8,7 @@ namespace Mantle.Storage.FileSystem
     {
         public string DirectoryPath { get; set; }
 
-        public bool DoesFileExist(string fileName)
+        public bool DoesObjectExist(string fileName)
         {
             ValidateFileName(fileName);
 
@@ -22,7 +22,7 @@ namespace Mantle.Storage.FileSystem
             }
         }
 
-        public string[] ListFiles()
+        public string[] ListObjects()
         {
             if (Directory.Exists(DirectoryPath) == false)
                 throw new StorageException(String.Format("Directory [{0}] does not exist.", DirectoryPath));
@@ -37,7 +37,7 @@ namespace Mantle.Storage.FileSystem
             }
         }
 
-        public Stream LoadFile(string fileName)
+        public Stream LoadObject(string fileName)
         {
             ValidateFileName(fileName);
 
@@ -56,7 +56,7 @@ namespace Mantle.Storage.FileSystem
             }
         }
 
-        public void SaveFile(Stream fileContents, string fileName)
+        public void SaveObject(Stream fileContents, string fileName)
         {
             if (fileContents == null)
                 throw new ArgumentNullException("fileContents");
@@ -90,6 +90,14 @@ namespace Mantle.Storage.FileSystem
                 throw new StorageException(
                     String.Format("The provided directory path [{0}] is invalid.", DirectoryPath), ex);
             }
+        }
+
+        public void Setup(string name, string directoryPath)
+        {
+            Name = name;
+            DirectoryPath = directoryPath;
+
+            Validate();
         }
 
         private void SetupDirectory()

@@ -6,10 +6,10 @@ namespace Mantle.Storage
     {
         string Name { get; }
 
-        bool DoesFileExist(string fileName);
-        string[] ListFiles();
-        Stream LoadFile(string fileName);
-        void SaveFile(Stream fileContents, string fileName);
+        bool DoesObjectExist(string objName);
+        string[] ListObjects();
+        Stream LoadObject(string objName);
+        void SaveObject(Stream obj, string objName);
         void Validate();
     }
 }
