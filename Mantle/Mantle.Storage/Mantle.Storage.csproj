@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFileStorage.cs" />
+    <Compile Include="BaseStorageClient.cs" />
+    <Compile Include="StorageClientDirectory.cs" />
+    <Compile Include="IStorageClient.cs" />
+    <Compile Include="IStorageClientDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageException.cs" />
   </ItemGroup>

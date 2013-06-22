@@ -16,12 +16,12 @@ namespace Mantle.Ninject
             this.kernel = kernel;
         }
 
-        public NinjectDependencyResolver(params INinjectModule[] modules)
+        public NinjectDependencyResolver(params INinjectModule[] ninjectModules)
         {
-            if (modules == null)
-                throw new ArgumentNullException("modules");
+            if (ninjectModules == null)
+                throw new ArgumentNullException("ninjectModules");
 
-            kernel = new StandardKernel(modules);
+            kernel = new StandardKernel(ninjectModules);
         }
 
         public T Get<T>()
@@ -33,9 +33,8 @@ namespace Mantle.Ninject
             catch (Exception ex)
             {
                 throw new DependencyResolutionException(
-                    String.Format(
-                        "An error occurred while attempting to resolve dependency type [{0}]. See inner exception for additional details.",
-                        typeof (T).FullName), ex);
+                    String.Format("An error occurred while attempting to resolve the dependency [{0}].",
+                                  typeof (T).FullName), ex);
             }
         }
     }

@@ -29,6 +29,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Aws", "Man
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting", "Mantle.Hosting\Mantle.Hosting.csproj", "{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Console.Hosting", "Mantle.Console.Hosting\Mantle.Console.Hosting.csproj", "{8A24A450-FB8B-42B9-9983-A0891E9F367C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Azure", "Mantle.Hosting.Azure\Mantle.Hosting.Azure.csproj", "{40D86431-1792-441C-A240-B3810C181428}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{A7443224-9BC6-404D-8278-010A88E40FEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +97,14 @@ Global
 		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A24A450-FB8B-42B9-9983-A0891E9F367C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A24A450-FB8B-42B9-9983-A0891E9F367C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A24A450-FB8B-42B9-9983-A0891E9F367C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A24A450-FB8B-42B9-9983-A0891E9F367C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D86431-1792-441C-A240-B3810C181428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D86431-1792-441C-A240-B3810C181428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D86431-1792-441C-A240-B3810C181428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D86431-1792-441C-A240-B3810C181428}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

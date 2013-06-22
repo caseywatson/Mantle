@@ -29,6 +29,9 @@ namespace Mantle.Hosting
             Worker.Stop();
         }
 
+        protected abstract void OnErrorOccurred(string message);
+        protected abstract void OnMessageOccurred(string message);
+
         protected virtual T Get<T>()
         {
             return dependencyResolver.Get<T>();
@@ -37,6 +40,9 @@ namespace Mantle.Hosting
         protected virtual void Setup()
         {
             Worker = Get<TWorker>();
+
+            Worker.ErrorOccurred += OnErrorOccurred;
+            Worker.MessageOccurred += OnMessageOccurred;
         }
     }
 }

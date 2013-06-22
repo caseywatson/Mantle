@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</ProjectGuid>
+    <ProjectGuid>{8A24A450-FB8B-42B9-9983-A0891E9F367C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Messaging</RootNamespace>
-    <AssemblyName>Mantle.Messaging</AssemblyName>
+    <RootNamespace>Mantle.Console.Hosting</RootNamespace>
+    <AssemblyName>Mantle.Console.Hosting</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,18 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Endpoint.cs" />
-    <Compile Include="IPublisherClient.cs" />
-    <Compile Include="IPublisherEndpoint.cs" />
-    <Compile Include="IPublisherEndpointDirectory.cs" />
-    <Compile Include="ISubscriberClient.cs" />
-    <Compile Include="ISubscriberEndpoint.cs" />
-    <Compile Include="ISubscriberEndpointDirectory.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MessagingException.cs" />
+    <Compile Include="ConsoleWorkerHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublisherEndpointDirectory.cs" />
-    <Compile Include="SubscriberEndpointDirectory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
+      <Project>{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}</Project>
+      <Name>Mantle.Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{D24E2319-5795-402E-817B-7213E308B301}</Project>
+      <Name>Mantle</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
