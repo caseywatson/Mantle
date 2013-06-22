@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Azure", "Man
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{A7443224-9BC6-404D-8278-010A88E40FEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Samples.Simple.Worker", "Mantle.Samples.Simple.Worker\Mantle.Samples.Simple.Worker.csproj", "{8EBA1968-E0F0-468E-9E37-F0784E122581}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,8 +107,15 @@ Global
 		{40D86431-1792-441C-A240-B3810C181428}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40D86431-1792-441C-A240-B3810C181428}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40D86431-1792-441C-A240-B3810C181428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBA1968-E0F0-468E-9E37-F0784E122581}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8EBA1968-E0F0-468E-9E37-F0784E122581} = {A7443224-9BC6-404D-8278-010A88E40FEB}
 	EndGlobalSection
 EndGlobal
