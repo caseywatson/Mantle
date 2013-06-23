@@ -2,7 +2,7 @@
 using Mantle.Samples.Simple.Worker;
 using Ninject.Modules;
 
-namespace Mantle.Sample.Simple.Host.Role
+namespace Mantle.Samples.Simple.Host.Role
 {
     public class WorkerModule : NinjectModule
     {

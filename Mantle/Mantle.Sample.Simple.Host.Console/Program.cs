@@ -2,7 +2,7 @@
 using Mantle.Hosting;
 using Ninject;
 
-namespace Mantle.Sample.Simple.Host.Console
+namespace Mantle.Samples.Simple.Host.Console
 {
     internal class Program
     {

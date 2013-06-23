@@ -2,7 +2,7 @@
 using Mantle.Storage.Azure;
 using Ninject.Modules;
 
-namespace Mantle.Sample.Simple.Host.Role
+namespace Mantle.Samples.Simple.Host.Role
 {
     public class AzureStorageModule : NinjectModule
     {

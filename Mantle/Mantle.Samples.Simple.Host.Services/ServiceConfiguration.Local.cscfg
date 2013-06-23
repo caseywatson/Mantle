@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="Mantle.Samples.Simple.Host.Services" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="2" osVersion="*" schemaVersion="2013-03.2.0">
-  <Role name="Mantle.Sample.Simple.Host.Role">
+  <Role name="Mantle.Samples.Simple.Host.Role">
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />

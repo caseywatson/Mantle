@@ -2,7 +2,7 @@
 using Mantle.Messaging.Msmq;
 using Ninject.Modules;
 
-namespace Mantle.Sample.Simple.Host.Console
+namespace Mantle.Samples.Simple.Host.Console
 {
     public class MsmqModule : NinjectModule
     {

@@ -39,11 +39,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Samples.Simple.Worke
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Mantle.Samples.Simple.Host.Services", "Mantle.Samples.Simple.Host.Services\Mantle.Samples.Simple.Host.Services.ccproj", "{99E54AB0-0D50-4CE6-A403-B6DF6D740BF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.Simple.Host.Role", "Mantle.Sample.Simple.Host.Role\Mantle.Sample.Simple.Host.Role.csproj", "{70F7C653-339A-487E-8D93-1DB04C345DDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Samples.Simple.Host.Role", "Mantle.Sample.Simple.Host.Role\Mantle.Samples.Simple.Host.Role.csproj", "{70F7C653-339A-487E-8D93-1DB04C345DDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.Simple.Host.Console", "Mantle.Sample.Simple.Host.Console\Mantle.Sample.Simple.Host.Console.csproj", "{EC72FA8F-BB66-4278-8960-D52A21B06DA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Samples.Simple.Host.Console", "Mantle.Sample.Simple.Host.Console\Mantle.Samples.Simple.Host.Console.csproj", "{EC72FA8F-BB66-4278-8960-D52A21B06DA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.Simple.Host.WindowsService", "Mantle.Sample.Simple.Host.WindowsService\Mantle.Sample.Simple.Host.WindowsService.csproj", "{4142FD91-6D43-45DD-9599-E605091FD000}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Samples.Simple.Host.WindowsService", "Mantle.Sample.Simple.Host.WindowsService\Mantle.Samples.Simple.Host.WindowsService.csproj", "{4142FD91-6D43-45DD-9599-E605091FD000}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A4BCE229-B924-4362-BDEE-96E32BBEEF1E}"
 	ProjectSection(SolutionItems) = preProject

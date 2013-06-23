@@ -37,22 +37,21 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mantle.Sample.Simple.Host.Role\Mantle.Sample.Simple.Host.Role.csproj">
-      <Name>Mantle.Sample.Simple.Host.Role</Name>
+    <Folder Include="Mantle.Samples.Simple.Host.RoleContent" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Mantle.Samples.Simple.Host.RoleContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Sample.Simple.Host.Role\Mantle.Samples.Simple.Host.Role.csproj">
+      <Name>Mantle.Samples.Simple.Host.Role</Name>
       <Project>{70f7c653-339a-487e-8d93-1db04c345dde}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
-      <RoleName>Mantle.Sample.Simple.Host.Role</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+      <RoleName>Mantle.Samples.Simple.Host.Role</RoleName>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mantle.Sample.Simple.Host.RoleContent\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Mantle.Sample.Simple.Host.RoleContent\diagnostics.wadcfg">
-      <SubType>Content</SubType>
-    </Content>
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

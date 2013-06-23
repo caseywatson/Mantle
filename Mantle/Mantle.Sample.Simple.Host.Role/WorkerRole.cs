@@ -4,7 +4,7 @@ using Mantle.Hosting;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Ninject;
 
-namespace Mantle.Sample.Simple.Host.Role
+namespace Mantle.Samples.Simple.Host.Role
 {
     public class WorkerRole : RoleEntryPoint
     {

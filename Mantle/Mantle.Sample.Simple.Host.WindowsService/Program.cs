@@ -4,7 +4,7 @@ using Mantle.Hosting;
 using Ninject;
 using Topshelf;
 
-namespace Mantle.Sample.Simple.Host.WindowsService
+namespace Mantle.Samples.Simple.Host.WindowsService
 {
     internal class Program
     {

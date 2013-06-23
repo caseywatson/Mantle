@@ -2,7 +2,7 @@
 using Mantle.Storage.FileSystem;
 using Ninject.Modules;
 
-namespace Mantle.Sample.Simple.Host.Console
+namespace Mantle.Samples.Simple.Host.Console
 {
     public class FileSystemStorageModule : NinjectModule
     {
