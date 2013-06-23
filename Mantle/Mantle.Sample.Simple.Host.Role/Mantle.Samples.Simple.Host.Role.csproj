@@ -88,6 +88,10 @@
       <Project>{021EB10A-59A7-4D8C-9BEF-D35A8C672479}</Project>
       <Name>Mantle.Azure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.Hosting.Azure\Mantle.Hosting.Azure.csproj">
+      <Project>{40D86431-1792-441C-A240-B3810C181428}</Project>
+      <Name>Mantle.Hosting.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
       <Project>{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}</Project>
       <Name>Mantle.Hosting</Name>
@@ -99,6 +103,10 @@
     <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
       <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
       <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Ninject\Mantle.Ninject.csproj">
+      <Project>{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}</Project>
+      <Name>Mantle.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Samples.Simple.Worker\Mantle.Samples.Simple.Worker.csproj">
       <Project>{8EBA1968-E0F0-468E-9E37-F0784E122581}</Project>

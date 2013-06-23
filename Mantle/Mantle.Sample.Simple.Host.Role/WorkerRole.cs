@@ -1,6 +1,8 @@
 using System.Net;
 using System.Reflection;
 using Mantle.Hosting;
+using Mantle.Hosting.Azure;
+using Mantle.Ninject;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Ninject;
 
@@ -8,7 +10,7 @@ namespace Mantle.Samples.Simple.Host.Role
 {
     public class WorkerRole : RoleEntryPoint
     {
-        private readonly IWorker worker;
+        private readonly IWorkerHost host;
 
         public WorkerRole()
         {
@@ -16,12 +18,12 @@ namespace Mantle.Samples.Simple.Host.Role
 
             kernel.Load(Assembly.GetExecutingAssembly());
 
-            worker = kernel.Get<IWorker>();
+            host = new AzureRoleWorkerHost(new NinjectDependencyResolver(kernel));
         }
 
         public override void Run()
         {
-            worker.Start();
+            host.Start();
         }
 
         public override bool OnStart()

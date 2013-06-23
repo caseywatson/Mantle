@@ -3,8 +3,7 @@ using Mantle.Hosting;
 
 namespace Mantle.Console.Hosting
 {
-    public class ConsoleWorkerHost<TWorker> : BaseWorkerHost<TWorker>
-        where TWorker : IWorker
+    public class ConsoleWorkerHost : BaseWorkerHost
     {
         public ConsoleWorkerHost(IDependencyResolver dependencyResolver)
             : base(dependencyResolver)

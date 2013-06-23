@@ -2,8 +2,7 @@
 
 namespace Mantle.Hosting.Azure
 {
-    public class AzureRoleWorkerHost<TWorker> : BaseWorkerHost<TWorker>
-        where TWorker : IWorker
+    public class AzureRoleWorkerHost : BaseWorkerHost
     {
         public AzureRoleWorkerHost(IDependencyResolver dependencyResolver)
             : base(dependencyResolver)

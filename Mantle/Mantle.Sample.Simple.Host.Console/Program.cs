@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
-using Mantle.Hosting;
+using Mantle.Console.Hosting;
+using Mantle.Ninject;
 using Ninject;
 
 namespace Mantle.Samples.Simple.Host.Console
@@ -12,7 +13,9 @@ namespace Mantle.Samples.Simple.Host.Console
 
             kernel.Load(Assembly.GetExecutingAssembly());
 
-            kernel.Get<IWorker>().Start();
+            var host = new ConsoleWorkerHost(new NinjectDependencyResolver(kernel));
+
+            host.Start();
         }
     }
 }

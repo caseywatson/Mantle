@@ -1,7 +1,6 @@
 ﻿namespace Mantle.Hosting
 {
-    public interface IWorkerHost<T>
-        where T : IWorker
+    public interface IWorkerHost
     {
         void Start();
         void Stop();

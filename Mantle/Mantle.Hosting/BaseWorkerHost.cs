@@ -2,8 +2,7 @@
 
 namespace Mantle.Hosting
 {
-    public abstract class BaseWorkerHost<TWorker> : IWorkerHost<TWorker>
-        where TWorker : IWorker
+    public abstract class BaseWorkerHost : IWorkerHost
     {
         private readonly IDependencyResolver dependencyResolver;
 
@@ -17,7 +16,7 @@ namespace Mantle.Hosting
             Setup();
         }
 
-        protected TWorker Worker { get; private set; }
+        protected IWorker Worker { get; private set; }
 
         public virtual void Start()
         {
@@ -39,7 +38,7 @@ namespace Mantle.Hosting
 
         protected virtual void Setup()
         {
-            Worker = Get<TWorker>();
+            Worker = Get<IWorker>();
 
             Worker.ErrorOccurred += OnErrorOccurred;
             Worker.MessageOccurred += OnMessageOccurred;
