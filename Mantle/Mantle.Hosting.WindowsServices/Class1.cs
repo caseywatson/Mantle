@@ -1,22 +1,25 @@
 ﻿using System.Diagnostics;
-using Mantle.Hosting;
 using Topshelf;
+using Topshelf.HostConfigurators;
 
-namespace Mantle.Samples.Simple.Host.WindowsService
+namespace Mantle.Hosting.WindowsServices
 {
-    public class WindowsServiceWorkerHost : BaseWorkerHost
+    public abstract class WindowsServiceWorkerHost : BaseWorkerHost
     {
-        private Topshelf.Host host;
+        private Host host;
 
-        public WindowsServiceWorkerHost(IDependencyResolver dependencyResolver)
+        protected WindowsServiceWorkerHost(IDependencyResolver dependencyResolver)
             : base(dependencyResolver)
         {
         }
 
+        public override void Start()
+        {
+            host.Run();
+        }
+
         protected override void Setup()
         {
-            base.Setup();
-
             host = HostFactory.New(x =>
                 {
                     x.Service<IWorker>(s =>
@@ -26,20 +29,11 @@ namespace Mantle.Samples.Simple.Host.WindowsService
                             s.WhenStopped(c => c.Stop());
                         });
 
-                    x.RunAsLocalSystem();
-
-                    x.SetDescription("This is a simple example of the Mantle framework.");
-                    x.SetDisplayName("Mantle Simple Example Service");
-                    x.SetServiceName("MantleSimpleExampleService");
+                    SetupService(x);
                 });
-
-            
         }
 
-        public override void Start()
-        {
-            host.Run();
-        }
+        protected abstract void SetupService(HostConfigurator configuration);
 
         protected override void OnErrorOccurred(string message)
         {
