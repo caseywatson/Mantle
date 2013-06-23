@@ -53,6 +53,7 @@
     <Compile Include="MsmqModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowsServiceWorkerHost.cs" />
     <Compile Include="WorkerModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +69,10 @@
       <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
       <Name>Mantle.Messaging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.Ninject\Mantle.Ninject.csproj">
+      <Project>{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}</Project>
+      <Name>Mantle.Ninject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Samples.Simple.Worker\Mantle.Samples.Simple.Worker.csproj">
       <Project>{8EBA1968-E0F0-468E-9E37-F0784E122581}</Project>
       <Name>Mantle.Samples.Simple.Worker</Name>
@@ -79,6 +84,10 @@
     <ProjectReference Include="..\Mantle.Storage\Mantle.Storage.csproj">
       <Project>{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}</Project>
       <Name>Mantle.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{D24E2319-5795-402E-817B-7213E308B301}</Project>
+      <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
