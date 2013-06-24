@@ -1,5 +1,4 @@
 ![Mantle Logo](http://imgur.com/KKqjEvi.png "Mantle Logo")
-
 Mantle
 ======
 
