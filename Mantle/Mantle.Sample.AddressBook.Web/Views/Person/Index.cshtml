@@ -1,0 +1,18 @@
+﻿@model Mantle.Sample.AddressBook.Shared.Person
+
+@{
+    ViewBag.Title = "Add a Person";
+}
+
+<h2>Add a Person</h2>
+
+@using (Html.BeginForm())
+{
+    <div style="margin-top: 30px; margin-bottom: 30px">
+        @Html.EditorForModel()
+    </div>
+
+    <input type="submit" value="Save Person"/>
+}
+
+
