@@ -21,7 +21,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
                 .InSingletonScope()
                 .OnActivation(
                     c => c.Setup("PersonQueue",
-                                 "Replace this text with the path to your MSMQ queue."));
+                                 ".\\private$\\mantletestqueue"));
         }
 
         private void LoadSubscriberEndpoints()

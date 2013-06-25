@@ -21,7 +21,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
                 .InSingletonScope()
                 .OnActivation(
                     c => c.Setup("PersonQueue",
-                                 "Replace this text with the URL of your SQS queue."));
+                                 "Replace this text with your AWS SQS queue URL."));
         }
 
         private void LoadSubscriberEndpoints()

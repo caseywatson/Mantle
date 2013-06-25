@@ -12,7 +12,10 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
             Bind<IAzureServiceBusConfiguration>()
                 .To<AzureServiceBusConfiguration>()
                 .InSingletonScope()
-                .OnActivation(c => c.Setup("Replace this text with your Azure service bus connection string."));
+                .OnActivation(
+                    c =>
+                    c.Setup(
+                        "Replace this text with your Azure service bus connection string."));
         }
     }
 }

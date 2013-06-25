@@ -7,7 +7,7 @@ namespace Mantle.Messaging.Aws
     {
         private readonly IAwsConfiguration awsConfiguration;
 
-        public SqsPublisherEndpoint(AwsConfiguration awsConfiguration)
+        public SqsPublisherEndpoint(IAwsConfiguration awsConfiguration)
         {
             if (awsConfiguration == null)
                 throw new ArgumentNullException("awsConfiguration");

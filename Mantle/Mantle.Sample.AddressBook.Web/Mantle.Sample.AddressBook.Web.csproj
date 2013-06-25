@@ -149,10 +149,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Mantle\AwsConfigurationModule.cs" />
-    <Compile Include="Mantle\AwsSqsModule.cs" />
-    <Compile Include="Mantle\AzureServiceBusConfigurationModule.cs" />
-    <Compile Include="Mantle\AzureServiceBusModule.cs" />
     <Compile Include="Mantle\MessagingModule.cs" />
     <Compile Include="Mantle\MsmqModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
