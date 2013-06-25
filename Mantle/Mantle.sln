@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Web", "Mantle.Sample.AddressBook.Web\Mantle.Sample.AddressBook.Web.csproj", "{C1404320-B671-422A-87BF-0E56552577E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Storage.Worker", "Mantle.Sample.AddressBook.Storage.Worker\Mantle.Sample.AddressBook.Storage.Worker.csproj", "{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{C1404320-B671-422A-87BF-0E56552577E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1404320-B671-422A-87BF-0E56552577E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1404320-B671-422A-87BF-0E56552577E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,5 +143,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B148FD8B-5987-4835-BE57-A628DB444A1E} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
 		{C1404320-B671-422A-87BF-0E56552577E8} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
+		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
 	EndGlobalSection
 EndGlobal
