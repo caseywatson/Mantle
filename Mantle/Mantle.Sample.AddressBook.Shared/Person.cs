@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
@@ -7,6 +8,11 @@ namespace Mantle.Sample.AddressBook.Shared
     [DataContract(Namespace = "http://mantle/samples/addressbook/1")]
     public class Person
     {
+        public Person()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [DataMember(Order = 0)]
         [ScaffoldColumn(false)]
         public string Id { get; set; }

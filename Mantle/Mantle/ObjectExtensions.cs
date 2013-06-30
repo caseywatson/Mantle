@@ -33,9 +33,14 @@ namespace Mantle
             var inputStream = new MemoryStream();
 
             using (var streamWriter = new StreamWriter(inputStream, Encoding.UTF8))
+            {
                 streamWriter.Write(source);
+                streamWriter.Flush();
 
-            return inputStream.Deserialize<T>();
+                inputStream.Position = 0;
+
+                return inputStream.Deserialize<T>();
+            }
         }
 
         public static MemoryStream Serialize<T>(this T obj)

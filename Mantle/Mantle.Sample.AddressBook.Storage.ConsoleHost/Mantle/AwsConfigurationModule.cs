@@ -1,7 +1,11 @@
-﻿using Mantle.Aws;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Mantle.Aws;
 using Ninject.Modules;
 
-namespace Mantle.Sample.AddressBook.Web.Mantle
+namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
 {
     public class AwsConfigurationModule : NinjectModule
     {

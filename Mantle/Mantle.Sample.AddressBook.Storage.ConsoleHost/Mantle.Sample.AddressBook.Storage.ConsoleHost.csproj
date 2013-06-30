@@ -46,6 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mantle\FileSystemStorageModule.cs" />
+    <Compile Include="Mantle\MessagingModule.cs" />
+    <Compile Include="Mantle\MsmqModule.cs" />
+    <Compile Include="Mantle\StorageModule.cs" />
     <Compile Include="Mantle\WorkerModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +58,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
+      <Project>{40c79336-1432-4656-b75a-d37d9524f662}</Project>
+      <Name>Mantle.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Azure\Mantle.Azure.csproj">
+      <Project>{021eb10a-59a7-4d8c-9bef-d35a8c672479}</Project>
+      <Name>Mantle.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Console.Hosting\Mantle.Console.Hosting.csproj">
       <Project>{8A24A450-FB8B-42B9-9983-A0891E9F367C}</Project>
       <Name>Mantle.Console.Hosting</Name>
@@ -62,6 +74,22 @@
       <Project>{67B4DBFB-146C-4FC2-A55B-1C496A00BA1B}</Project>
       <Name>Mantle.Hosting</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj">
+      <Project>{3e255166-1290-4034-b269-937da2f3ab43}</Project>
+      <Name>Mantle.Messaging.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Azure\Mantle.Messaging.Azure.csproj">
+      <Project>{94c89754-1e27-40c7-ac06-093c8fa3d259}</Project>
+      <Name>Mantle.Messaging.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Msmq\Mantle.Messaging.Msmq.csproj">
+      <Project>{0a66fd59-6b05-452c-8ca0-a91d006cdd01}</Project>
+      <Name>Mantle.Messaging.Msmq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{e220316d-3290-4ed6-a8b1-c6ba1c74439a}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Ninject\Mantle.Ninject.csproj">
       <Project>{42C2CA36-C640-4DDE-AE7D-638BB5FF8997}</Project>
       <Name>Mantle.Ninject</Name>
@@ -69,6 +97,22 @@
     <ProjectReference Include="..\Mantle.Sample.AddressBook.Storage.Worker\Mantle.Sample.AddressBook.Storage.Worker.csproj">
       <Project>{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}</Project>
       <Name>Mantle.Sample.AddressBook.Storage.Worker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Storage.Aws\Mantle.Storage.Aws.csproj">
+      <Project>{e17bedc3-e514-4b54-b716-408007dd5c8c}</Project>
+      <Name>Mantle.Storage.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Storage.Azure\Mantle.Storage.Azure.csproj">
+      <Project>{4afb1635-7ab1-4575-ba28-24a95bd2749c}</Project>
+      <Name>Mantle.Storage.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Storage.FileSystem\Mantle.Storage.FileSystem.csproj">
+      <Project>{d942d524-2163-4213-b12e-4cbc6437175d}</Project>
+      <Name>Mantle.Storage.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Storage\Mantle.Storage.csproj">
+      <Project>{aff7c969-8b8c-4b24-b8b3-e0bcad99699a}</Project>
+      <Name>Mantle.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{D24E2319-5795-402E-817B-7213E308B301}</Project>

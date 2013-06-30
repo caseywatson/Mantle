@@ -2,7 +2,7 @@
 using Mantle.Messaging.Azure;
 using Ninject.Modules;
 
-namespace Mantle.Sample.AddressBook.Web.Mantle
+namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
 {
     public class AzureServiceBusModule : NinjectModule
     {
@@ -14,19 +14,19 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
 
         private void LoadPublisherEndpoints()
         {
-            // TODO: Setup publisher endpoints.
-
-            Bind<IPublisherEndpoint>()
-                .To<AzureServiceBusQueuePublisherEndpoint>()
-                .InSingletonScope()
-                .OnActivation(
-                    c => c.Setup("PersonQueue",
-                                 "mantletestqueue"));
+            // TODO: Setup publisher endpoints. 
         }
 
         private void LoadSubscriberEndpoints()
         {
             // TODO: Setup subscriber endpoints.
+
+            Bind<ISubscriberEndpoint>()
+              .To<AzureServiceBusQueueSubscriberEndpoint>()
+              .InSingletonScope()
+              .OnActivation(
+                  c => c.Setup("PersonQueue",
+                               "mantletestqueue"));
         }
     }
 }
