@@ -11,7 +11,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
             Bind<IStorageClient>()
                 .To<FileSystemStorageClient>()
                 .InSingletonScope()
-                .OnActivation(c => c.Setup("PersonStorage", "C:\\People\\"));
+                .OnActivation(c => c.Setup("PersonStorage", "Replace this text with your storage directory path."));
         }
     }
 }

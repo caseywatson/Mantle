@@ -11,7 +11,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
             Bind<IStorageClient>()
                 .To<AwsS3StorageClient>()
                 .InSingletonScope()
-                .OnActivation(c => c.Setup("PersonStorage", "mantleaddressbook"));
+                .OnActivation(c => c.Setup("PersonStorage", "Replace this text with the name of your AWS S3 bucket."));
         }
     }
 }

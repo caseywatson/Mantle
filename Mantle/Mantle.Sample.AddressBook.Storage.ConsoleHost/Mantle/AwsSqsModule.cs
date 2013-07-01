@@ -27,7 +27,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
                 .OnActivation(
                     c => c.Setup(
                         "PersonQueue",
-                        "https://sqs.us-east-1.amazonaws.com/682037665995/mantletestqueue"));
+                        "Replace this text with your SQS queue URL."));
         }
     }
 }

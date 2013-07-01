@@ -19,7 +19,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
             Bind<IPublisherEndpoint>()
                 .To<AzureStorageQueuePublisherEndpoint>()
                 .InSingletonScope()
-                .OnActivation(c => c.Setup("PersonQueue", "mantletestqueue"));
+                .OnActivation(c => c.Setup("PersonQueue", "Replace this text with the name of your Azure storage queue."));
         }
 
         private void LoadSubscriberEndpoints()

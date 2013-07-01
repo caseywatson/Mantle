@@ -16,16 +16,16 @@ namespace Mantle.Hosting.WindowsServices
                 throw new ArgumentNullException("serviceConfigurator");
 
             host = HostFactory.New(x =>
+            {
+                x.Service<IWorker>(y =>
                 {
-                    x.Service<IWorker>(y =>
-                        {
-                            y.ConstructUsing(z => Worker);
-                            y.WhenStarted(z => z.Start());
-                            y.WhenStopped(z => z.Stop());
-                        });
-
-                    serviceConfigurator(x);
+                    y.ConstructUsing(z => Worker);
+                    y.WhenStarted(z => z.Start());
+                    y.WhenStopped(z => z.Stop());
                 });
+
+                serviceConfigurator(x);
+            });
         }
 
         public override void Start()

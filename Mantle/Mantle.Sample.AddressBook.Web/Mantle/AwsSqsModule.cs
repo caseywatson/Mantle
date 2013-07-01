@@ -16,13 +16,13 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
         {
             // TODO: Setup publisher endpoints.
 
-            Bind<IPublisherEndpoint>()
-                .To<SqsPublisherEndpoint>()
-                .InSingletonScope()
-                .OnActivation(
-                    c => c.Setup(
-                        "PersonQueue",
-                        "https://sqs.us-east-1.amazonaws.com/682037665995/mantletestqueue"));
+            Bind<ISubscriberEndpoint>()
+              .To<SqsSubscriberEndpoint>()
+              .InSingletonScope()
+              .OnActivation(
+                  c => c.Setup(
+                      "PersonQueue",
+                      "Replace this text with your SQS queue URL."));
         }
 
         private void LoadSubscriberEndpoints()

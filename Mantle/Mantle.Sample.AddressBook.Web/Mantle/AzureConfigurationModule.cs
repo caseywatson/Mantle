@@ -15,7 +15,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
                 .OnActivation(
                     c =>
                     c.Setup(
-                        "Endpoint=sb://mantletest.servicebus.windows.net/;SharedSecretIssuer=owner;SharedSecretValue=UQxITa659SF4fTCSTPC+dHKrRAQHyiIpaJpv4R180rE="));
+                        "Replace this text with your Azure service bus connection string."));
 
             // TODO: Setup your Azure storage configuration.
 
@@ -25,7 +25,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
                 .OnActivation(
                     c =>
                     c.Setup(
-                        "DefaultEndpointsProtocol=http;AccountName=mantleteststorage;AccountKey=v5u4RW5TeR5epUfcjt+aPEseezGx2YgHqA/LboV9N+hgzNv2aLzPJn2g1uiGr+LHjA/6/duhx5bEfXbSjH9RaA=="));
+                        "Replace this text with your Azure storage connection string."));
         }
     }
 }

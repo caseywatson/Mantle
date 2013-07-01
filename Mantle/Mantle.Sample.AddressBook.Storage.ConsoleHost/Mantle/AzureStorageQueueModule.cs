@@ -25,7 +25,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
                 .To<AzureStorageQueueSubscriberEndpoint>()
                 .InSingletonScope()
                 .OnActivation(
-                    c => c.Setup("PersonQueue", "mantletestqueue"));
+                    c => c.Setup("PersonQueue", "Replace this text with the name of your Azure storage queue."));
         }
     }
 }

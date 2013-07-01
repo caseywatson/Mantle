@@ -10,11 +10,11 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
             // TODO: Setup your AWS configuration.
 
             Bind<IAwsConfiguration>()
-                .To<AwsConfiguration>()
-                .InSingletonScope()
-                .OnActivation(c => c.Setup(
-                    "AKIAJHUQPFSNH37KQDHA",
-                    "D0vWHUzUVnpYuN97lF4Erpu0+1kThwBwHjZ7Qeyb"));
+                 .To<AwsConfiguration>()
+                 .InSingletonScope()
+                 .OnActivation(c => c.Setup(
+                     "Replace this text with your AWS access key.",
+                     "Replace this text with your AWS secret key."));
         }
     }
 }

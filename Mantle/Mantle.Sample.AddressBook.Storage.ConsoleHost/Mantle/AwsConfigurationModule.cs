@@ -17,8 +17,8 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
                 .To<AwsConfiguration>()
                 .InSingletonScope()
                 .OnActivation(c => c.Setup(
-                    "AKIAJHUQPFSNH37KQDHA",
-                    "D0vWHUzUVnpYuN97lF4Erpu0+1kThwBwHjZ7Qeyb"));
+                    "Replace this text with your AWS access key.",
+                    "Replace this text with your AWS secret key."));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
               .InSingletonScope()
               .OnActivation(
                   c => c.Setup("PersonQueue",
-                               "mantletestqueue"));
+                               "Replace this text with the name of your Azure service bus queue."));
         }
     }
 }
