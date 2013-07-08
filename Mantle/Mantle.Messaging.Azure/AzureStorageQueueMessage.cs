@@ -20,16 +20,32 @@ namespace Mantle.Messaging.Azure
 
             this.sqClient = sqClient;
             this.cqMessage = cqMessage;
+
+            CanBeAbandoned = false;
+            CanBeCompleted = true;
+            CanBeKilled = false;
+            CanGetDeliveryCount = false;
         }
 
         public override void Abandon()
         {
-            // Do nothing... Azure will release the message automatically.
+            throw new NotSupportedException(
+                "Unable to abandon Azure storage queue message. Azure storage queue messages are automatically abandoned if not completed.");
         }
 
         public override void Complete()
         {
             sqClient.Delete(cqMessage);
+        }
+
+        public override int GetDeliveryCount()
+        {
+            return cqMessage.DequeueCount;
+        }
+
+        public override void Kill()
+        {
+            throw new NotSupportedException("Unable to kill Azure storage queue message.");
         }
     }
 }
