@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{F705D018-F04E-4274-8BC9-DA9B190E134F}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
       <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
       <Name>Mantle.Messaging</Name>

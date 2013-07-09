@@ -5,12 +5,12 @@ namespace Mantle.Configuration.Source.SqlServer.Models
 {
     public static class ModuleExtensions
     {
-        public static ModuleConfiguration ToModuleConfiguration(this Module module)
+        public static ConfigurationMetadata ToModuleConfiguration(this Module module)
         {
             if (module == null)
                 throw new ArgumentNullException("module");
 
-            var configuration = new ModuleConfiguration {GroupName = module.Group.Name, Name = module.Name};
+            var configuration = new ConfigurationMetadata {GroupName = module.Group.Name, Name = module.Name};
 
             foreach (PropertyValue property in module.PropertyValues)
             {

@@ -60,7 +60,7 @@
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlServerModuleConfigurationSource.cs" />
+    <Compile Include="SqlServerConfigurationMetadataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

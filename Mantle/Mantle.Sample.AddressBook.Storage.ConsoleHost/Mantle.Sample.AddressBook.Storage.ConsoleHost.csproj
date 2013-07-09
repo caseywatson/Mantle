@@ -67,6 +67,10 @@
       <Project>{021eb10a-59a7-4d8c-9bef-d35a8c672479}</Project>
       <Name>Mantle.Azure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{F705D018-F04E-4274-8BC9-DA9B190E134F}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Console.Hosting\Mantle.Console.Hosting.csproj">
       <Project>{8A24A450-FB8B-42B9-9983-A0891E9F367C}</Project>
       <Name>Mantle.Console.Hosting</Name>

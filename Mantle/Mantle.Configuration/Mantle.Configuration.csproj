@@ -39,9 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IModuleConfigurationSource.cs" />
-    <Compile Include="ModuleConfiguration.cs" />
-    <Compile Include="IModuleConfiguration.cs" />
+    <Compile Include="IConfigurable.cs" />
+    <Compile Include="IConfigurationMetadataSource.cs" />
+    <Compile Include="ConfigurationMetadata.cs" />
+    <Compile Include="IConfigurationMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,9 +1,10 @@
 ﻿using System;
 using Mantle.Azure;
+using Mantle.Configuration;
 
 namespace Mantle.Messaging.Azure
 {
-    public class AzureServiceSubscriptionSubscriberEndpoint : Endpoint, ISubscriberEndpoint
+    public class AzureServiceSubscriptionSubscriberEndpoint : Endpoint, ISubscriberEndpoint, IConfigurable
     {
         private readonly IAzureServiceBusConfiguration sbConfiguration;
 
@@ -19,6 +20,22 @@ namespace Mantle.Messaging.Azure
 
         public string SubscriptionName { get; set; }
         public string TopicName { get; set; }
+
+        public void Configure(IConfigurationMetadata metadata)
+        {
+            if (metadata == null)
+                throw new ArgumentNullException("metadata");
+
+            Name = metadata.Name;
+
+            if (metadata.Properties.ContainsKey(ConfigurationProperties.TopicName))
+                TopicName = metadata.Properties[ConfigurationProperties.TopicName];
+
+            if (metadata.Properties.ContainsKey(ConfigurationProperties.SubscriptionName))
+                SubscriptionName = metadata.Properties[ConfigurationProperties.SubscriptionName];
+
+            Validate();
+        }
 
         public ISubscriberClient GetClient()
         {
@@ -43,6 +60,12 @@ namespace Mantle.Messaging.Azure
             SubscriptionName = subscriptionName;
 
             Validate();
+        }
+
+        public static class ConfigurationProperties
+        {
+            public const string TopicName = "TopicName";
+            public const string SubscriptionName = "SubscriptionName";
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using Mantle.Azure;
+using Mantle.Configuration;
 
 namespace Mantle.Messaging.Azure
 {
-    public abstract class AzureStorageQueueEndpoint : Endpoint
+    public abstract class AzureStorageQueueEndpoint : Endpoint, IConfigurable
     {
         protected readonly IAzureStorageConfiguration StorageConfiguration;
 
@@ -19,6 +20,19 @@ namespace Mantle.Messaging.Azure
 
         public string QueueName { get; set; }
 
+        public void Configure(IConfigurationMetadata metadata)
+        {
+            if (metadata == null)
+                throw new ArgumentNullException("metadata");
+
+            Name = metadata.Name;
+
+            if (metadata.Properties.ContainsKey(ConfigurationProperties.QueueName))
+                QueueName = metadata.Properties[ConfigurationProperties.QueueName];
+
+            Validate();
+        }
+
         public void Configure(string name, string queueName)
         {
             Name = name;
@@ -33,6 +47,11 @@ namespace Mantle.Messaging.Azure
 
             if (String.IsNullOrEmpty(QueueName))
                 throw new MessagingException("Azure service bus queue name is required.");
+        }
+
+        public static class ConfigurationProperties
+        {
+            public const string QueueName = "QueueName";
         }
     }
 }

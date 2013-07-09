@@ -5,11 +5,11 @@ using Mantle.Configuration.Source.SqlServer.Models;
 
 namespace Mantle.Configuration.Source.SqlServer
 {
-    public class SqlServerModuleConfigurationSource : IModuleConfigurationSource
+    public class SqlServerConfigurationMetadataSource : IConfigurationMetadataSource
     {
         private readonly ConfigurationContext context;
 
-        public SqlServerModuleConfigurationSource(ConfigurationContext context)
+        public SqlServerConfigurationMetadataSource(ConfigurationContext context)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -17,7 +17,7 @@ namespace Mantle.Configuration.Source.SqlServer
             this.context = context;
         }
 
-        public IEnumerable<IModuleConfiguration> LoadConfiguration(string groupName)
+        public IEnumerable<IConfigurationMetadata> LoadConfiguration(string groupName)
         {
             if (String.IsNullOrEmpty(groupName))
                 throw new ArgumentException("Group name is required.", "groupName");

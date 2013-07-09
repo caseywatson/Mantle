@@ -2,7 +2,7 @@
 
 namespace Mantle.Configuration
 {
-    public interface IModuleConfiguration
+    public interface IConfigurationMetadata
     {
         string Name { get; }
         string GroupName { get; }

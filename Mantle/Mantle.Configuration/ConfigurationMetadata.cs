@@ -2,9 +2,9 @@
 
 namespace Mantle.Configuration
 {
-    public class ModuleConfiguration : IModuleConfiguration
+    public class ConfigurationMetadata : IConfigurationMetadata
     {
-        public ModuleConfiguration()
+        public ConfigurationMetadata()
         {
             Properties = new Dictionary<string, string>();
         }

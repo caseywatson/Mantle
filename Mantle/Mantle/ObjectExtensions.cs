@@ -7,6 +7,18 @@ namespace Mantle
 {
     public static class ObjectExtensions
     {
+        public static void DoIfImplements<T>(this object target, Action<T> toDo)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+
+            if (toDo == null)
+                throw new ArgumentNullException("toDo");
+
+            if (target is T)
+                toDo((T) (target));
+        }
+
         public static T Deserialize<T>(this Stream inputStream)
         {
             if (inputStream == null)

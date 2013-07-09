@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Mantle.Configuration;
 
 namespace Mantle.Messaging
 {
-    public class CompositePublisherEndpoint : Endpoint, IPublisherEndpoint
+    public class CompositePublisherEndpoint : Endpoint, IPublisherEndpoint, IConfigurable
     {
         private readonly IPublisherEndpointDirectory publisherDirectory;
 
@@ -14,6 +16,21 @@ namespace Mantle.Messaging
         }
 
         public Dictionary<string, IPublisherEndpoint> ChildEndpoints { get; set; }
+
+        public void Configure(IConfigurationMetadata metadata)
+        {
+            if (metadata == null)
+                throw new ArgumentNullException("metadata");
+
+            if (metadata.Properties.ContainsKey(metadata.Properties[ConfigurationProperties.ChildEndpointNames]))
+                Configure(metadata.Name,
+                    metadata.Properties[ConfigurationProperties.ChildEndpointNames].Split(',')
+                        .Select(n => n.Trim())
+                        .Where(n => (n.Length > 0))
+                        .ToArray());
+
+            Validate();
+        }
 
         public IPublisherClient GetClient()
         {
@@ -53,6 +70,11 @@ namespace Mantle.Messaging
             }
 
             Validate();
+        }
+
+        public static class ConfigurationProperties
+        {
+            public const string ChildEndpointNames = "ChildEndpointNames";
         }
     }
 }

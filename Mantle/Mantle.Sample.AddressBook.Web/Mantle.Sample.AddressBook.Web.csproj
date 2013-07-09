@@ -258,6 +258,10 @@
       <Project>{021EB10A-59A7-4D8C-9BEF-D35A8C672479}</Project>
       <Name>Mantle.Azure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{F705D018-F04E-4274-8BC9-DA9B190E134F}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj">
       <Project>{3E255166-1290-4034-B269-937DA2F3AB43}</Project>
       <Name>Mantle.Messaging.Aws</Name>
