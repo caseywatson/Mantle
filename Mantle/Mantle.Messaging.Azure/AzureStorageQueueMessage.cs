@@ -3,7 +3,7 @@ using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace Mantle.Messaging.Azure
 {
-    public class AzureStorageQueueMessage<T> : Message<T>
+    public class AzureStorageQueueMessage<T> : Message<T>, ICanBeCompleted, IHaveADeliveryCount
     {
         private readonly CloudQueueMessage cqMessage;
         private readonly AzureStorageQueueSubscriberClient sqClient;
@@ -20,32 +20,16 @@ namespace Mantle.Messaging.Azure
 
             this.sqClient = sqClient;
             this.cqMessage = cqMessage;
-
-            CanBeAbandoned = false;
-            CanBeCompleted = true;
-            CanBeKilled = false;
-            CanGetDeliveryCount = false;
         }
 
-        public override void Abandon()
-        {
-            throw new NotSupportedException(
-                "Unable to abandon Azure storage queue message. Azure storage queue messages are automatically abandoned if not completed.");
-        }
-
-        public override void Complete()
+        public void Complete()
         {
             sqClient.Delete(cqMessage);
         }
 
-        public override int GetDeliveryCount()
+        public int GetDeliveryCount()
         {
             return cqMessage.DequeueCount;
-        }
-
-        public override void Kill()
-        {
-            throw new NotSupportedException("Unable to kill Azure storage queue message.");
         }
     }
 }

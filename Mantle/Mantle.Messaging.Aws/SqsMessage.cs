@@ -2,7 +2,7 @@
 
 namespace Mantle.Messaging.Aws
 {
-    public class SqsMessage<T> : Message<T>
+    public class SqsMessage<T> : Message<T>, ICanBeCompleted
     {
         private readonly SqsSubscriberClient client;
         private readonly string receiptHandle;
@@ -18,32 +18,11 @@ namespace Mantle.Messaging.Aws
 
             this.client = client;
             this.receiptHandle = receiptHandle;
-
-            CanBeAbandoned = false;
-            CanBeCompleted = true;
-            CanBeKilled = false;
-            CanGetDeliveryCount = false;
         }
 
-        public override void Abandon()
-        {
-            throw new NotSupportedException(
-                "Unable to abandon Amazon SQS message. SQS messages are automatically abandoned if not completed.");
-        }
-
-        public override void Complete()
+        public void Complete()
         {
             client.Delete(receiptHandle);
-        }
-
-        public override void Kill()
-        {
-            throw new NotSupportedException("Unable to kill Amazon SQS message.");
-        }
-
-        public override int GetDeliveryCount()
-        {
-            throw new NotSupportedException("Unable to get Amazon SQS message delivery count.");
         }
     }
 }

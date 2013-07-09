@@ -1,9 +1,8 @@
-﻿using System;
-using System.Messaging;
+﻿using System.Messaging;
 
 namespace Mantle.Messaging.Msmq
 {
-    public class MsmqMessage<T> : Message<T>
+    public class MsmqMessage<T> : Message<T>, ICanBeAbandoned, ICanBeCompleted
     {
         private readonly MessageQueueTransaction transaction;
 
@@ -11,14 +10,9 @@ namespace Mantle.Messaging.Msmq
             : base(payload)
         {
             this.transaction = transaction;
-
-            CanBeAbandoned = true;
-            CanBeCompleted = true;
-            CanBeKilled = false;
-            CanGetDeliveryCount = false;
         }
 
-        public override void Abandon()
+        public void Abandon()
         {
             if (transaction != null)
             {
@@ -33,7 +27,7 @@ namespace Mantle.Messaging.Msmq
             }
         }
 
-        public override void Complete()
+        public void Complete()
         {
             if (transaction != null)
             {
@@ -46,16 +40,6 @@ namespace Mantle.Messaging.Msmq
                     transaction.Dispose();
                 }
             }
-        }
-
-        public override void Kill()
-        {
-            throw new NotSupportedException("Unable to kill MSMQ message.");
-        }
-
-        public override int GetDeliveryCount()
-        {
-            throw new NotSupportedException("Unable to get MSMQ message delivery count.");
         }
     }
 }

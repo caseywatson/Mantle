@@ -42,6 +42,10 @@
     <Compile Include="CompositePublisherClient.cs" />
     <Compile Include="CompositePublisherEndpoint.cs" />
     <Compile Include="Endpoint.cs" />
+    <Compile Include="ICanBeAbandoned.cs" />
+    <Compile Include="ICanBeCompleted.cs" />
+    <Compile Include="ICanBeKilled.cs" />
+    <Compile Include="IHaveADeliveryCount.cs" />
     <Compile Include="IPublisherClient.cs" />
     <Compile Include="IPublisherEndpoint.cs" />
     <Compile Include="IPublisherEndpointDirectory.cs" />

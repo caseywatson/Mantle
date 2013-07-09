@@ -3,7 +3,8 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure
 {
-    public class AzureServiceBusMessage<T> : Message<T>
+    public class AzureServiceBusMessage<T> : Message<T>, ICanBeAbandoned, ICanBeCompleted, ICanBeKilled,
+        IHaveADeliveryCount
     {
         private readonly BrokeredMessage sbMessage;
 
@@ -14,14 +15,9 @@ namespace Mantle.Messaging.Azure
                 throw new ArgumentNullException("sbMessage");
 
             this.sbMessage = sbMessage;
-
-            CanBeAbandoned = true;
-            CanBeCompleted = true;
-            CanBeKilled = true;
-            CanGetDeliveryCount = true;
         }
 
-        public override void Abandon()
+        public void Abandon()
         {
             if (sbMessage != null)
             {
@@ -36,7 +32,7 @@ namespace Mantle.Messaging.Azure
             }
         }
 
-        public override void Complete()
+        public void Complete()
         {
             if (sbMessage != null)
             {
@@ -51,7 +47,7 @@ namespace Mantle.Messaging.Azure
             }
         }
 
-        public override void Kill()
+        public void Kill()
         {
             if (sbMessage != null)
             {
@@ -66,7 +62,7 @@ namespace Mantle.Messaging.Azure
             }
         }
 
-        public override int GetDeliveryCount()
+        public int GetDeliveryCount()
         {
             if (sbMessage != null)
                 return sbMessage.DeliveryCount;
