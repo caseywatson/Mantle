@@ -150,6 +150,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mantle\AzureConfigurationModule.cs" />
+    <Compile Include="Mantle\AzureStorageModule.cs" />
     <Compile Include="Mantle\AzureStorageQueueModule.cs" />
     <Compile Include="Mantle\MessagingModule.cs" />
     <Compile Include="Mantle\StorageModule.cs" />
@@ -281,6 +282,10 @@
     <ProjectReference Include="..\Mantle.Sample.AddressBook.Shared\Mantle.Sample.AddressBook.Shared.csproj">
       <Project>{B148FD8B-5987-4835-BE57-A628DB444A1E}</Project>
       <Name>Mantle.Sample.AddressBook.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Storage.Azure\Mantle.Storage.Azure.csproj">
+      <Project>{4AFB1635-7AB1-4575-BA28-24A95BD2749C}</Project>
+      <Name>Mantle.Storage.Azure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Storage\Mantle.Storage.csproj">
       <Project>{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}</Project>

@@ -1,6 +1,4 @@
-﻿using Mantle.Messaging;
-using Mantle.Messaging.Azure;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 
 namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
 {
@@ -15,17 +13,23 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
         private void LoadPublisherEndpoints()
         {
             // TODO: Setup publisher endpoints.
+
+            //Bind<ISubscriberEndpoint>()
+            //    .To<AzureStorageQueueSubscriberEndpoint>()
+            //    .InSingletonScope()
+            //    .OnActivation(
+            //        c => c.Configure("My Publisher Endpoint", "Replace this text with the name of your Azure storage queue."));
         }
 
         private void LoadSubscriberEndpoints()
         {
             // TODO: Setup subscriber endpoints.
 
-            Bind<ISubscriberEndpoint>()
-                .To<AzureStorageQueueSubscriberEndpoint>()
-                .InSingletonScope()
-                .OnActivation(
-                    c => c.Configure("PersonQueue", "Replace this text with the name of your Azure storage queue."));
+            //Bind<ISubscriberEndpoint>()
+            //    .To<AzureStorageQueueSubscriberEndpoint>()
+            //    .InSingletonScope()
+            //    .OnActivation(
+            //        c => c.Configure("My Subscriber Endpoint", "Replace this text with the name of your Azure storage queue."));
         }
     }
 }

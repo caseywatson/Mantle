@@ -8,10 +8,12 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
     {
         public override void Load()
         {
-            Bind<IStorageClient>()
-                .To<AzureBlobStorageClient>()
-                .InSingletonScope()
-                .OnActivation(c => c.Configure("PersonStorage", "Replace this text with the name of your Azure storage container."));
+            // TODO: Setup Azure storage clients here.
+
+            //Bind<IStorageClient>()
+            //    .To<AzureBlobStorageClient>()
+            //    .InSingletonScope()
+            //    .OnActivation(c => c.Configure("My Storage Client", "Replace this text with the name of your Azure storage container."));
         }
     }
 }

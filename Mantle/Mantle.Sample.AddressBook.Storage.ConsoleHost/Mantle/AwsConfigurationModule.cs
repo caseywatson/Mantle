@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mantle.Aws;
+﻿using Mantle.Aws;
 using Ninject.Modules;
 
 namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
@@ -16,7 +12,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
             Bind<IAwsConfiguration>()
                 .To<AwsConfiguration>()
                 .InSingletonScope()
-                .OnActivation(c => c.Setup(
+                .OnActivation(c => c.Configure(
                     "Replace this text with your AWS access key.",
                     "Replace this text with your AWS secret key."));
         }

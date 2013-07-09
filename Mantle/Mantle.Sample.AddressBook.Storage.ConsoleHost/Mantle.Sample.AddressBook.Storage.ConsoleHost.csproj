@@ -46,10 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mantle\AwsConfigurationModule.cs" />
+    <Compile Include="Mantle\AwsSqsModule.cs" />
+    <Compile Include="Mantle\AwsStorageModule.cs" />
     <Compile Include="Mantle\AzureConfigurationModule.cs" />
+    <Compile Include="Mantle\AzureServiceBusModule.cs" />
     <Compile Include="Mantle\AzureStorageQueueModule.cs" />
     <Compile Include="Mantle\AzureStorageModule.cs" />
+    <Compile Include="Mantle\FileSystemStorageModule.cs" />
     <Compile Include="Mantle\MessagingModule.cs" />
+    <Compile Include="Mantle\MsmqModule.cs" />
     <Compile Include="Mantle\StorageModule.cs" />
     <Compile Include="Mantle\WorkerModule.cs" />
     <Compile Include="Program.cs" />

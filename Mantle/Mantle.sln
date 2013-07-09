@@ -56,6 +56,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Source
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Ninject", "Mantle.Configuration.Ninject\Mantle.Configuration.Ninject.csproj", "{1F4508E6-325E-4E29-A7CC-70952B41D698}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetPackages", "NugetPackages", "{C5A862AE-1676-4CCA-A35F-CC3586DC8007}"
+	ProjectSection(SolutionItems) = preProject
+		NugetPackages\mantle-messaging-aws-sqs.1.0.0.nupkg = NugetPackages\mantle-messaging-aws-sqs.1.0.0.nupkg
+		NugetPackages\mantle-messaging-azure.1.0.0.nupkg = NugetPackages\mantle-messaging-azure.1.0.0.nupkg
+		NugetPackages\mantle-messaging-msmq.1.0.0.nupkg = NugetPackages\mantle-messaging-msmq.1.0.0.nupkg
+		NugetPackages\mantle-storage-aws-s3.1.0.0.nupkg = NugetPackages\mantle-storage-aws-s3.1.0.0.nupkg
+		NugetPackages\mantle-storage-azure.1.0.0.nupkg = NugetPackages\mantle-storage-azure.1.0.0.nupkg
+		NugetPackages\mantle-storage-windows.1.0.0.nupkg = NugetPackages\mantle-storage-windows.1.0.0.nupkg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

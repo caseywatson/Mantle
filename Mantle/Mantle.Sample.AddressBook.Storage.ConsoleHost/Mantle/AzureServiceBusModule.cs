@@ -15,18 +15,25 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
         private void LoadPublisherEndpoints()
         {
             // TODO: Setup publisher endpoints. 
+
+            //Bind<IPublisherEndpoint>()
+            //    .To<AzureServiceBusQueuePublisherEndpoint>()
+            //    .InSingletonScope()
+            //    .OnActivation(
+            //        c => c.Configure("My Publisher Endpoint",
+            //            "Replace this text with the name of your Azure service bus queue."));
         }
 
         private void LoadSubscriberEndpoints()
         {
             // TODO: Setup subscriber endpoints.
 
-            Bind<ISubscriberEndpoint>()
-              .To<AzureServiceBusQueueSubscriberEndpoint>()
-              .InSingletonScope()
-              .OnActivation(
-                  c => c.Setup("PersonQueue",
-                               "Replace this text with the name of your Azure service bus queue."));
+            //Bind<ISubscriberEndpoint>()
+            //    .To<AzureServiceBusQueueSubscriberEndpoint>()
+            //    .InSingletonScope()
+            //    .OnActivation(
+            //        c => c.Configure("My Subscriber Endpoint",
+            //            "Replace this text with the name of your Azure service bus queue."));
         }
     }
 }

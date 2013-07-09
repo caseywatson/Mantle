@@ -8,10 +8,12 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
     {
         public override void Load()
         {
-            Bind<IStorageClient>()
-                .To<FileSystemStorageClient>()
-                .InSingletonScope()
-                .OnActivation(c => c.Setup("PersonStorage", "Replace this text with your storage directory path."));
+            // TODO: Setup file system storage clients here.
+
+            //Bind<IStorageClient>()
+            //    .To<FileSystemStorageClient>()
+            //    .InSingletonScope()
+            //    .OnActivation(c => c.Configure("My Storage Client", "Replace this text with your storage directory path."));
         }
     }
 }

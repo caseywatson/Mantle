@@ -15,19 +15,27 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
         private void LoadPublisherEndpoints()
         {
             // TODO: Setup publisher endpoints.
+
+            //Bind<IPublisherEndpoint>()
+            //    .To<SqsPublisherEndpoint>()
+            //    .InSingletonScope()
+            //    .OnActivation(
+            //        c => c.Configure(
+            //            "My Publisher Endpoint",
+            //            "Replace this text with your SQS queue URL."));
         }
 
         private void LoadSubscriberEndpoints()
         {
             // TODO: Setup subscriber endpoints.
 
-            Bind<ISubscriberEndpoint>()
-                .To<SqsSubscriberEndpoint>()
-                .InSingletonScope()
-                .OnActivation(
-                    c => c.Setup(
-                        "PersonQueue",
-                        "Replace this text with your SQS queue URL."));
+            //Bind<ISubscriberEndpoint>()
+            //    .To<SqsSubscriberEndpoint>()
+            //    .InSingletonScope()
+            //    .OnActivation(
+            //        c => c.Configure(
+            //            "My Subscriber Endpoint",
+            //            "Replace this text with your SQS queue URL."));
         }
     }
 }
