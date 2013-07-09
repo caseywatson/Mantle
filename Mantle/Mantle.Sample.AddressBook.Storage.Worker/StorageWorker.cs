@@ -6,24 +6,32 @@ using Mantle.Storage;
 
 namespace Mantle.Sample.AddressBook.Storage.Worker
 {
-    public class StorageWorker : BaseWorker
+    // TOOD: Give your worker a meaningful name.
+
+    public class Worker : BaseWorker
     {
+        private readonly IPublisherEndpointDirectory publisherDirectory;
         private readonly IStorageClientDirectory storageDirectory;
         private readonly ISubscriberEndpointDirectory subscriberDirectory;
 
-        public StorageWorker(IStorageClientDirectory storageDirectory, ISubscriberEndpointDirectory subscriberDirectory)
+        public Worker(IPublisherEndpointDirectory publisherDirectory, IStorageClientDirectory storageDirectory,
+                      ISubscriberEndpointDirectory subscriberDirectory)
         {
+            this.publisherDirectory = publisherDirectory;
             this.storageDirectory = storageDirectory;
             this.subscriberDirectory = subscriberDirectory;
         }
 
         public override void Start()
         {
-            IStorageClient storageClient = storageDirectory["PersonStorage"];
-            ISubscriberClient subscriberClient = subscriberDirectory["PersonQueue"].GetClient();
+            IPublisherClient publisherClient = publisherDirectory["My Publisher Endpoint"].GetClient();
+            IStorageClient storageClient = storageDirectory["My Storage Client"];
+            ISubscriberClient subscriberClient = subscriberDirectory["My Subscriber Endpoint"].GetClient();
 
             while (true)
             {
+                // TODO: Add your application-specific domain logic here.
+
                 OnMessageOccurred("Waiting for the next Person message...");
                 Message<Person> personMessage = subscriberClient.Receive<Person>();
 

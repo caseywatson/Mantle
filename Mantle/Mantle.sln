@@ -58,12 +58,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Ninjec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetPackages", "NugetPackages", "{C5A862AE-1676-4CCA-A35F-CC3586DC8007}"
 	ProjectSection(SolutionItems) = preProject
-		NugetPackages\mantle-messaging-aws-sqs.1.0.0.nupkg = NugetPackages\mantle-messaging-aws-sqs.1.0.0.nupkg
-		NugetPackages\mantle-messaging-azure.1.0.0.nupkg = NugetPackages\mantle-messaging-azure.1.0.0.nupkg
-		NugetPackages\mantle-messaging-msmq.1.0.0.nupkg = NugetPackages\mantle-messaging-msmq.1.0.0.nupkg
-		NugetPackages\mantle-storage-aws-s3.1.0.0.nupkg = NugetPackages\mantle-storage-aws-s3.1.0.0.nupkg
-		NugetPackages\mantle-storage-azure.1.0.0.nupkg = NugetPackages\mantle-storage-azure.1.0.0.nupkg
-		NugetPackages\mantle-storage-windows.1.0.0.nupkg = NugetPackages\mantle-storage-windows.1.0.0.nupkg
+		NugetPackages\mantle-configuration-sql-server.1.0.0-beta.nupkg = NugetPackages\mantle-configuration-sql-server.1.0.0-beta.nupkg
+		NugetPackages\mantle-configuration.1.0.0-beta.nupkg = NugetPackages\mantle-configuration.1.0.0-beta.nupkg
+		NugetPackages\mantle-messaging-aws-sqs.1.0.0-beta.nupkg = NugetPackages\mantle-messaging-aws-sqs.1.0.0-beta.nupkg
+		NugetPackages\mantle-messaging-azure.1.0.0-beta.nupkg = NugetPackages\mantle-messaging-azure.1.0.0-beta.nupkg
+		NugetPackages\mantle-messaging-msmq.1.0.0-beta.nupkg = NugetPackages\mantle-messaging-msmq.1.0.0-beta.nupkg
+		NugetPackages\mantle-storage-aws-s3.1.0.0-beta.nupkg = NugetPackages\mantle-storage-aws-s3.1.0.0-beta.nupkg
+		NugetPackages\mantle-storage-azure.1.0.0-beta.nupkg = NugetPackages\mantle-storage-azure.1.0.0-beta.nupkg
+		NugetPackages\mantle-storage-windows.1.0.0-beta.nupkg = NugetPackages\mantle-storage-windows.1.0.0-beta.nupkg
+		NugetPackages\mantle-worker-template.1.0.0-beta.nupkg = NugetPackages\mantle-worker-template.1.0.0-beta.nupkg
 	EndProjectSection
 EndProject
 Global

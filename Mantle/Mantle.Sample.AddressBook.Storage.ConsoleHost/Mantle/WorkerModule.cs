@@ -8,7 +8,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
     {
         public override void Load()
         {
-            Bind<IWorker>().To<StorageWorker>().InSingletonScope();
+            // Bind<IWorker>().To<Worker>().InSingletonScope();
         }
     }
 }
