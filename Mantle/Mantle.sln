@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Source.SqlServer", "Mantle.Configuration.Source.SqlServer\Mantle.Configuration.Source.SqlServer.csproj", "{D338B202-F835-4CB1-B560-132D1EC980E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Ninject", "Mantle.Configuration.Ninject\Mantle.Configuration.Ninject.csproj", "{1F4508E6-325E-4E29-A7CC-70952B41D698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +150,10 @@ Global
 		{D338B202-F835-4CB1-B560-132D1EC980E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D338B202-F835-4CB1-B560-132D1EC980E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D338B202-F835-4CB1-B560-132D1EC980E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
