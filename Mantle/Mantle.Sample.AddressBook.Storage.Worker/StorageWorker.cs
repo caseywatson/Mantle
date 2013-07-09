@@ -36,11 +36,15 @@ namespace Mantle.Sample.AddressBook.Storage.Worker
                     OnMessageOccurred("Received Person message [{0}].", person.Id);
                     storageClient.SaveObject(person.Serialize(), person.Id);
                     OnMessageOccurred("Saved Person [{0}].", person.Id);
-                    personMessage.Complete();
+
+                    if (personMessage is ICanBeCompleted)
+                        (personMessage as ICanBeCompleted).Complete();
                 }
                 catch (Exception ex)
                 {
-                    personMessage.Abandon();
+                    if (personMessage is ICanBeAbandoned)
+                        (personMessage as ICanBeAbandoned).Abandon();
+
                     OnErrorOccurred(
                         "An error occurred while processing an incoming Person message. See below for additional details: \n\n{0}",
                         ex.Message);

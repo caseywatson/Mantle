@@ -7,7 +7,7 @@ namespace Mantle.Azure
     {
         public string ConnectionString { get; set; }
 
-        public void Setup(string connectionString)
+        public void Configure(string connectionString)
         {
             ConnectionString = connectionString;
 

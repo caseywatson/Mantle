@@ -6,7 +6,7 @@ namespace Mantle.Messaging.Azure
     {
         public string QueueName { get; set; }
 
-        public void Setup(string name, string queueName)
+        public void Configure(string name, string queueName)
         {
             Name = name;
             QueueName = queueName;

@@ -92,7 +92,7 @@ namespace Mantle.Storage.FileSystem
             }
         }
 
-        public void Setup(string name, string directoryPath)
+        public void Configure(string name, string directoryPath)
         {
             Name = name;
             DirectoryPath = directoryPath;

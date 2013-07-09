@@ -32,7 +32,7 @@ namespace Mantle.Messaging
                 ChildEndpoints[endpointKey].Validate();
         }
 
-        public void Setup(string name, params string[] childEndpointNames)
+        public void Configure(string name, params string[] childEndpointNames)
         {
             Name = name;
 

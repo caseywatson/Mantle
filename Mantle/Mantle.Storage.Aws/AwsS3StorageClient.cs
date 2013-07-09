@@ -169,7 +169,7 @@ namespace Mantle.Storage.Aws
                 throw new StorageException("Bucket name must be between 3 and 63 characters in length.");
         }
 
-        public void Setup(string name, string bucketName)
+        public void Configure(string name, string bucketName)
         {
             Name = name;
             BucketName = bucketName;

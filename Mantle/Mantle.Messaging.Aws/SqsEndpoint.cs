@@ -6,7 +6,7 @@ namespace Mantle.Messaging.Aws
     {
         public string QueueUrl { get; set; }
 
-        public void Setup(string name, string queueUrl)
+        public void Configure(string name, string queueUrl)
         {
             Name = name;
             QueueUrl = queueUrl;

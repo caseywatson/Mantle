@@ -17,7 +17,7 @@ namespace Mantle.Aws
                 throw new ConfigurationErrorsException("AWS secret key is required.");
         }
 
-        public void Setup(string accessKey, string secretKey)
+        public void Configure(string accessKey, string secretKey)
         {
             AccessKey = accessKey;
             SecretKey = secretKey;

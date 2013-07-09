@@ -13,8 +13,8 @@ namespace Mantle.Messaging
 
         public void Dispose()
         {
-            if (Message != null)
-                Message.Complete();
+            if ((Message != null) && (Message is ICanBeCompleted))
+                (Message as ICanBeCompleted).Complete();
         }
     }
 }

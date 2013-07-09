@@ -150,7 +150,7 @@ namespace Mantle.Storage.Azure
                 throw new StorageException("Container name must be between 3 and 63 characters in length.");
         }
 
-        public void Setup(string name, string containerName)
+        public void Configure(string name, string containerName)
         {
             Name = name;
             ContainerName = containerName;

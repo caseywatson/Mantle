@@ -6,7 +6,7 @@ namespace Mantle.Messaging.Msmq
     {
         public string QueuePath { get; set; }
 
-        public void Setup(string name, string queuePath)
+        public void Configure(string name, string queuePath)
         {
             Name = name;
             QueuePath = queuePath;

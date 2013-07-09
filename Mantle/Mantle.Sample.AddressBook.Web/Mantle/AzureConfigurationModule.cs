@@ -14,7 +14,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
                 .InSingletonScope()
                 .OnActivation(
                     c =>
-                    c.Setup(
+                    c.Configure(
                         "Replace this text with your Azure service bus connection string."));
 
             // TODO: Setup your Azure storage configuration.
@@ -24,7 +24,7 @@ namespace Mantle.Sample.AddressBook.Web.Mantle
                 .InSingletonScope()
                 .OnActivation(
                     c =>
-                    c.Setup(
+                    c.Configure(
                         "Replace this text with your Azure storage connection string."));
         }
     }

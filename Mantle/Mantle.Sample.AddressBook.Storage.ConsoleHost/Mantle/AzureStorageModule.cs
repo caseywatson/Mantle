@@ -11,7 +11,7 @@ namespace Mantle.Sample.AddressBook.Storage.ConsoleHost.Mantle
             Bind<IStorageClient>()
                 .To<AzureBlobStorageClient>()
                 .InSingletonScope()
-                .OnActivation(c => c.Setup("PersonStorage", "Replace this text with the name of your Azure storage container."));
+                .OnActivation(c => c.Configure("PersonStorage", "Replace this text with the name of your Azure storage container."));
         }
     }
 }
