@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20617.1 PREVIEW
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage", "Mantle.Storage\Mantle.Storage.csproj", "{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration", "Mantle.Configuration\Mantle.Configuration.csproj", "{F705D018-F04E-4274-8BC9-DA9B190E134F}"
@@ -58,14 +60,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Ninjec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetPackages", "NugetPackages", "{C5A862AE-1676-4CCA-A35F-CC3586DC8007}"
 	ProjectSection(SolutionItems) = preProject
+		NugetPackages\mantle-aws.1.0.0-beta.nupkg = NugetPackages\mantle-aws.1.0.0-beta.nupkg
+		NugetPackages\mantle-azure.1.0.0-beta.nupkg = NugetPackages\mantle-azure.1.0.0-beta.nupkg
+		NugetPackages\mantle-base.1.0.0-beta.nupkg = NugetPackages\mantle-base.1.0.0-beta.nupkg
 		NugetPackages\mantle-configuration-sql-server.1.0.0-beta.nupkg = NugetPackages\mantle-configuration-sql-server.1.0.0-beta.nupkg
 		NugetPackages\mantle-configuration.1.0.0-beta.nupkg = NugetPackages\mantle-configuration.1.0.0-beta.nupkg
+		NugetPackages\mantle-hosting.1.0.0-beta.nupkg = NugetPackages\mantle-hosting.1.0.0-beta.nupkg
 		NugetPackages\mantle-messaging-aws-sqs.1.0.0-beta.nupkg = NugetPackages\mantle-messaging-aws-sqs.1.0.0-beta.nupkg
 		NugetPackages\mantle-messaging-azure.1.0.0-beta.nupkg = NugetPackages\mantle-messaging-azure.1.0.0-beta.nupkg
 		NugetPackages\mantle-messaging-msmq.1.0.0-beta.nupkg = NugetPackages\mantle-messaging-msmq.1.0.0-beta.nupkg
+		NugetPackages\mantle-messaging.1.0.0-beta.nupkg = NugetPackages\mantle-messaging.1.0.0-beta.nupkg
+		NugetPackages\mantle-ninject.1.0.0-beta.nupkg = NugetPackages\mantle-ninject.1.0.0-beta.nupkg
 		NugetPackages\mantle-storage-aws-s3.1.0.0-beta.nupkg = NugetPackages\mantle-storage-aws-s3.1.0.0-beta.nupkg
 		NugetPackages\mantle-storage-azure.1.0.0-beta.nupkg = NugetPackages\mantle-storage-azure.1.0.0-beta.nupkg
 		NugetPackages\mantle-storage-windows.1.0.0-beta.nupkg = NugetPackages\mantle-storage-windows.1.0.0-beta.nupkg
+		NugetPackages\mantle-storage.1.0.0-beta.nupkg = NugetPackages\mantle-storage.1.0.0-beta.nupkg
 		NugetPackages\mantle-worker-azure-cloud-service-role-host.1.0.0-beta.nupkg = NugetPackages\mantle-worker-azure-cloud-service-role-host.1.0.0-beta.nupkg
 		NugetPackages\mantle-worker-console-host.1.0.0-beta.nupkg = NugetPackages\mantle-worker-console-host.1.0.0-beta.nupkg
 		NugetPackages\mantle-worker-template.1.0.0-beta.nupkg = NugetPackages\mantle-worker-template.1.0.0-beta.nupkg

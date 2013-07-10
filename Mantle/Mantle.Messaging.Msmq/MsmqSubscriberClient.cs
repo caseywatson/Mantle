@@ -46,7 +46,20 @@ namespace Mantle.Messaging.Msmq
 
                 queueMessage.BodyStream.Position = 0;
 
-                return new MsmqMessage<T>(queueMessage.BodyStream.Deserialize<T>(), transaction);
+                T payload;
+
+                try
+                {
+                    payload = queueMessage.BodyStream.Deserialize<T>();
+                }
+                catch
+                {
+                    throw new MessageDeserializationException<T>(
+                        "Unable to deserialize the provided MSMQ message payload.",
+                        new MsmqMessage<T>(default(T), transaction));
+                }
+
+                return new MsmqMessage<T>(payload, transaction);
             }
             catch (Exception ex)
             {

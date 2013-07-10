@@ -54,6 +54,8 @@
     <Compile Include="ISubscriberEndpoint.cs" />
     <Compile Include="ISubscriberEndpointDirectory.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="MessageDeserializationException.cs" />
+    <Compile Include="MessageExtensions.cs" />
     <Compile Include="MessageScope.cs" />
     <Compile Include="MessagingException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

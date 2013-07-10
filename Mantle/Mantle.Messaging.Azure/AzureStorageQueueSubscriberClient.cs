@@ -30,7 +30,20 @@ namespace Mantle.Messaging.Azure
                 if (cqMessage == null)
                     return null;
 
-                return new AzureStorageQueueMessage<T>(cqMessage.AsBytes.DeserializeBytes<T>(), this, cqMessage);
+                T payload;
+
+                try
+                {
+                    payload = cqMessage.AsBytes.DeserializeBytes<T>();
+                }
+                catch
+                {
+                    throw new MessageDeserializationException<T>(
+                        "Unable to deserialize the provided Azure storage queue message payload.",
+                        new AzureStorageQueueMessage<T>(default(T), this, cqMessage));
+                }
+
+                return new AzureStorageQueueMessage<T>(payload, this, cqMessage);
             }
             catch (Exception ex)
             {

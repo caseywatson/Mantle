@@ -43,7 +43,20 @@ namespace Mantle.Messaging.Aws
 
                 Message sqsMessage = response.ReceiveMessageResult.Message[0];
 
-                return new SqsMessage<T>(sqsMessage.Body.DeserializeString<T>(), this, sqsMessage.ReceiptHandle);
+                T payload;
+
+                try
+                {
+                    payload = sqsMessage.Body.DeserializeString<T>();
+                }
+                catch
+                {
+                    throw new MessageDeserializationException<T>(
+                        "Unable to deserialize the provided SQS message payload.",
+                        new SqsMessage<T>(default(T), this, sqsMessage.ReceiptHandle));
+                }
+
+                return new SqsMessage<T>(payload, this, sqsMessage.ReceiptHandle);
             }
             catch (Exception ex)
             {
