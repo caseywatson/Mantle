@@ -26,7 +26,21 @@ namespace Mantle.Messaging.Azure
                 if (brokeredMessage == null)
                     return null;
 
-                return new AzureServiceBusMessage<T>(brokeredMessage.GetBody<T>(), brokeredMessage);
+
+                T payload;
+
+                try
+                {
+                    payload = brokeredMessage.GetBody<T>();
+                }
+                catch
+                {
+                    throw new MessageDeserializationException<T>(
+                        "Unable to deserialize the provided Azure service bus brokered message payload.",
+                        new AzureServiceBusMessage<T>(default(T), brokeredMessage));
+                }
+
+                return new AzureServiceBusMessage<T>(payload, brokeredMessage);
             }
             catch (Exception ex)
             {
