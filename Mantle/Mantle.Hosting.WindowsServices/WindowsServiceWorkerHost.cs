@@ -5,12 +5,12 @@ using Topshelf.HostConfigurators;
 
 namespace Mantle.Hosting.WindowsServices
 {
-    public abstract class WindowsServiceWorkerHost : BaseWorkerHost
+    public class WindowsServiceWorkerHost : BaseWorkerHost
     {
         private readonly Host host;
 
-        protected WindowsServiceWorkerHost(IDependencyResolver dependencyResolver,
-                                           Action<HostConfigurator> serviceConfigurator) : base(dependencyResolver)
+        public WindowsServiceWorkerHost(IDependencyResolver dependencyResolver,
+                                        Action<HostConfigurator> serviceConfigurator) : base(dependencyResolver)
         {
             if (serviceConfigurator == null)
                 throw new ArgumentNullException("serviceConfigurator");

@@ -78,11 +78,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetPackages", "NugetPacka
 		NugetPackages\mantle-worker-azure-cloud-service-role-host.1.0.0-beta.nupkg = NugetPackages\mantle-worker-azure-cloud-service-role-host.1.0.0-beta.nupkg
 		NugetPackages\mantle-worker-console-host.1.0.0-beta.nupkg = NugetPackages\mantle-worker-console-host.1.0.0-beta.nupkg
 		NugetPackages\mantle-worker-template.1.0.0-beta.nupkg = NugetPackages\mantle-worker-template.1.0.0-beta.nupkg
+		NugetPackages\mantle-worker-windows-service-host.1.0.0-beta.nupkg = NugetPackages\mantle-worker-windows-service-host.1.0.0-beta.nupkg
 	EndProjectSection
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Mantle.Sample.AddressBook.Storage.Services", "Mantle.Sample.AddressBook.Storage.Services\Mantle.Sample.AddressBook.Storage.Services.ccproj", "{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Storage.Host", "Mantle.Sample.AddressBook.Storage.Host\Mantle.Sample.AddressBook.Storage.Host.csproj", "{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.WindowsServiceHost", "Mantle.Sample.AddressBook.WindowsServiceHost\Mantle.Sample.AddressBook.WindowsServiceHost.csproj", "{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -190,6 +193,10 @@ Global
 		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,5 +208,6 @@ Global
 		{5E4267FD-461A-4FFC-8DE0-0C742D114A79} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
 		{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
 		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
+		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
 	EndGlobalSection
 EndGlobal
