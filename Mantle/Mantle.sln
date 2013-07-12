@@ -87,6 +87,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.WindowsServiceHost", "Mantle.Sample.AddressBook.WindowsServiceHost\Mantle.Sample.AddressBook.WindowsServiceHost.csproj", "{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Logging", "Mantle.Logging\Mantle.Logging.csproj", "{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Logging.MessagingAdapter", "Mantle.Logging.MessagingAdapter\Mantle.Logging.MessagingAdapter.csproj", "{B27DF037-A93A-4600-8642-2D3145B556A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -197,6 +201,14 @@ Global
 		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B27DF037-A93A-4600-8642-2D3145B556A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B27DF037-A93A-4600-8642-2D3145B556A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B27DF037-A93A-4600-8642-2D3145B556A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B27DF037-A93A-4600-8642-2D3145B556A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
