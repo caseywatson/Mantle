@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{F705D018-F04E-4274-8BC9-DA9B190E134F}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Logging\Mantle.Logging.csproj">
       <Project>{dfb081b6-dbf7-4a50-a4d4-c9aff385c74d}</Project>
       <Name>Mantle.Logging</Name>

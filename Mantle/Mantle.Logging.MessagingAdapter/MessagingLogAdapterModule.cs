@@ -6,7 +6,10 @@ namespace Mantle.Logging.MessagingAdapter
     {
         public override void Load()
         {
-            Bind<ILogAdapter>().To<MessagingLogAdapter>().InTransientScope();
+            Bind<ILogAdapter>()
+                .To<MessagingLogAdapter>()
+                .InTransientScope()
+                .OnActivation(c => c.Configure("Enter the name of the log publishing endpoint here."));
         }
     }
 }
