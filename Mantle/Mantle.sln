@@ -44,16 +44,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A4BCE2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.WindowsServices", "Mantle.Hosting.WindowsServices\Mantle.Hosting.WindowsServices.csproj", "{D878027F-764D-4C85-AE52-1AC316894041}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{BA11B5A2-1470-4F54-8849-3F4170919A4F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Shared", "Mantle.Sample.AddressBook.Shared\Mantle.Sample.AddressBook.Shared.csproj", "{B148FD8B-5987-4835-BE57-A628DB444A1E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Web", "Mantle.Sample.AddressBook.Web\Mantle.Sample.AddressBook.Web.csproj", "{C1404320-B671-422A-87BF-0E56552577E8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Storage.Worker", "Mantle.Sample.AddressBook.Storage.Worker\Mantle.Sample.AddressBook.Storage.Worker.csproj", "{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Storage.ConsoleHost", "Mantle.Sample.AddressBook.Storage.ConsoleHost\Mantle.Sample.AddressBook.Storage.ConsoleHost.csproj", "{5E4267FD-461A-4FFC-8DE0-0C742D114A79}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Source.SqlServer", "Mantle.Configuration.Source.SqlServer\Mantle.Configuration.Source.SqlServer.csproj", "{D338B202-F835-4CB1-B560-132D1EC980E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration.Ninject", "Mantle.Configuration.Ninject\Mantle.Configuration.Ninject.csproj", "{1F4508E6-325E-4E29-A7CC-70952B41D698}"
@@ -80,12 +70,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetPackages", "NugetPacka
 		NugetPackages\mantle-worker-template.1.0.0-beta.nupkg = NugetPackages\mantle-worker-template.1.0.0-beta.nupkg
 		NugetPackages\mantle-worker-windows-service-host.1.0.0-beta.nupkg = NugetPackages\mantle-worker-windows-service-host.1.0.0-beta.nupkg
 	EndProjectSection
-EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Mantle.Sample.AddressBook.Storage.Services", "Mantle.Sample.AddressBook.Storage.Services\Mantle.Sample.AddressBook.Storage.Services.ccproj", "{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.Storage.Host", "Mantle.Sample.AddressBook.Storage.Host\Mantle.Sample.AddressBook.Storage.Host.csproj", "{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.AddressBook.WindowsServiceHost", "Mantle.Sample.AddressBook.WindowsServiceHost\Mantle.Sample.AddressBook.WindowsServiceHost.csproj", "{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Logging", "Mantle.Logging\Mantle.Logging.csproj", "{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}"
 EndProject
@@ -165,22 +149,6 @@ Global
 		{D878027F-764D-4C85-AE52-1AC316894041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D878027F-764D-4C85-AE52-1AC316894041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D878027F-764D-4C85-AE52-1AC316894041}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B148FD8B-5987-4835-BE57-A628DB444A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B148FD8B-5987-4835-BE57-A628DB444A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B148FD8B-5987-4835-BE57-A628DB444A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B148FD8B-5987-4835-BE57-A628DB444A1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1404320-B671-422A-87BF-0E56552577E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1404320-B671-422A-87BF-0E56552577E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1404320-B671-422A-87BF-0E56552577E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1404320-B671-422A-87BF-0E56552577E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E4267FD-461A-4FFC-8DE0-0C742D114A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E4267FD-461A-4FFC-8DE0-0C742D114A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E4267FD-461A-4FFC-8DE0-0C742D114A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E4267FD-461A-4FFC-8DE0-0C742D114A79}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D338B202-F835-4CB1-B560-132D1EC980E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D338B202-F835-4CB1-B560-132D1EC980E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D338B202-F835-4CB1-B560-132D1EC980E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -189,18 +157,6 @@ Global
 		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F4508E6-325E-4E29-A7CC-70952B41D698}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -212,14 +168,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B148FD8B-5987-4835-BE57-A628DB444A1E} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
-		{C1404320-B671-422A-87BF-0E56552577E8} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
-		{4EF6DF26-58D2-4DDC-88D6-C3115AFBC066} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
-		{5E4267FD-461A-4FFC-8DE0-0C742D114A79} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
-		{6DAF1A02-B8BF-4D77-B514-A6C57371B8DD} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
-		{4EA74E36-C2F2-4657-9AFA-7BEDFFB85FF6} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
-		{FF76FF36-8EC4-4AF0-98B4-4D3D980B6C7D} = {BA11B5A2-1470-4F54-8849-3F4170919A4F}
 	EndGlobalSection
 EndGlobal
