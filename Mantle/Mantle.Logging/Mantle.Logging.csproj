@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseLogAdapter.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="ILog.cs" />

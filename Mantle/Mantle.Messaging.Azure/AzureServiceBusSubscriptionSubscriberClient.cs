@@ -8,7 +8,7 @@ namespace Mantle.Messaging.Azure
     {
         private readonly SubscriptionClient subscriptionClient;
 
-        public AzureServiceBusSubscriptionSubscriberClient(AzureServiceSubscriptionSubscriberEndpoint endpoint,
+        public AzureServiceBusSubscriptionSubscriberClient(AzureServiceBusSubscriptionSubscriberEndpoint endpoint,
                                                            IAzureServiceBusConfiguration sbConfiguration)
             : base(sbConfiguration)
         {

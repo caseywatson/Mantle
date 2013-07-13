@@ -4,7 +4,7 @@ using Mantle.Messaging;
 
 namespace Mantle.Logging.MessagingAdapter
 {
-    public class MessagingLogAdapter : IConfigurable, ILogAdapter
+    public class MessagingLogAdapter : BaseLogAdapter, IConfigurable, ILogAdapter
     {
         private readonly IPublisherEndpointDirectory publisherDirectory;
 

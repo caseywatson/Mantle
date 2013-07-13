@@ -19,13 +19,31 @@ namespace Mantle.Logging
             this.logAdapters = logAdapters;
         }
 
+        public event Action<Event, Exception> ErrorOccurred;
+
         public void Record(Event evt)
         {
             if (evt == null)
                 throw new ArgumentNullException("evt");
 
-            foreach (ILogAdapter logAdapter in logAdapters)
-                logAdapter.Record(evt);
+            try
+            {
+                foreach (ILogAdapter logAdapter in logAdapters)
+                {
+                    if ((logAdapter.Condition == null) || (logAdapter.Condition(evt)))
+                        logAdapter.Record(evt);
+                }
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred(evt, ex);
+            }
+        }
+
+        private void OnErrorOccurred(Event evt, Exception ex)
+        {
+            if (ErrorOccurred != null)
+                ErrorOccurred(evt, ex);
         }
     }
 }

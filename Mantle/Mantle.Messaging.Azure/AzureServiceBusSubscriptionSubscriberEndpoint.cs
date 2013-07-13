@@ -4,11 +4,11 @@ using Mantle.Configuration;
 
 namespace Mantle.Messaging.Azure
 {
-    public class AzureServiceSubscriptionSubscriberEndpoint : Endpoint, ISubscriberEndpoint, IConfigurable
+    public class AzureServiceBusSubscriptionSubscriberEndpoint : Endpoint, ISubscriberEndpoint, IConfigurable
     {
         private readonly IAzureServiceBusConfiguration sbConfiguration;
 
-        public AzureServiceSubscriptionSubscriberEndpoint(IAzureServiceBusConfiguration sbConfiguration)
+        public AzureServiceBusSubscriptionSubscriberEndpoint(IAzureServiceBusConfiguration sbConfiguration)
         {
             if (sbConfiguration == null)
                 throw new ArgumentNullException("sbConfiguration");
