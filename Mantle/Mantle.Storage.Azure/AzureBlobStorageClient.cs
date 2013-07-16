@@ -66,6 +66,7 @@ namespace Mantle.Storage.Azure
                 var outputStream = new MemoryStream();
 
                 blobReference.DownloadToStream(outputStream);
+                outputStream.Position = 0;
 
                 return outputStream;
             }
