@@ -61,12 +61,14 @@ namespace Mantle.Storage.Azure
 
                 if (blobReference.Exists() == false)
                     throw new StorageException(String.Format("Azure blob [{0}/{1}] does not exist. File not found.",
-                                                             ContainerName, fileName));
+                        ContainerName, fileName));
 
                 var outputStream = new MemoryStream();
 
                 blobReference.DownloadToStream(outputStream);
-                outputStream.Position = 0;
+
+                if (outputStream.CanSeek)
+                    outputStream.Position = 0;
 
                 return outputStream;
             }
@@ -91,6 +93,9 @@ namespace Mantle.Storage.Azure
                 containerReference.CreateIfNotExists();
 
                 CloudBlockBlob blobReference = containerReference.GetBlockBlobReference(fileName);
+
+                if (fileContents.CanSeek)
+                    fileContents.Position = 0;
 
                 blobReference.UploadFromStream(fileContents);
             }

@@ -48,7 +48,12 @@ namespace Mantle.Storage.FileSystem
 
             try
             {
-                return File.OpenRead(filePath);
+                FileStream fileStream = File.OpenRead(filePath);
+
+                if (fileStream.CanSeek)
+                    fileStream.Position = 0;
+
+                return fileStream;
             }
             catch (Exception ex)
             {
@@ -66,6 +71,9 @@ namespace Mantle.Storage.FileSystem
             try
             {
                 SetupDirectory();
+
+                if (fileContents.CanSeek)
+                    fileContents.Position = 0;
 
                 using (FileStream fileStream = File.Create(Path.Combine(DirectoryPath, fileName)))
                     fileContents.CopyTo(fileStream);

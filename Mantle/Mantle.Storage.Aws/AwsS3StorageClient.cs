@@ -81,17 +81,22 @@ namespace Mantle.Storage.Aws
                 {
                     if (DoesBucketExist(client) == false)
                         throw new StorageException(String.Format("AWS S3 bucket [{0}] does not exist. File not found.",
-                                                                 BucketName));
+                            BucketName));
 
                     if (DoesObjectExist(client, fileName) == false)
                         throw new StorageException(
                             String.Format("AWS S3 object [{0}/{1}] does not exist. File not found.", BucketName,
-                                          fileName));
+                                fileName));
 
                     GetObjectRequest objectRequest = new GetObjectRequest().WithBucketName(BucketName).WithKey(fileName);
 
                     using (GetObjectResponse objectResponse = client.GetObject(objectRequest))
+                    {
+                        if (objectResponse.ResponseStream.CanSeek)
+                            objectResponse.ResponseStream.Position = 0;
+
                         return objectResponse.ResponseStream;
+                    }
                 }
             }
             catch (AmazonS3Exception s3Ex)
@@ -120,6 +125,9 @@ namespace Mantle.Storage.Aws
                         SetupBucket(client);
 
                     PutObjectRequest objectRequest = new PutObjectRequest().WithBucketName(BucketName).WithKey(fileName);
+
+                    if (fileContents.CanSeek)
+                        fileContents.Position = 0;
 
                     objectRequest.InputStream = fileContents;
 
