@@ -15,7 +15,7 @@ namespace Mantle.Logging
             return new LogScope(log, scopeName, parameters);
         }
 
-        public static void DebugFormat(this ILog log, string message, params object[] parameters)
+        public static Event DebugFormat(this ILog log, string message, params object[] parameters)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -23,10 +23,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(String.Format(message, parameters), Severity.Debug));
+            var e = (new Event(String.Format(message, parameters), Severity.Debug));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void InformationFormat(this ILog log, string message, params object[] parameters)
+        public static Event InformationFormat(this ILog log, string message, params object[] parameters)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -34,10 +38,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(String.Format(message, parameters), Severity.Information));
+            var e = (new Event(String.Format(message, parameters), Severity.Information));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void WarningFormat(this ILog log, string message, params object[] parameters)
+        public static Event WarningFormat(this ILog log, string message, params object[] parameters)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -45,10 +53,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(String.Format(message, parameters), Severity.Warning));
+            var e = (new Event(String.Format(message, parameters), Severity.Warning));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void ErrorFormat(this ILog log, string message, params object[] parameters)
+        public static Event ErrorFormat(this ILog log, string message, params object[] parameters)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -56,10 +68,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(String.Format(message, parameters), Severity.Error));
+            var e = (new Event(String.Format(message, parameters), Severity.Error));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void FatalFormat(this ILog log, string message, params object[] parameters)
+        public static Event FatalFormat(this ILog log, string message, params object[] parameters)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -67,10 +83,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(String.Format(message, parameters), Severity.Fatal));
+            var e = (new Event(String.Format(message, parameters), Severity.Fatal));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Debug(this ILog log, string message, params string[] tags)
+        public static Event Debug(this ILog log, string message, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -78,10 +98,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(message, Severity.Debug, tags: tags));
+            var e = (new Event(message, Severity.Debug, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Information(this ILog log, string message, params string[] tags)
+        public static Event Information(this ILog log, string message, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -89,10 +113,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(message, Severity.Information, tags: tags));
+            var e = (new Event(message, Severity.Information, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Warning(this ILog log, string message, params string[] tags)
+        public static Event Warning(this ILog log, string message, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -100,10 +128,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(message, Severity.Warning, tags: tags));
+            var e = (new Event(message, Severity.Warning, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Error(this ILog log, string message, params string[] tags)
+        public static Event Error(this ILog log, string message, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -111,10 +143,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(message, Severity.Error, tags: tags));
+            var e = (new Event(message, Severity.Error, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Fatal(this ILog log, string message, params string[] tags)
+        public static Event Fatal(this ILog log, string message, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -122,10 +158,14 @@ namespace Mantle.Logging
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentException("Message is required.", "message");
 
-            log.Record(new Event(message, Severity.Fatal, tags: tags));
+            var e = (new Event(message, Severity.Fatal, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Warning(this ILog log, string message, Exception ex, params string[] tags)
+        public static Event Warning(this ILog log, string message, Exception ex, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -136,10 +176,14 @@ namespace Mantle.Logging
             if (ex != null)
                 message += String.Format("\n\nEXCEPTION DETAILS\n\n{0}", ex.ToDescriptionString());
 
-            log.Record(new Event(message, Severity.Warning, tags: tags));
+            var e = (new Event(message, Severity.Warning, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Error(this ILog log, string message, Exception ex, params string[] tags)
+        public static Event Error(this ILog log, string message, Exception ex, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -150,10 +194,14 @@ namespace Mantle.Logging
             if (ex != null)
                 message += String.Format("\n\nEXCEPTION DETAILS\n\n{0}", ex.ToDescriptionString());
 
-            log.Record(new Event(message, Severity.Error, tags: tags));
+            var e = (new Event(message, Severity.Error, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
 
-        public static void Fatal(this ILog log, string message, Exception ex, params string[] tags)
+        public static Event Fatal(this ILog log, string message, Exception ex, params string[] tags)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
@@ -164,7 +212,11 @@ namespace Mantle.Logging
             if (ex != null)
                 message += String.Format("\n\nEXCEPTION DETAILS\n\n{0}", ex.ToDescriptionString());
 
-            log.Record(new Event(message, Severity.Fatal, tags: tags));
+            var e = (new Event(message, Severity.Fatal, tags: tags));
+
+            log.Record(e);
+
+            return e;
         }
     }
 }
