@@ -19,8 +19,8 @@ namespace Mantle.Messaging.Azure
 
             try
             {
-                if (NsManager.TopicExists(endpoint.Name) == false)
-                    NsManager.CreateTopic(endpoint.Name);
+                if (NsManager.TopicExists(endpoint.TopicName) == false)
+                    NsManager.CreateTopic(endpoint.TopicName);
 
                 topicClient = TopicClient.CreateFromConnectionString(sbConfiguration.ConnectionString,
                                                                      endpoint.TopicName);
