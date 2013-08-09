@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.20617.1 PREVIEW
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage", "Mantle.Storage\Mantle.Storage.csproj", "{AFF7C969-8B8C-4B24-B8B3-E0BCAD99699A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration", "Mantle.Configuration\Mantle.Configuration.csproj", "{F705D018-F04E-4274-8BC9-DA9B190E134F}"
@@ -78,6 +76,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Logging", "Mantle.Logging\Mantle.Logging.csproj", "{DFB081B6-DBF7-4A50-A4D4-C9AFF385C74D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Logging.MessagingAdapter", "Mantle.Logging.MessagingAdapter\Mantle.Logging.MessagingAdapter.csproj", "{B27DF037-A93A-4600-8642-2D3145B556A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.WindowsServiceBus", "Mantle.WindowsServiceBus\Mantle.WindowsServiceBus.csproj", "{767EFC1A-9410-4A6C-BBEF-D63A46173102}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.WindowsServiceBus", "Mantle.Messaging.WindowsServiceBus\Mantle.Messaging.WindowsServiceBus.csproj", "{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +167,14 @@ Global
 		{B27DF037-A93A-4600-8642-2D3145B556A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B27DF037-A93A-4600-8642-2D3145B556A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B27DF037-A93A-4600-8642-2D3145B556A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767EFC1A-9410-4A6C-BBEF-D63A46173102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767EFC1A-9410-4A6C-BBEF-D63A46173102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767EFC1A-9410-4A6C-BBEF-D63A46173102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767EFC1A-9410-4A6C-BBEF-D63A46173102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
