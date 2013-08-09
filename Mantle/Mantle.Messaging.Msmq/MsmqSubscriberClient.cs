@@ -3,27 +3,11 @@ using System.Messaging;
 
 namespace Mantle.Messaging.Msmq
 {
-    public class MsmqSubscriberClient : ISubscriberClient
+    public class MsmqSubscriberClient : MsmqClient, ISubscriberClient
     {
-        private readonly MessageQueue queue;
-
         public MsmqSubscriberClient(MsmqSubscriberEndpoint endpoint)
+            : base(endpoint)
         {
-            if (endpoint == null)
-                throw new ArgumentNullException("endpoint");
-
-            endpoint.Validate();
-
-            try
-            {
-                queue = new MessageQueue(endpoint.QueuePath);
-            }
-            catch (Exception ex)
-            {
-                throw new MessagingException(
-                    "An error occurred while attempting to access the specified queue. See inner exception for more details.",
-                    ex);
-            }
         }
 
         public Message<T> Receive<T>()
@@ -39,7 +23,7 @@ namespace Mantle.Messaging.Msmq
 
             try
             {
-                Message queueMessage = queue.Receive(timeout, transaction);
+                Message queueMessage = Queue.Receive(timeout, transaction);
 
                 if (queueMessage == null)
                     return null;
@@ -54,9 +38,7 @@ namespace Mantle.Messaging.Msmq
                 }
                 catch
                 {
-                    throw new MessageDeserializationException<T>(
-                        "Unable to deserialize the provided MSMQ message payload.",
-                        new MsmqMessage<T>(default(T), transaction));
+                    payload = default(T);
                 }
 
                 return new MsmqMessage<T>(payload, transaction);

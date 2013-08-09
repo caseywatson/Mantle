@@ -20,10 +20,7 @@ namespace Mantle.Messaging.Azure
             try
             {
                 if (NsManager.TopicExists(endpoint.TopicName) == false)
-                    throw new MessagingException(
-                        String.Format(
-                            "The Azure service bus topic [{0}] to which the specified subscription [{1}] subscribes to does not exist.",
-                            endpoint.TopicName, endpoint.SubscriptionName));
+                    NsManager.CreateTopic(endpoint.TopicName);
 
                 if (NsManager.SubscriptionExists(endpoint.TopicName, endpoint.SubscriptionName) == false)
                     NsManager.CreateSubscription(endpoint.TopicName, endpoint.SubscriptionName);
@@ -64,9 +61,7 @@ namespace Mantle.Messaging.Azure
                 }
                 catch
                 {
-                    throw new MessageDeserializationException<T>(
-                        "Unable to deserialize the provided Azure service bus brokered message payload.",
-                        new AzureServiceBusMessage<T>(default(T), brokeredMessage));
+                    payload = default(T);
                 }
 
                 return new AzureServiceBusMessage<T>(payload, brokeredMessage);

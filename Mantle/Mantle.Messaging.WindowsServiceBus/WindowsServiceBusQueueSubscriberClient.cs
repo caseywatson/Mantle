@@ -35,9 +35,7 @@ namespace Mantle.Messaging.WindowsServiceBus
                 }
                 catch
                 {
-                    throw new MessageDeserializationException<T>(
-                        "Unable to deserialize the provided Windows service bus brokered message payload.",
-                        new WindowsServiceBusMessage<T>(default(T), brokeredMessage));
+                    payload = default(T);
                 }
 
                 return new WindowsServiceBusMessage<T>(payload, brokeredMessage);

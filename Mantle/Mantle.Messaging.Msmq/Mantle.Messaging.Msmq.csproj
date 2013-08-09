@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsmqClient.cs" />
     <Compile Include="MsmqEndpoint.cs" />
     <Compile Include="MsmqMessage.cs" />
     <Compile Include="MsmqPublisherClient.cs" />

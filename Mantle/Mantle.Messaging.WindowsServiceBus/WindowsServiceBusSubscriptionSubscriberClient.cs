@@ -22,10 +22,7 @@ namespace Mantle.Messaging.WindowsServiceBus
             try
             {
                 if (NsManager.TopicExists(endpoint.TopicName) == false)
-                    throw new MessagingException(
-                        String.Format(
-                            "The Windows service bus topic [{0}] to which the specified subscription [{1}] subscribes to does not exist.",
-                            endpoint.TopicName, endpoint.SubscriptionName));
+                    NsManager.CreateTopic(endpoint.TopicName);
 
                 if (NsManager.SubscriptionExists(endpoint.TopicName, endpoint.SubscriptionName) == false)
                     NsManager.CreateSubscription(endpoint.TopicName, endpoint.SubscriptionName);
@@ -66,9 +63,7 @@ namespace Mantle.Messaging.WindowsServiceBus
                 }
                 catch
                 {
-                    throw new MessageDeserializationException<T>(
-                        "Unable to deserialize the provided Windows service bus brokered message payload.",
-                        new WindowsServiceBusMessage<T>(default(T), brokeredMessage));
+                    payload = default(T);
                 }
 
                 return new WindowsServiceBusMessage<T>(payload, brokeredMessage);

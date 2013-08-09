@@ -23,6 +23,8 @@ namespace Mantle.Messaging.Azure
             CloudStorageAccount = CloudStorageAccount.Parse(storageConfiguration.ConnectionString);
             CloudQueueClient = CloudStorageAccount.CreateCloudQueueClient();
             CloudQueue = CloudQueueClient.GetQueueReference(endpoint.QueueName);
+
+            CloudQueue.CreateIfNotExists();
         }
     }
 }

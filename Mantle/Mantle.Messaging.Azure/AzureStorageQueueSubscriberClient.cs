@@ -10,10 +10,6 @@ namespace Mantle.Messaging.Azure
                                                  IAzureStorageConfiguration storageConfiguration)
             : base(endpoint, storageConfiguration)
         {
-            if (CloudQueue.Exists() == false)
-                throw new MessagingException(
-                    String.Format("The specified Azure storage queue [{0}] does not exist. Unable to subscribe.",
-                        endpoint.QueueName));
         }
 
         public Message<T> Receive<T>()
@@ -38,9 +34,7 @@ namespace Mantle.Messaging.Azure
                 }
                 catch
                 {
-                    throw new MessageDeserializationException<T>(
-                        "Unable to deserialize the provided Azure storage queue message payload.",
-                        new AzureStorageQueueMessage<T>(default(T), this, cqMessage));
+                    payload = default(T);
                 }
 
                 return new AzureStorageQueueMessage<T>(payload, this, cqMessage);

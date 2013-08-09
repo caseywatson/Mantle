@@ -10,7 +10,6 @@ namespace Mantle.Messaging.Azure
                                                 IAzureStorageConfiguration storageConfiguration)
             : base(endpoint, storageConfiguration)
         {
-            CloudQueue.CreateIfNotExists();
         }
 
         public void Publish<T>(T message)
