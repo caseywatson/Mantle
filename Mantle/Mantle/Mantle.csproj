@@ -43,6 +43,7 @@
     <Compile Include="DependencyResolutionException.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="ProfileAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
