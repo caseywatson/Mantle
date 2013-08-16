@@ -8,18 +8,25 @@ namespace Mantle.Ninject
 {
     public static class AssemblyExtensions
     {
-        public static IEnumerable<INinjectModule> GetModulesByProfile(Assembly sourceAssembly, string profileName)
+        public static IEnumerable<INinjectModule> GetMantleModules(this Assembly sourceAssembly,
+                                                                   params string[] profileNames)
         {
             if (sourceAssembly == null)
                 throw new ArgumentNullException("sourceAssembly");
 
-            if (String.IsNullOrEmpty(profileName) == false)
-                throw new ArgumentNullException("profileName");
+            string rootNamespace = sourceAssembly.GetName().Name;
+            var moduleNamespaces = new List<string>();
 
-            return sourceAssembly
-                .GetExportedTypes()
-                .Where(t => (IsLoadableModule(t) && IsInProfile(t, profileName)))
-                .Select(t => (Activator.CreateInstance(t) as INinjectModule));
+            moduleNamespaces.Add(String.Format("{0}.Mantle.Boilerplate", rootNamespace));
+
+            if ((profileNames != null) && (profileNames.Length > 0))
+                moduleNamespaces.AddRange(
+                    profileNames.Select(p => String.Format("{0}.Mantle.Profiles.{1}", rootNamespace, p)));
+
+            return
+                sourceAssembly.GetExportedTypes()
+                              .Where(t => (IsLoadableModule(t)) && (IsInAnyNamespace(t, moduleNamespaces)))
+                              .Select(t => (Activator.CreateInstance(t) as INinjectModule));
         }
 
         private static bool IsLoadableModule(Type type)
@@ -30,12 +37,9 @@ namespace Mantle.Ninject
                    && type.GetConstructor(Type.EmptyTypes) != null;
         }
 
-        private static bool IsInProfile(Type type, string profileName)
+        private static bool IsInAnyNamespace(Type type, IEnumerable<string> namespaces)
         {
-            return
-                type.GetCustomAttributes(typeof (ProfileAttribute), false)
-                    .OfType<ProfileAttribute>()
-                    .Any(pa => (pa.ProfileName == profileName));
+            return (namespaces.Any(n => ((type.Namespace == n) || (type.Namespace.StartsWith(n + ".")))));
         }
     }
 }
