@@ -7,6 +7,7 @@ namespace Mantle.Messaging.Azure
     public abstract class AzureServiceBusQueueClient : AzureServiceBusClient
     {
         protected readonly QueueClient QueueClient;
+        protected readonly AzureServiceBusQueueEndpoint QueueEndpoint;
 
         protected AzureServiceBusQueueClient(AzureServiceBusQueueEndpoint endpoint,
                                              IAzureServiceBusConfiguration sbConfiguration)
@@ -16,6 +17,8 @@ namespace Mantle.Messaging.Azure
                 throw new ArgumentNullException("endpoint");
 
             endpoint.Validate();
+
+            QueueEndpoint = endpoint;
 
             try
             {

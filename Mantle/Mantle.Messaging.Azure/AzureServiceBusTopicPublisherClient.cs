@@ -39,7 +39,10 @@ namespace Mantle.Messaging.Azure
         {
             try
             {
-                topicClient.Send(new BrokeredMessage(message));
+                var sbMessage = new BrokeredMessage(message);
+
+                sbMessage.Properties["MantleType"] = typeof (T).GetMessagingTypeString();
+                topicClient.Send(sbMessage);
             }
             catch (Exception ex)
             {

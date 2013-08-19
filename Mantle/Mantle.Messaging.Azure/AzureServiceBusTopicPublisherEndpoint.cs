@@ -46,6 +46,11 @@ namespace Mantle.Messaging.Azure
                 throw new MessagingException("Azure service bus topic name is required.");
         }
 
+        public IPublisherEndpointManager GetManager()
+        {
+            return new AzureServiceBusTopicPublisherEndpointManager(this, sbConfiguration);
+        }
+
         public void Configure(string name, string topicName)
         {
             Name = name;

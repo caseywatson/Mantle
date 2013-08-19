@@ -45,14 +45,17 @@
     <Compile Include="ICanBeAbandoned.cs" />
     <Compile Include="ICanBeCompleted.cs" />
     <Compile Include="ICanBeKilled.cs" />
+    <Compile Include="IEndpointManager.cs" />
     <Compile Include="IHaveADeliveryCount.cs" />
     <Compile Include="IPublisherClient.cs" />
     <Compile Include="IPublisherEndpoint.cs" />
     <Compile Include="IPublisherEndpointDirectory.cs" />
+    <Compile Include="IPublisherEndpointManager.cs" />
     <Compile Include="ISubscriberClient.cs" />
     <Compile Include="ISubscriberClientExtensions.cs" />
     <Compile Include="ISubscriberEndpoint.cs" />
     <Compile Include="ISubscriberEndpointDirectory.cs" />
+    <Compile Include="ISubscriberEndpointManager.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageDeserializationException.cs" />
     <Compile Include="MessageExtensions.cs" />

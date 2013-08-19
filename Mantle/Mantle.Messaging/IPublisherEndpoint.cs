@@ -5,6 +5,8 @@
         string Name { get; }
 
         IPublisherClient GetClient();
+        IPublisherEndpointManager GetManager();
+
         void Validate();
     }
 }

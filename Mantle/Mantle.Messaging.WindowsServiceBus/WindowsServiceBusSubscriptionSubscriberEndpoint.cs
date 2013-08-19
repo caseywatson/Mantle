@@ -53,6 +53,11 @@ namespace Mantle.Messaging.WindowsServiceBus
                 throw new MessagingException("Windows service bus topic name is required.");
         }
 
+        public ISubscriberEndpointManager GetManager()
+        {
+            return new AzureServiceBusSubscriptionSubscriberEndpointManager(this, sbConfiguration);
+        }
+
         public void Configure(string name, string topicName, string subscriptionName)
         {
             Name = name;

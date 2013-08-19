@@ -1,7 +1,5 @@
 ﻿using System;
-
 using Mantle.WindowsServiceBus;
-
 using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.WindowsServiceBus
@@ -11,7 +9,7 @@ namespace Mantle.Messaging.WindowsServiceBus
         private readonly TopicClient topicClient;
 
         public WindowsServiceBusTopicPublisherClient(WindowsServiceBusTopicPublisherEndpoint endpoint,
-                                                   IWindowsServiceBusConfiguration sbConfiguration)
+                                                     IWindowsServiceBusConfiguration sbConfiguration)
             : base(sbConfiguration)
         {
             if (endpoint == null)
@@ -41,7 +39,10 @@ namespace Mantle.Messaging.WindowsServiceBus
         {
             try
             {
-                topicClient.Send(new BrokeredMessage(message));
+                var sbMessage = new BrokeredMessage(message);
+
+                sbMessage.Properties["MantleType"] = typeof (T).GetMessagingTypeString();
+                topicClient.Send(sbMessage);
             }
             catch (Exception ex)
             {

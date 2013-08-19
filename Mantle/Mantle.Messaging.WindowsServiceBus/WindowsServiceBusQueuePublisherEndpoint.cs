@@ -21,5 +21,10 @@ namespace Mantle.Messaging.WindowsServiceBus
         {
             return new WindowsServiceBusQueuePublisherClient(this, sbConfiguration);
         }
+
+        public IPublisherEndpointManager GetManager()
+        {
+            return new WindowsServiceBusQueuePublisherEndpointManager(this, sbConfiguration);
+        }
     }
 }

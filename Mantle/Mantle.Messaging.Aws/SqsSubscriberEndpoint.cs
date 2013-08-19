@@ -21,5 +21,10 @@ namespace Mantle.Messaging.Aws
         {
             return new SqsSubscriberClient(this, awsConfiguration);
         }
+
+        public ISubscriberEndpointManager GetManager()
+        {
+            return new SqsSubscriberEndpointManager(this, awsConfiguration);
+        }
     }
 }

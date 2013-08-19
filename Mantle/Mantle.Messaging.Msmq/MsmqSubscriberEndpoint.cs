@@ -6,5 +6,10 @@
         {
             return new MsmqSubscriberClient(this);
         }
+
+        public ISubscriberEndpointManager GetManager()
+        {
+            return new MsmqSubscriberEndpointManager(this);
+        }
     }
 }

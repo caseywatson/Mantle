@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AWSSDK">
-      <HintPath>..\packages\AWSSDK.1.5.27.0\lib\AWSSDK.dll</HintPath>
+    <Reference Include="AWSSDK, Version=2.0.0.3, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AWSSDK.2.0.0.3-beta\lib\net35\AWSSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,11 +48,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqsClient.cs" />
     <Compile Include="SqsEndpoint.cs" />
+    <Compile Include="SqsEndpointManager.cs" />
     <Compile Include="SqsMessage.cs" />
     <Compile Include="SqsPublisherClient.cs" />
     <Compile Include="SqsPublisherEndpoint.cs" />
+    <Compile Include="SqsPublisherEndpointManager.cs" />
     <Compile Include="SqsSubscriberClient.cs" />
     <Compile Include="SqsSubscriberEndpoint.cs" />
+    <Compile Include="SqsSubscriberEndpointManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">

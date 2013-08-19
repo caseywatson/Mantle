@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Mantle.WindowsServiceBus;
 
 namespace Mantle.Messaging.WindowsServiceBus
@@ -21,6 +20,11 @@ namespace Mantle.Messaging.WindowsServiceBus
         public ISubscriberClient GetClient()
         {
             return new WindowsServiceBusQueueSubscriberClient(this, sbConfiguration);
+        }
+
+        public ISubscriberEndpointManager GetManager()
+        {
+            return new WindowsServiceBusQueueSubscriberEndpointManager(this, sbConfiguration);
         }
     }
 }

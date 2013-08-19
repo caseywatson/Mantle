@@ -13,5 +13,10 @@ namespace Mantle.Messaging.Azure
         {
             return new AzureStorageQueueSubscriberClient(this, StorageConfiguration);
         }
+
+        public ISubscriberEndpointManager GetManager()
+        {
+            return new AzureStorageQueueSubscriberEndpointManager(this, StorageConfiguration);
+        }
     }
 }

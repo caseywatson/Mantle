@@ -28,20 +28,19 @@ namespace Mantle.Messaging.Aws
         {
             try
             {
-                ReceiveMessageRequest request =
-                    new ReceiveMessageRequest().WithMaxNumberOfMessages(1M)
-                                               .WithQueueUrl(endpoint.QueueUrl)
-                                               .WithWaitTimeSeconds((int) (timeout.TotalSeconds));
+                var request = new ReceiveMessageRequest
+                    {
+                        MaxNumberOfMessages = 1,
+                        QueueUrl = endpoint.QueueUrl,
+                        WaitTimeSeconds = ((int) (timeout.TotalSeconds))
+                    };
 
                 ReceiveMessageResponse response = Client.ReceiveMessage(request);
 
-                if (response.IsSetReceiveMessageResult() == false)
+                if ((response.Messages != null) || (response.Messages.Count == 0))
                     return null;
 
-                if (response.ReceiveMessageResult.Message.Count == 0)
-                    return null;
-
-                Message sqsMessage = response.ReceiveMessageResult.Message[0];
+                Message sqsMessage = response.Messages[0];
 
                 T payload;
 

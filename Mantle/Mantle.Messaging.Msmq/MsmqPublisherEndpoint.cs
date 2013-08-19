@@ -6,5 +6,10 @@
         {
             return new MsmqPublisherClient(this);
         }
+
+        public IPublisherEndpointManager GetManager()
+        {
+            return new MsmqPublisherEndpointManager(this);
+        }
     }
 }

@@ -21,5 +21,10 @@ namespace Mantle.Messaging.Azure
         {
             return new AzureServiceBusQueueSubscriberClient(this, sbConfiguration);
         }
+
+        public ISubscriberEndpointManager GetManager()
+        {
+            return new AzureServiceBusQueueSubscriberEndpointManager(this, sbConfiguration);
+        }
     }
 }

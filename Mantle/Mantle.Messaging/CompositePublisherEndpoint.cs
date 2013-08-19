@@ -37,6 +37,11 @@ namespace Mantle.Messaging
             return new CompositePublisherClient(this);
         }
 
+        public IPublisherEndpointManager GetManager()
+        {
+            return null;
+        }
+
         public override void Validate()
         {
             base.Validate();

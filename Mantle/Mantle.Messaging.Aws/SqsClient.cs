@@ -7,7 +7,7 @@ namespace Mantle.Messaging.Aws
 {
     public abstract class SqsClient
     {
-        protected readonly AmazonSQS Client;
+        protected readonly IAmazonSQS Client;
 
         protected SqsClient(IAwsConfiguration awsConfiguration)
         {

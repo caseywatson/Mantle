@@ -46,6 +46,11 @@ namespace Mantle.Messaging.WindowsServiceBus
                 throw new MessagingException("Windows service bus topic name is required.");
         }
 
+        public IPublisherEndpointManager GetManager()
+        {
+            return new WinodwsServiceBusTopicPublisherEndpointManager(this, sbConfiguration);
+        }
+
         public void Configure(string name, string topicName)
         {
             Name = name;

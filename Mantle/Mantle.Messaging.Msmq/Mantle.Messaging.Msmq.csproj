@@ -42,11 +42,14 @@
   <ItemGroup>
     <Compile Include="MsmqClient.cs" />
     <Compile Include="MsmqEndpoint.cs" />
+    <Compile Include="MsmqEndpointManager.cs" />
     <Compile Include="MsmqMessage.cs" />
     <Compile Include="MsmqPublisherClient.cs" />
     <Compile Include="MsmqPublisherEndpoint.cs" />
+    <Compile Include="MsmqPublisherEndpointManager.cs" />
     <Compile Include="MsmqSubscriberClient.cs" />
     <Compile Include="MsmqSubscriberEndpoint.cs" />
+    <Compile Include="MsmqSubscriberEndpointManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

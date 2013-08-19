@@ -21,5 +21,11 @@ namespace Mantle.Messaging.Aws
         {
             return new SqsPublisherClient(this, awsConfiguration);
         }
+
+
+        public IPublisherEndpointManager GetManager()
+        {
+            return new SqsPublisherEndpointManager(this, awsConfiguration);
+        }
     }
 }

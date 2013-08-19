@@ -48,17 +48,23 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowsServiceBusClient.cs" />
+    <Compile Include="WindowsServiceBusEndpointManager.cs" />
     <Compile Include="WindowsServiceBusMessage.cs" />
     <Compile Include="WindowsServiceBusQueueClient.cs" />
     <Compile Include="WindowsServiceBusQueueEndpoint.cs" />
+    <Compile Include="WindowsServiceBusQueueEndpointManager.cs" />
     <Compile Include="WindowsServiceBusQueuePublisherClient.cs" />
     <Compile Include="WindowsServiceBusQueuePublisherEndpoint.cs" />
+    <Compile Include="WindowsServiceBusQueuePublisherEndpointManager.cs" />
     <Compile Include="WindowsServiceBusQueueSubscriberClient.cs" />
     <Compile Include="WindowsServiceBusQueueSubscriberEndpoint.cs" />
+    <Compile Include="WindowsServiceBusQueueSubscriberEndpointManager.cs" />
+    <Compile Include="WindowsServiceBusSubscriptionSubscriberEndpointManager.cs" />
     <Compile Include="WindowsServiceBusSubscriptionSubscriberClient.cs" />
     <Compile Include="WindowsServiceBusSubscriptionSubscriberEndpoint.cs" />
     <Compile Include="WindowsServiceBusTopicPublisherClient.cs" />
     <Compile Include="WindowsServiceBusTopicPublisherEndpoint.cs" />
+    <Compile Include="WindowsServiceBusTopicPublisherEndpointManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -76,6 +82,10 @@
     <ProjectReference Include="..\Mantle.WindowsServiceBus\Mantle.WindowsServiceBus.csproj">
       <Project>{767EFC1A-9410-4A6C-BBEF-D63A46173102}</Project>
       <Name>Mantle.WindowsServiceBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{d24e2319-5795-402e-817b-7213e308b301}</Project>
+      <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

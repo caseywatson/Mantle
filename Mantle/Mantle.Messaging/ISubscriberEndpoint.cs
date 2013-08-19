@@ -5,6 +5,8 @@
         string Name { get; }
 
         ISubscriberClient GetClient();
+        ISubscriberEndpointManager GetManager();
+
         void Validate();
     }
 }

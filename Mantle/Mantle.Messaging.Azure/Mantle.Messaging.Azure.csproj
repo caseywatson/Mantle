@@ -67,22 +67,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureServiceBusClient.cs" />
+    <Compile Include="AzureServiceBusEndpointManager.cs" />
     <Compile Include="AzureServiceBusMessage.cs" />
     <Compile Include="AzureServiceBusQueueClient.cs" />
     <Compile Include="AzureServiceBusQueueEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueueEndpointManager.cs" />
     <Compile Include="AzureServiceBusQueuePublisherClient.cs" />
     <Compile Include="AzureServiceBusQueuePublisherEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueuePublisherEndpointManager.cs" />
     <Compile Include="AzureServiceBusQueueSubscriberClient.cs" />
     <Compile Include="AzureServiceBusQueueSubscriberEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueueSubscriberEndpointManager.cs" />
     <Compile Include="AzureServiceBusSubscriptionSubscriberClient.cs" />
     <Compile Include="AzureServiceBusSubscriptionSubscriberEndpoint.cs" />
+    <Compile Include="AzureServiceBusSubscriptionSubscriberEndpointManager.cs" />
     <Compile Include="AzureServiceBusTopicPublisherClient.cs" />
     <Compile Include="AzureServiceBusTopicPublisherEndpoint.cs" />
+    <Compile Include="AzureServiceBusTopicPublisherEndpointManager.cs" />
+    <Compile Include="AzureStorageQueueSubscriberEndpointManager.cs" />
     <Compile Include="AzureStorageQueueClient.cs" />
     <Compile Include="AzureStorageQueueEndpoint.cs" />
+    <Compile Include="AzureStorageQueueEndpointManager.cs" />
     <Compile Include="AzureStorageQueueMessage.cs" />
     <Compile Include="AzureStorageQueuePublisherClient.cs" />
     <Compile Include="AzureStorageQueuePublisherEndpoint.cs" />
+    <Compile Include="AzureStorageQueuePublisherEndpointManager.cs" />
     <Compile Include="AzureStorageQueueSubscriberClient.cs" />
     <Compile Include="AzureStorageQueueSubscriberEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
