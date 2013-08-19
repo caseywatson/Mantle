@@ -46,6 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SnsClient.cs" />
+    <Compile Include="SnsPublisherClient.cs" />
+    <Compile Include="SnsPublisherEndpoint.cs" />
+    <Compile Include="SnsPublisherEndpointManager.cs" />
     <Compile Include="SqsClient.cs" />
     <Compile Include="SqsEndpoint.cs" />
     <Compile Include="SqsEndpointManager.cs" />
