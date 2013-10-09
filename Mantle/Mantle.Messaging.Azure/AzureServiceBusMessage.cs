@@ -3,7 +3,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure
 {
-    public class AzureServiceBusMessage<T> : Message<T>, ICanBeAbandoned, ICanBeCompleted, ICanBeKilled,
+    public class AzureServiceBusMessage<T> : Message<T>, ICanBeAbandoned, ICanBeCompleted, ICanBeKilled, ICanRenewLock,
         IHaveADeliveryCount
     {
         private readonly BrokeredMessage sbMessage;
@@ -51,6 +51,8 @@ namespace Mantle.Messaging.Azure
         {
             if (sbMessage != null)
             {
+                sbMessage.RenewLock();
+
                 try
                 {
                     sbMessage.DeadLetter();
@@ -61,6 +63,12 @@ namespace Mantle.Messaging.Azure
                 }
             }
         }
+
+        public void RenewLock()
+        {
+            if (sbMessage != null)
+                sbMessage.RenewLock();
+      }
 
         public int GetDeliveryCount()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Mantle.Azure;
+using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure
@@ -27,6 +28,8 @@ namespace Mantle.Messaging.Azure
 
                 QueueClient = QueueClient.CreateFromConnectionString(sbConfiguration.ConnectionString,
                                                                      endpoint.QueueName);
+
+                QueueClient.RetryPolicy = RetryExponential.Default;
             }
             catch (Exception ex)
             {

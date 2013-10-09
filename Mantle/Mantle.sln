@@ -52,6 +52,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.WindowsServiceBus", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.WindowsServiceBus", "Mantle.Messaging.WindowsServiceBus\Mantle.Messaging.WindowsServiceBus.csproj", "{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage.Dictionary", "Mantle.Storage.Dictionary\Mantle.Storage.Dictionary.csproj", "{14AFFC87-CCC5-4AFD-A594-A30A4DEAC2F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage.Dictionary.Azure", "Mantle.Storage.Dictionary.Azure\Mantle.Storage.Dictionary.Azure.csproj", "{FA9F9C73-977A-454C-A06B-B1CBF4260F96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Storage.Dictionary.InMemory", "Mantle.Storage.Dictionary.InMemory\Mantle.Storage.Dictionary.InMemory.csproj", "{364A5DC4-3816-4015-A6A7-95219F5D2A2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +152,18 @@ Global
 		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68B9BFED-EFD1-40D9-B286-BB5E86AD9A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14AFFC87-CCC5-4AFD-A594-A30A4DEAC2F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AFFC87-CCC5-4AFD-A594-A30A4DEAC2F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14AFFC87-CCC5-4AFD-A594-A30A4DEAC2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14AFFC87-CCC5-4AFD-A594-A30A4DEAC2F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9F9C73-977A-454C-A06B-B1CBF4260F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9F9C73-977A-454C-A06B-B1CBF4260F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9F9C73-977A-454C-A06B-B1CBF4260F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9F9C73-977A-454C-A06B-B1CBF4260F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{364A5DC4-3816-4015-A6A7-95219F5D2A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{364A5DC4-3816-4015-A6A7-95219F5D2A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{364A5DC4-3816-4015-A6A7-95219F5D2A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{364A5DC4-3816-4015-A6A7-95219F5D2A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

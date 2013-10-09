@@ -11,8 +11,15 @@ namespace Mantle.Messaging
 
             if (message is ICanBeAbandoned)
             {
-                (message as ICanBeAbandoned).Abandon();
-                return true;
+                try
+                {
+                    (message as ICanBeAbandoned).Abandon();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
 
             return false;
@@ -25,8 +32,36 @@ namespace Mantle.Messaging
 
             if (message is ICanBeCompleted)
             {
-                (message as ICanBeCompleted).Complete();
-                return true;
+                try
+                {
+                    (message as ICanBeCompleted).Complete();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool TryToRenewLock<T>(this Message<T> message)
+        {
+            if (message == null)
+                throw new ArgumentNullException("message");
+
+            if (message is ICanRenewLock)
+            {
+                try
+                {
+                    (message as ICanRenewLock).RenewLock();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
 
             return false;
@@ -39,14 +74,22 @@ namespace Mantle.Messaging
 
             if (message is ICanBeKilled)
             {
-                (message as ICanBeKilled).Kill();
-                return true;
+                try
+                {
+                    (message as ICanBeKilled).Kill();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
 
             return false;
         }
 
-        public static bool TryToKillIfDeliveryCountThresholdExceeded<T>(this Message<T> message, int deliveryCountThreshold)
+        public static bool TryToKillIfDeliveryCountThresholdExceeded<T>(this Message<T> message,
+            int deliveryCountThreshold)
         {
             if (message == null)
                 throw new ArgumentNullException("message");

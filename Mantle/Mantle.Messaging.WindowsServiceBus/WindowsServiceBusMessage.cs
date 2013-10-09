@@ -3,7 +3,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.WindowsServiceBus
 {
-    public class WindowsServiceBusMessage<T> : Message<T>, ICanBeAbandoned, ICanBeCompleted, ICanBeKilled,
+    public class WindowsServiceBusMessage<T> : Message<T>, ICanBeAbandoned, ICanBeCompleted, ICanBeKilled, ICanRenewLock,
         IHaveADeliveryCount
     {
         private readonly BrokeredMessage sbMessage;
@@ -60,6 +60,12 @@ namespace Mantle.Messaging.WindowsServiceBus
                     sbMessage.Dispose();
                 }
             }
+        }
+
+        public void RenewLock()
+        {
+            if (sbMessage != null)
+                sbMessage.RenewLock();
         }
 
         public int GetDeliveryCount()

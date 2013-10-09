@@ -14,7 +14,7 @@ namespace Mantle.Messaging.Azure
 
         public Message<T> Receive<T>()
         {
-            return Receive<T>(TimeSpan.FromSeconds(30));
+            return Receive<T>(TimeSpan.FromMinutes(1));
         }
 
         public Message<T> Receive<T>(TimeSpan timeout)

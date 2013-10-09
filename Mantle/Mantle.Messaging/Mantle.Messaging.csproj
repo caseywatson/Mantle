@@ -45,6 +45,7 @@
     <Compile Include="ICanBeAbandoned.cs" />
     <Compile Include="ICanBeCompleted.cs" />
     <Compile Include="ICanBeKilled.cs" />
+    <Compile Include="ICanRenewLock.cs" />
     <Compile Include="IEndpointManager.cs" />
     <Compile Include="IHaveADeliveryCount.cs" />
     <Compile Include="IPublisherClient.cs" />

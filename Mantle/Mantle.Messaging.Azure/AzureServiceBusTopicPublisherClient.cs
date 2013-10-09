@@ -1,5 +1,6 @@
 ﻿using System;
 using Mantle.Azure;
+using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure
@@ -24,6 +25,8 @@ namespace Mantle.Messaging.Azure
 
                 topicClient = TopicClient.CreateFromConnectionString(sbConfiguration.ConnectionString,
                                                                      endpoint.TopicName);
+
+                topicClient.RetryPolicy = RetryExponential.Default;
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Mantle.Azure;
+using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure
@@ -28,6 +29,8 @@ namespace Mantle.Messaging.Azure
                 subscriptionClient = SubscriptionClient.CreateFromConnectionString(sbConfiguration.ConnectionString,
                     endpoint.TopicName,
                     endpoint.SubscriptionName);
+
+                subscriptionClient.RetryPolicy = RetryExponential.Default;
             }
             catch (Exception ex)
             {
@@ -41,7 +44,7 @@ namespace Mantle.Messaging.Azure
 
         public Message<T> Receive<T>()
         {
-            return Receive<T>(TimeSpan.FromSeconds(30));
+            return Receive<T>(TimeSpan.FromMinutes(1));
         }
 
         public Message<T> Receive<T>(TimeSpan timeout)

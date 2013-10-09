@@ -21,7 +21,7 @@ namespace Mantle.Messaging.Azure
         {
             try
             {
-                CloudQueueMessage cqMessage = CloudQueue.GetMessage();
+                CloudQueueMessage cqMessage = CloudQueue.GetMessage(timeout);
 
                 if (cqMessage == null)
                     return null;
