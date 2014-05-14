@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using Ninject.Modules;
@@ -8,8 +9,30 @@ namespace Mantle.Ninject
 {
     public static class AssemblyExtensions
     {
+        public static IEnumerable<INinjectModule> GetConfiguredMantleModules(this Assembly sourceAssembly,
+            string appSettingName = "MantleProfiles")
+        {
+            if (sourceAssembly == null)
+                throw new ArgumentNullException("sourceAssembly");
+
+            var appSettings = ConfigurationManager.AppSettings;
+
+            if (appSettings[appSettingName] == null)
+                throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] not configured.",
+                    appSettingName));
+
+            var moduleNames =
+                appSettings[appSettingName].Split(',', ';').Select(p => p.Trim()).Where(p => (p.Length > 0)).ToArray();
+
+            if (moduleNames.Length == 0)
+                throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] not configured.",
+                    appSettingName));
+
+            return sourceAssembly.GetMantleModules(moduleNames);
+        }
+
         public static IEnumerable<INinjectModule> GetMantleModules(this Assembly sourceAssembly,
-                                                                   params string[] profileNames)
+            params string[] profileNames)
         {
             if (sourceAssembly == null)
                 throw new ArgumentNullException("sourceAssembly");
@@ -25,8 +48,8 @@ namespace Mantle.Ninject
 
             return
                 sourceAssembly.GetExportedTypes()
-                              .Where(t => (IsLoadableModule(t)) && (IsInAnyNamespace(t, moduleNamespaces)))
-                              .Select(t => (Activator.CreateInstance(t) as INinjectModule));
+                    .Where(t => (IsLoadableModule(t)) && (IsInAnyNamespace(t, moduleNamespaces)))
+                    .Select(t => (Activator.CreateInstance(t) as INinjectModule));
         }
 
         private static bool IsLoadableModule(Type type)
