@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{94C89754-1E27-40C7-AC06-093C8FA3D259}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mantle.Messaging.Azure</RootNamespace>
+    <AssemblyName>Mantle.Messaging.Azure</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceBus, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.ServiceBus.2.2.1.1\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.2.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.1.0.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.2.1.0.3\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AzureServiceBusClient.cs" />
+    <Compile Include="AzureServiceBusEndpointManager.cs" />
+    <Compile Include="AzureServiceBusMessage.cs" />
+    <Compile Include="AzureServiceBusQueueClient.cs" />
+    <Compile Include="AzureServiceBusQueueEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueueEndpointManager.cs" />
+    <Compile Include="AzureServiceBusQueuePublisherClient.cs" />
+    <Compile Include="AzureServiceBusQueuePublisherEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueuePublisherEndpointManager.cs" />
+    <Compile Include="AzureServiceBusQueueSubscriberClient.cs" />
+    <Compile Include="AzureServiceBusQueueSubscriberEndpoint.cs" />
+    <Compile Include="AzureServiceBusQueueSubscriberEndpointManager.cs" />
+    <Compile Include="AzureServiceBusSubscriptionSubscriberClient.cs" />
+    <Compile Include="AzureServiceBusSubscriptionSubscriberEndpoint.cs" />
+    <Compile Include="AzureServiceBusSubscriptionSubscriberEndpointManager.cs" />
+    <Compile Include="AzureServiceBusTopicPublisherClient.cs" />
+    <Compile Include="AzureServiceBusTopicPublisherEndpoint.cs" />
+    <Compile Include="AzureServiceBusTopicPublisherEndpointManager.cs" />
+    <Compile Include="AzureStorageQueueSubscriberEndpointManager.cs" />
+    <Compile Include="AzureStorageQueueClient.cs" />
+    <Compile Include="AzureStorageQueueEndpoint.cs" />
+    <Compile Include="AzureStorageQueueEndpointManager.cs" />
+    <Compile Include="AzureStorageQueueMessage.cs" />
+    <Compile Include="AzureStorageQueuePublisherClient.cs" />
+    <Compile Include="AzureStorageQueuePublisherEndpoint.cs" />
+    <Compile Include="AzureStorageQueuePublisherEndpointManager.cs" />
+    <Compile Include="AzureStorageQueueSubscriberClient.cs" />
+    <Compile Include="AzureStorageQueueSubscriberEndpoint.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Azure\Mantle.Azure.csproj">
+      <Project>{021EB10A-59A7-4D8C-9BEF-D35A8C672479}</Project>
+      <Name>Mantle.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{F705D018-F04E-4274-8BC9-DA9B190E134F}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{E220316D-3290-4ED6-A8B1-C6BA1C74439A}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{d24e2319-5795-402e-817b-7213e308b301}</Project>
+      <Name>Mantle</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
