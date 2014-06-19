@@ -1,29 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mantle.Extensions;
-using Mantle.Interfaces;
 
 namespace Mantle.Configuration.Configurers
 {
     public class AdHocConfigurer<T> : BaseConfigurer<T>
     {
-        private readonly Dictionary<string, object> configurationSettings;
+        private readonly Dictionary<string, object> configurationDictionary;
 
-        public AdHocConfigurer(object configurationSettings)
+        public AdHocConfigurer(object configurationObject)
         {
-            if (configurationSettings == null)
-                throw new ArgumentNullException("configurationSettings");
+            if (configurationDictionary == null)
+                throw new ArgumentNullException("configurationObject");
 
-            this.configurationSettings = configurationSettings.ToDictionary();
-        }
-
-        public AdHocConfigurer(ITypeMetadataCache typeMetadataCache, object configurationSettings)
-            : base(typeMetadataCache)
-        {
-            if (configurationSettings == null)
-                throw new ArgumentNullException("configurationSettings");
-
-            this.configurationSettings = configurationSettings.ToDictionary();
+            configurationDictionary = configurationObject.ToDictionary();
         }
 
         public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(
@@ -31,13 +21,13 @@ namespace Mantle.Configuration.Configurers
         {
             foreach (ConfigurationTargetProperty targetPropertyMetadata in targetMetadata.Properties)
             {
-                if (configurationSettings.ContainsKey(targetPropertyMetadata.SettingName))
+                if (configurationDictionary.ContainsKey(targetPropertyMetadata.SettingName))
                 {
                     yield return
                         new ConfigurationSetting
                         {
                             Name = targetPropertyMetadata.SettingName,
-                            Value = configurationSettings[targetPropertyMetadata.SettingName].ToString()
+                            Value = configurationDictionary[targetPropertyMetadata.SettingName].ToString()
                         };
                 }
             }

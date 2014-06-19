@@ -1,21 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
-using Mantle.Interfaces;
 
 namespace Mantle.Configuration.Configurers
 {
     public class AppSettingsConfigurer<T> : BaseConfigurer<T>
     {
-        public AppSettingsConfigurer()
-        {
-        }
-
-        public AppSettingsConfigurer(ITypeMetadataCache typeMetadataCache)
-            : base(typeMetadataCache)
-        {
-        }
-
         public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(
             ConfigurationTarget<T> targetMetadata)
         {

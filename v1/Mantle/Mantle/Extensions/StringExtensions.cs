@@ -17,7 +17,9 @@ namespace Mantle.Extensions
             Dictionary<string, object> dataDictionary = data.ToDictionary();
 
             foreach (string key in dataDictionary.Keys)
+            {
                 source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter), dataDictionary[key].ToString());
+            }
 
             return source;
         }

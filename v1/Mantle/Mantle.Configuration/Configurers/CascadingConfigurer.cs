@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mantle.Configuration.Interfaces;
-using Mantle.Interfaces;
 
 namespace Mantle.Configuration.Configurers
 {
@@ -10,15 +9,6 @@ namespace Mantle.Configuration.Configurers
         private readonly IConfigurer<T>[] configurers;
 
         public CascadingConfigurer(params IConfigurer<T>[] configurers)
-        {
-            if (configurers == null)
-                throw new ArgumentNullException("configurers");
-
-            this.configurers = configurers;
-        }
-
-        public CascadingConfigurer(ITypeMetadataCache typeMetadataCache, params IConfigurer<T>[] configurers)
-            : base(typeMetadataCache)
         {
             if (configurers == null)
                 throw new ArgumentNullException("configurers");

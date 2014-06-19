@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4F5E248D-0A3C-489E-A481-8E749D5F740E}"
 EndProject
@@ -10,6 +10,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Ninject", "Mantle.Ninject\Mantle.Ninject.csproj", "{05556B9F-4A46-4CC8-9F36-30C17F22DF3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Configuration", "Mantle.Configuration\Mantle.Configuration.csproj", "{14843F74-B007-4357-9AEA-4703D772B6AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{32A98AFE-4DF9-4ED6-94B2-90E45738623A}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Tests", "Mantle.Tests\Mantle.Tests.csproj", "{25BA76BE-E6C0-4456-A7CF-FB1140474B31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +38,10 @@ Global
 		{14843F74-B007-4357-9AEA-4703D772B6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14843F74-B007-4357-9AEA-4703D772B6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14843F74-B007-4357-9AEA-4703D772B6AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BA76BE-E6C0-4456-A7CF-FB1140474B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25BA76BE-E6C0-4456-A7CF-FB1140474B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25BA76BE-E6C0-4456-A7CF-FB1140474B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25BA76BE-E6C0-4456-A7CF-FB1140474B31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +50,6 @@ Global
 		{CE605888-E0D5-4195-9115-45CC9A3B0548} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{05556B9F-4A46-4CC8-9F36-30C17F22DF3A} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{14843F74-B007-4357-9AEA-4703D772B6AE} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
+		{25BA76BE-E6C0-4456-A7CF-FB1140474B31} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 	EndGlobalSection
 EndGlobal
