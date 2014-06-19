@@ -45,6 +45,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.4.0.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -61,12 +65,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\AzureTableDictionaryStorageClient.cs" />
+    <Compile Include="Entities\AzureTableDictionaryStorageEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{14843F74-B007-4357-9AEA-4703D772B6AE}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.DictionaryStorage\Mantle.DictionaryStorage.csproj">
       <Project>{8EDACE4A-5F52-47F3-A5D0-5F72CF14CD74}</Project>
       <Name>Mantle.DictionaryStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>
+      <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

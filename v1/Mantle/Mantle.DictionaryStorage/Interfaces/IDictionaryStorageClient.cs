@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Mantle.DictionaryStorage.Interfaces
 {
-    class IDictionaryStorageClient
+    public interface IDictionaryStorageClient<T>
+        where T : class, new()
     {
+        void Delete(string entityId, string partitionId, string dictionaryName = null);
+        bool Exists(string entityId, string partitionId, string dictionaryName = null);
+        void InsertOrUpdate(T entity, string entityId, string partitionId, string dictionaryName = null);
+        T Load(string entityId, string partitionId, string dictionaryName = null);
+        IEnumerable<T> LoadAll(string parititionId, string dictionaryName = null);
     }
 }

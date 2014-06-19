@@ -94,19 +94,24 @@ namespace Mantle.DictionaryStorage.Azure.Entities
                 var propertyType = inputProperty.PropertyInfo.PropertyType;
                 var propertyValue = inputProperty.PropertyInfo.GetValue(Data);
 
-                if (inputPropertyValue != null)
+                if (propertyValue != null)
                 {
-                if (propertyType == typeof (bool))
-                    dictionary[propertyName] = new EntityProperty((bool) (inputPropertyValue));
-                else if (propertyType == typeof (bool?))
-                    dictionary[propertyName] = new EntityProperty((bool?) (inputPropertyValue));
-                else if (propertyType == typeof (byte))
-                    dictionary[propertyName] = new EntityProperty((byte) (inputPropertyValue));
-                else if (propertyType == typeof(byte?))
-                    dictionary[propertyName] 
-            }
+                    if (propertyType == typeof (bool))
+                        dictionary[propertyName] = new EntityProperty((bool) (propertyValue));
+                    else if (propertyType == typeof (bool?))
+                        dictionary[propertyName] = new EntityProperty((bool?) (propertyValue));
+                    else if (propertyType == typeof (byte))
+                        dictionary[propertyName] = new EntityProperty((byte) (propertyValue));
+                    else if (propertyType == typeof (byte?))
+                        dictionary[propertyName] = new EntityProperty((byte?) (propertyValue));
+                    else if (propertyType == typeof (byte[]))
+                        dictionary[propertyName] = new EntityProperty((byte[]) (propertyValue));
+                    else
+                        dictionary[propertyName] =
+                            new EntityProperty(JsonConvert.SerializeObject(propertyValue, Formatting.Indented));
+                }
 
-            return dictionary;
+                return dictionary;
+            }
         }
     }
-}
