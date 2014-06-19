@@ -52,6 +52,8 @@ namespace Mantle.Configuration.Configurers
                     cfgTargetProperty.SettingName = (String.IsNullOrEmpty(cfgAttribute.SettingName)
                         ? GetConventionalSettingName(cfgTarget, propertyMetadata)
                         : cfgAttribute.SettingName.Merge(new {Name = targetName}));
+
+                    cfgTarget.Properties.Add(cfgTargetProperty);
                 }
             }
 
@@ -217,7 +219,7 @@ namespace Mantle.Configuration.Configurers
             }
             else if (propertyType == (typeof (double?)))
             {
-                cfgTargetProperty.PropertyMetadata.PropertyInfo.SetValue(cfgTarget, value);
+                cfgTargetProperty.PropertyMetadata.PropertyInfo.SetValue(cfgTarget.Target, value);
             }
         }
 

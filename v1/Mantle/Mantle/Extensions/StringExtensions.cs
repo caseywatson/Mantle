@@ -18,7 +18,11 @@ namespace Mantle.Extensions
 
             foreach (string key in dataDictionary.Keys)
             {
-                source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter), dataDictionary[key].ToString());
+                if (dataDictionary[key] != null)
+                {
+                    source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter),
+                                            dataDictionary[key].ToString());
+                }
             }
 
             return source;
