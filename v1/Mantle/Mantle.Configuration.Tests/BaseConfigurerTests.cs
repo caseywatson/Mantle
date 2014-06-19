@@ -390,7 +390,7 @@ namespace Mantle.Configuration.Tests
         {
             const string propertyName = "DateTimeProperty";
             const string settingName = "SimpleTestTarget.DateTimeProperty";
-            const string settingValue = "Invalid 1/11/1981";
+            const string settingValue = "Invalid";
 
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
