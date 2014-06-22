@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Mantle.DictionaryStorage.Interfaces
 {
@@ -8,6 +9,10 @@ namespace Mantle.DictionaryStorage.Interfaces
         void Delete(string entityId, string partitionId, string dictionaryName = null);
         bool Exists(string entityId, string partitionId, string dictionaryName = null);
         void InsertOrUpdate(T entity, string entityId, string partitionId, string dictionaryName = null);
+
+        void InsertOrUpdate(IEnumerable<T> entities, Func<T, string> entityIdSelector,
+                            Func<T, string> partitionIdSelector, string dictionaryName = null);
+
         T Load(string entityId, string partitionId, string dictionaryName = null);
         IEnumerable<T> LoadAll(string parititionId, string dictionaryName = null);
     }

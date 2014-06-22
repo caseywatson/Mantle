@@ -127,6 +127,7 @@ namespace Mantle.Configuration.Tests
         public void Should_configure_nullable_Guid_property()
         {
             var testGuid = Guid.NewGuid();
+
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
                 {
@@ -269,7 +270,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_follow_convention_by_default_when_configuring_properties_on_named_target()
+        public void Should_follow_default_naming_convention_when_configuring_property_on_named_target()
         {
             const string targetName = "TestTarget";
             const string testString = "Test";

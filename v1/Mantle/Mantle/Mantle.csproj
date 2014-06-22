@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultDirectory.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Interfaces\IDirectory.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

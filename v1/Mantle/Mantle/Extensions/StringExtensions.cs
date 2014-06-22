@@ -21,11 +21,25 @@ namespace Mantle.Extensions
                 if (dataDictionary[key] != null)
                 {
                     source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter),
-                                            dataDictionary[key].ToString());
+                        dataDictionary[key].ToString());
                 }
             }
 
             return source;
+        }
+
+        public static void Require(this string parameter, string parameterName, string errorMessage = null)
+        {
+            if (String.IsNullOrEmpty(parameterName))
+                throw new ArgumentException("[parameterName] is required.", "parameterName");
+
+            if (String.IsNullOrEmpty(parameter))
+            {
+                if (errorMessage == null)
+                    throw new ArgumentException(String.Format("[{0}] is required.", parameterName), parameterName);
+
+                throw new ArgumentException(errorMessage, parameterName);
+            }
         }
 
         public static bool? TryParseBoolean(this string source)

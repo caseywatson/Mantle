@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mantle.Extensions;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
@@ -16,6 +17,13 @@ namespace Mantle.DictionaryStorage.Azure.Entities
             typeMetadata = new TypeMetadata(typeof (T));
         }
 
+        public AzureTableDictionaryStorageEntity(TypeMetadata typeMetadata)
+        {
+            typeMetadata.Require("typeMetadata");
+
+            this.typeMetadata = typeMetadata;
+        }
+
         public T Data { get; set; }
         public string ETag { get; set; }
         public string PartitionKey { get; set; }
@@ -24,12 +32,12 @@ namespace Mantle.DictionaryStorage.Azure.Entities
         {
             var t = new T();
 
-            foreach (var outputProperty in typeMetadata.Properties)
+            foreach (PropertyMetadata outputProperty in typeMetadata.Properties)
             {
                 if (properties.ContainsKey(outputProperty.PropertyInfo.Name))
                 {
-                    var inputProperty = properties[outputProperty.PropertyInfo.Name];
-                    var propertyType = outputProperty.PropertyInfo.PropertyType;
+                    EntityProperty inputProperty = properties[outputProperty.PropertyInfo.Name];
+                    Type propertyType = outputProperty.PropertyInfo.PropertyType;
 
                     if ((propertyType == typeof (bool)) && (inputProperty.BooleanValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.BooleanValue.Value);
@@ -73,8 +81,8 @@ namespace Mantle.DictionaryStorage.Azure.Entities
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.StringValue);
                     else if (inputProperty.StringValue != null)
                         outputProperty.PropertyInfo.SetValue(t,
-                                                             JsonConvert.DeserializeObject(inputProperty.StringValue,
-                                                                                           propertyType));
+                            JsonConvert.DeserializeObject(inputProperty.StringValue,
+                                propertyType));
                 }
             }
 
@@ -88,11 +96,11 @@ namespace Mantle.DictionaryStorage.Azure.Entities
         {
             var dictionary = new Dictionary<string, EntityProperty>();
 
-            foreach (var inputProperty in typeMetadata.Properties)
+            foreach (PropertyMetadata inputProperty in typeMetadata.Properties)
             {
-                var propertyName = inputProperty.PropertyInfo.Name;
-                var propertyType = inputProperty.PropertyInfo.PropertyType;
-                var propertyValue = inputProperty.PropertyInfo.GetValue(Data);
+                string propertyName = inputProperty.PropertyInfo.Name;
+                Type propertyType = inputProperty.PropertyInfo.PropertyType;
+                object propertyValue = inputProperty.PropertyInfo.GetValue(Data);
 
                 if (propertyValue != null)
                 {
@@ -106,12 +114,43 @@ namespace Mantle.DictionaryStorage.Azure.Entities
                         dictionary[propertyName] = new EntityProperty((byte?) (propertyValue));
                     else if (propertyType == typeof (byte[]))
                         dictionary[propertyName] = new EntityProperty((byte[]) (propertyValue));
+                    else if (propertyType == typeof (decimal))
+                        dictionary[propertyName] = new EntityProperty((double) (propertyValue));
+                    else if (propertyType == typeof (decimal?))
+                        dictionary[propertyName] = new EntityProperty((double?) (propertyValue));
+                    else if (propertyType == typeof (DateTime))
+                        dictionary[propertyName] = new EntityProperty((DateTime) (propertyValue));
+                    else if (propertyType == typeof (DateTime?))
+                        dictionary[propertyName] = new EntityProperty((DateTime?) (propertyValue));
+                    else if (propertyType == typeof (double))
+                        dictionary[propertyName] = new EntityProperty((double) (propertyValue));
+                    else if (propertyType == typeof (double?))
+                        dictionary[propertyName] = new EntityProperty((double?) (propertyValue));
+                    else if (propertyType == typeof (float))
+                        dictionary[propertyName] = new EntityProperty((float) (propertyValue));
+                    else if (propertyType == typeof (float?))
+                        dictionary[propertyName] = new EntityProperty((float?) (propertyValue));
+                    else if (propertyType == typeof (Guid))
+                        dictionary[propertyName] = new EntityProperty((Guid) (propertyValue));
+                    else if (propertyType == typeof (Guid?))
+                        dictionary[propertyName] = new EntityProperty((Guid?) (propertyValue));
+                    else if (propertyType == typeof (int))
+                        dictionary[propertyName] = new EntityProperty((int) (propertyValue));
+                    else if (propertyType == typeof (int?))
+                        dictionary[propertyName] = new EntityProperty((int?) (propertyValue));
+                    else if (propertyType == typeof (long))
+                        dictionary[propertyName] = new EntityProperty((long) (propertyValue));
+                    else if (propertyType == typeof (long?))
+                        dictionary[propertyName] = new EntityProperty((long?) (propertyValue));
+                    else if (propertyType == typeof (string))
+                        dictionary[propertyName] = new EntityProperty((string) (propertyValue));
                     else
                         dictionary[propertyName] =
                             new EntityProperty(JsonConvert.SerializeObject(propertyValue, Formatting.Indented));
                 }
-
-                return dictionary;
             }
+
+            return dictionary;
         }
     }
+}
