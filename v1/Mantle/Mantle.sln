@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{9DC5CC66
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.DictionaryStorage.Azure", "Mantle.DictionaryStorage.Azure\Mantle.DictionaryStorage.Azure.csproj", "{8C8BE584-1D71-4576-921E-6A934E878780}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage", "Mantle.BlobStorage\Mantle.BlobStorage.csproj", "{83F5F9FF-341B-4E9E-8733-152952CAFEF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage.Azure", "Mantle.BlobStorage.Azure\Mantle.BlobStorage.Azure.csproj", "{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,14 @@ Global
 		{8C8BE584-1D71-4576-921E-6A934E878780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C8BE584-1D71-4576-921E-6A934E878780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C8BE584-1D71-4576-921E-6A934E878780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F5F9FF-341B-4E9E-8733-152952CAFEF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F5F9FF-341B-4E9E-8733-152952CAFEF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F5F9FF-341B-4E9E-8733-152952CAFEF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F5F9FF-341B-4E9E-8733-152952CAFEF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +86,7 @@ Global
 		{AC1A182E-C5EC-45FA-8675-386F72E3C7C8} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{8EDACE4A-5F52-47F3-A5D0-5F72CF14CD74} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{8C8BE584-1D71-4576-921E-6A934E878780} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
+		{83F5F9FF-341B-4E9E-8733-152952CAFEF7} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
+		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
 	EndGlobalSection
 EndGlobal

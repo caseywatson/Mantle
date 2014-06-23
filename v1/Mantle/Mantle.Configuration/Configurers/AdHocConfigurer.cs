@@ -10,9 +10,7 @@ namespace Mantle.Configuration.Configurers
 
         public AdHocConfigurer(object configurationObject)
         {
-            if (configurationDictionary == null)
-                throw new ArgumentNullException("configurationObject");
-
+            configurationObject.Require("configurationObject");
             configurationDictionary = configurationObject.ToDictionary();
         }
 

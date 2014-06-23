@@ -8,11 +8,8 @@ namespace Mantle.Extensions
         public static string Merge(this string source, object data, char fieldStartDelimiter = '{',
                                    char fieldEndDelimiter = '}')
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-
-            if (data == null)
-                throw new ArgumentNullException("data");
+            source.Require("source");
+            data.Require("data");
 
             Dictionary<string, object> dataDictionary = data.ToDictionary();
 
@@ -21,7 +18,7 @@ namespace Mantle.Extensions
                 if (dataDictionary[key] != null)
                 {
                     source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter),
-                        dataDictionary[key].ToString());
+                                            dataDictionary[key].ToString());
                 }
             }
 
@@ -44,8 +41,7 @@ namespace Mantle.Extensions
 
         public static bool? TryParseBoolean(this string source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             bool temp;
 
@@ -57,8 +53,7 @@ namespace Mantle.Extensions
 
         public static DateTime? TryParseDateTime(this string source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             DateTime temp;
 
@@ -70,8 +65,7 @@ namespace Mantle.Extensions
 
         public static double? TryParseDouble(this string source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             double temp;
 
@@ -83,8 +77,7 @@ namespace Mantle.Extensions
 
         public static int? TryParseInt(this string source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             int temp;
 
@@ -96,8 +89,7 @@ namespace Mantle.Extensions
 
         public static long? TryParseLong(this string source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             long temp;
 
@@ -109,8 +101,7 @@ namespace Mantle.Extensions
 
         public static Guid? TryParseGuid(this string source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             Guid temp;
 

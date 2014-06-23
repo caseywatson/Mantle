@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mantle.Extensions;
 using Mantle.Interfaces;
 using Ninject;
 
@@ -11,8 +12,7 @@ namespace Mantle.Ninject
 
         public NinjectDependencyResolver(IKernel kernel)
         {
-            if (kernel == null)
-                throw new ArgumentNullException("kernel");
+            kernel.Require("kernel");
 
             this.kernel = kernel;
 
@@ -26,27 +26,22 @@ namespace Mantle.Ninject
 
         public T Get<T>(string name)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Name is required.", "name");
+            name.Require("name");
 
             return kernel.Get<T>(name);
         }
 
         public object Get(Type type)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
+            type.Require("type");
 
             return kernel.Get(type);
         }
 
         public object Get(Type type, string name)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Name is required.", "name");
+            type.Require("type");
+            name.Require("name");
 
             return kernel.Get(type, name);
         }
@@ -58,8 +53,7 @@ namespace Mantle.Ninject
 
         public void Release(object target)
         {
-            if (target == null)
-                throw new ArgumentNullException("target");
+            target.Require("target");
 
             kernel.Release(target);
         }

@@ -270,7 +270,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_follow_default_naming_convention_when_configuring_property_on_named_target()
+        public void Should_follow_default_naming_convention_when_configuring_property_on_named_instance()
         {
             const string targetName = "TestTarget";
             const string testString = "Test";
@@ -401,13 +401,7 @@ namespace Mantle.Configuration.Tests
 
             var testTarget = new SimpleTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith(String.Format(
-                                                              "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a date/time value.",
-                                                              settingName, settingValue, typeof (SimpleTestTarget).Name,
-                                                              propertyName)));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
 
         [Test]
@@ -425,13 +419,7 @@ namespace Mantle.Configuration.Tests
 
             var testTarget = new SimpleTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith(String.Format(
-                                                              "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a GUID value.",
-                                                              settingName, settingValue, typeof (SimpleTestTarget).Name,
-                                                              propertyName)));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
 
         [Test]
@@ -449,13 +437,7 @@ namespace Mantle.Configuration.Tests
 
             var testTarget = new SimpleTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith(String.Format(
-                                                              "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a boolean value.",
-                                                              settingName, settingValue, typeof (SimpleTestTarget).Name,
-                                                              propertyName)));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
 
         [Test]
@@ -473,13 +455,7 @@ namespace Mantle.Configuration.Tests
 
             var testTarget = new SimpleTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith(String.Format(
-                                                              "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a double value.",
-                                                              settingName, settingValue, typeof (SimpleTestTarget).Name,
-                                                              propertyName)));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
 
         [Test]
@@ -497,13 +473,7 @@ namespace Mantle.Configuration.Tests
 
             var testTarget = new SimpleTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith(String.Format(
-                                                              "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a 32-bit integer value.",
-                                                              settingName, settingValue, typeof (SimpleTestTarget).Name,
-                                                              propertyName)));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
 
         [Test]
@@ -521,13 +491,7 @@ namespace Mantle.Configuration.Tests
 
             var testTarget = new SimpleTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith(String.Format(
-                                                              "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a 64-bit integer value.",
-                                                              settingName, settingValue, typeof (SimpleTestTarget).Name,
-                                                              propertyName)));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
 
         [Test]
@@ -536,10 +500,7 @@ namespace Mantle.Configuration.Tests
             var configurer = new TestConfigurer<RequiredTestTarget>(new List<ConfigurationSetting>());
             var testTarget = new RequiredTestTarget();
 
-            var ex = Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-
-            Assert.IsNotNull(ex);
-            Assert.IsTrue(ex.Message.StartsWith("[RequiredTestTarget.RequiredProperty] is not configured."));
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Mantle.Extensions;
 
 namespace Mantle.Configuration
 {
@@ -10,8 +10,7 @@ namespace Mantle.Configuration
 
         public ConfigurationSetting(string name, string value)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentException("Name is required.", "name");
+            name.Require("name");
 
             Name = name;
             Value = value;

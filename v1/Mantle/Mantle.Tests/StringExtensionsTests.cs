@@ -127,55 +127,37 @@ namespace Mantle.Tests
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_Date_Time_value()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).TryParseDateTime());
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => default(string).TryParseDateTime());
         }
 
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_Guid_value()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).TryParseGuid());
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => default(string).TryParseGuid());
         }
 
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_boolean_value()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).TryParseBoolean());
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => default(string).TryParseBoolean());
         }
 
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_double_value()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).TryParseDouble());
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => default(string).TryParseDouble());
         }
 
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_int_value()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).TryParseInt());
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => default(string).TryParseInt());
         }
 
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_long_value()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).TryParseLong());
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => default(string).TryParseLong());
         }
 
         [Test]

@@ -13,7 +13,6 @@ namespace Mantle.DictionaryStorage.Azure.Clients
     public class AzureTableDictionaryStorageClient<T> : IDictionaryStorageClient<T>
         where T : class, new()
     {
-        private readonly string defaultDictionaryName;
         private readonly TypeMetadata typeMetadata;
 
         private CloudStorageAccount cloudStorageAccount;
@@ -22,7 +21,6 @@ namespace Mantle.DictionaryStorage.Azure.Clients
         public AzureTableDictionaryStorageClient()
         {
             typeMetadata = new TypeMetadata(typeof (T));
-            defaultDictionaryName = typeMetadata.Type.Name;
         }
 
         public CloudStorageAccount CloudStorageAccount
@@ -43,30 +41,31 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             }
         }
 
-        [Configurable]
+        [Configurable(IsRequired = true)]
+        public string DictionaryName { get; set; }
+
+        [Configurable(IsRequired = true)]
         public string StorageConnectionString { get; set; }
 
-        public void Delete(string entityId, string partitionId, string dictionaryName = null)
+        public void DeleteEntity(string entityId, string partitionId)
         {
             partitionId.Require("entityId");
             partitionId.Require("partitionId");
 
-            dictionaryName = (dictionaryName ?? defaultDictionaryName);
-
-            CloudTable table = CloudTableClient.GetTableReference(dictionaryName);
+            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             if (table.Exists() == false)
-                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", dictionaryName));
+                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", DictionaryName));
 
             TableOperation retrieveOp = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId,
-                entityId);
+                                                                                                      entityId);
 
             TableResult retrieveResult = table.Execute(retrieveOp);
 
             if (retrieveResult.Result == null)
                 throw new InvalidOperationException(
                     String.Format("Entity [{0}/{1}] was not found in dictionary [{2}].", partitionId,
-                        entityId, dictionaryName));
+                                  entityId, DictionaryName));
 
             TableOperation deleteOp =
                 TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
@@ -74,12 +73,12 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             table.Execute(deleteOp);
         }
 
-        public bool Exists(string entityId, string partitionId, string dictionaryName = null)
+        public bool EntityExists(string entityId, string partitionId)
         {
             entityId.Require("entityId");
             partitionId.Require("partitionId");
 
-            CloudTable table = CloudTableClient.GetTableReference(dictionaryName ?? defaultDictionaryName);
+            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             if (table.Exists() == false)
                 return false;
@@ -89,7 +88,7 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             return (table.Execute(op).Result != null);
         }
 
-        public void InsertOrUpdate(T entity, string entityId, string partitionId, string dictionaryName = null)
+        public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
         {
             entity.Require("entity");
             entityId.Require("entityId");
@@ -101,7 +100,7 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             storageEntity.RowKey = entityId;
             storageEntity.PartitionKey = partitionId;
 
-            CloudTable table = CloudTableClient.GetTableReference(dictionaryName ?? defaultDictionaryName);
+            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             table.CreateIfNotExists();
 
@@ -110,15 +109,15 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             table.Execute(op);
         }
 
-        public T Load(string entityId, string partitionId, string dictionaryName = null)
+        public T LoadEntity(string entityId, string partitionId)
         {
             entityId.Require("entityId");
             partitionId.Require("partitionId");
 
-            CloudTable table = CloudTableClient.GetTableReference(dictionaryName ?? defaultDictionaryName);
+            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             if (table.Exists() == false)
-                return null;
+                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", DictionaryName));
 
             TableOperation op = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
             TableResult result = table.Execute(op);
@@ -134,43 +133,43 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             return storageEntity.Data;
         }
 
-        public IEnumerable<T> LoadAll(string partitionId, string dictionaryName = null)
+        public IEnumerable<T> LoadAllEntities(string partitionId)
         {
             partitionId.Require("partitionId");
 
-            CloudTable table = CloudTableClient.GetTableReference(dictionaryName ?? defaultDictionaryName);
+            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
-            if (table.Exists())
-            {
-                TableQuery<AzureTableDictionaryStorageEntity<T>> query =
-                    new TableQuery<AzureTableDictionaryStorageEntity<T>>().Where(
-                        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionId));
+            if (table.Exists() == false)
+                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", DictionaryName));
 
-                foreach (var queryResult in table.ExecuteQuery(query))
-                    yield return queryResult.Data;
-            }
+            TableQuery<AzureTableDictionaryStorageEntity<T>> query = new TableQuery
+                <AzureTableDictionaryStorageEntity<T>>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionId));
+
+            foreach (var queryResult in table.ExecuteQuery(query))
+                yield return queryResult.Data;
         }
 
-        public void InsertOrUpdate(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-                                   Func<T, string> partitionIdSelector, string dictionaryName = null)
+        public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
+                                           Func<T, string> partitionIdSelector)
         {
             entities.Require("entities");
             entityIdSelector.Require("entityIdSelector");
             partitionIdSelector.Require("partitionIdSelector");
 
-            CloudTable table = CloudTableClient.GetTableReference(dictionaryName ?? defaultDictionaryName);
+            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             table.CreateIfNotExists();
 
             IEnumerable<IGrouping<string, AzureTableDictionaryStorageEntity<T>>> storageEntityGroups =
                 entities.Select(
-                    e =>
-                        new AzureTableDictionaryStorageEntity<T>
-                        {
-                            Data = e,
-                            PartitionKey = partitionIdSelector(e),
-                            RowKey = entityIdSelector(e)
-                        }).GroupBy(e => e.PartitionKey);
+                                e =>
+                                    new AzureTableDictionaryStorageEntity<T>(typeMetadata)
+                                    {
+                                        Data = e,
+                                        PartitionKey = partitionIdSelector(e),
+                                        RowKey = entityIdSelector(e)
+                                    }).GroupBy(e => e.PartitionKey);
 
             foreach (var storageEntityGroup in storageEntityGroups)
             {

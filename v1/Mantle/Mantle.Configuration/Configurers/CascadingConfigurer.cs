@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mantle.Configuration.Interfaces;
+using Mantle.Extensions;
 
 namespace Mantle.Configuration.Configurers
 {
@@ -10,9 +11,7 @@ namespace Mantle.Configuration.Configurers
 
         public CascadingConfigurer(params IConfigurer<T>[] configurers)
         {
-            if (configurers == null)
-                throw new ArgumentNullException("configurers");
-
+            configurers.Require("configurers");
             this.configurers = configurers;
         }
 

@@ -40,10 +40,7 @@ namespace Mantle.Tests
         [Test]
         public void Should_throw_ArgumentNullException_if_attempting_to_convert_null_to_a_dictionary()
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => ObjectExtensions.ToDictionary(null));
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentNullException>(() => ObjectExtensions.ToDictionary(null));
         }
     }
 }

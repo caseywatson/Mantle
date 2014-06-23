@@ -6,14 +6,14 @@ namespace Mantle.DictionaryStorage.Interfaces
     public interface IDictionaryStorageClient<T>
         where T : class, new()
     {
-        void Delete(string entityId, string partitionId, string dictionaryName = null);
-        bool Exists(string entityId, string partitionId, string dictionaryName = null);
-        void InsertOrUpdate(T entity, string entityId, string partitionId, string dictionaryName = null);
+        void DeleteEntity(string entityId, string partitionId);
+        bool EntityExists(string entityId, string partitionId);
+        void InsertOrUpdateEntity(T entity, string entityId, string partitionId);
 
-        void InsertOrUpdate(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-                            Func<T, string> partitionIdSelector, string dictionaryName = null);
+        void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
+                                    Func<T, string> partitionIdSelector);
 
-        T Load(string entityId, string partitionId, string dictionaryName = null);
-        IEnumerable<T> LoadAll(string parititionId, string dictionaryName = null);
+        T LoadEntity(string entityId, string partitionId);
+        IEnumerable<T> LoadAllEntities(string parititionId);
     }
 }

@@ -8,8 +8,7 @@ namespace Mantle.Extensions
     {
         public static Dictionary<string, object> ToDictionary(this object source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            source.Require("source");
 
             var dictionary = new Dictionary<string, object>();
             Type sourceType = source.GetType();
