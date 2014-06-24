@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage", "Mantl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage.Azure", "Mantle.BlobStorage.Azure\Mantle.BlobStorage.Azure.csproj", "{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging", "Mantle.Messaging\Mantle.Messaging.csproj", "{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,5 +94,6 @@ Global
 		{8C8BE584-1D71-4576-921E-6A934E878780} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
 		{83F5F9FF-341B-4E9E-8733-152952CAFEF7} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
+		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 	EndGlobalSection
 EndGlobal

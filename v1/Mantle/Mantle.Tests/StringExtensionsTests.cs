@@ -125,39 +125,39 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_Date_Time_value()
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_Date_Time_value()
         {
-            Assert.Throws<ArgumentNullException>(() => default(string).TryParseDateTime());
+            Assert.Throws<ArgumentException>(() => default(string).TryParseDateTime());
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_Guid_value()
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_Guid_value()
         {
-            Assert.Throws<ArgumentNullException>(() => default(string).TryParseGuid());
+            Assert.Throws<ArgumentException>(() => default(string).TryParseGuid());
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_boolean_value()
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_boolean_value()
         {
-            Assert.Throws<ArgumentNullException>(() => default(string).TryParseBoolean());
+            Assert.Throws<ArgumentException>(() => default(string).TryParseBoolean());
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_double_value()
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_double_value()
         {
-            Assert.Throws<ArgumentNullException>(() => default(string).TryParseDouble());
+            Assert.Throws<ArgumentException>(() => default(string).TryParseDouble());
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_int_value()
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_int_value()
         {
-            Assert.Throws<ArgumentNullException>(() => default(string).TryParseInt());
+            Assert.Throws<ArgumentException>(() => default(string).TryParseInt());
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_attempting_to_parse_null_string_to_long_value()
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_long_value()
         {
-            Assert.Throws<ArgumentNullException>(() => default(string).TryParseLong());
+            Assert.Throws<ArgumentException>(() => default(string).TryParseLong());
         }
 
         [Test]
@@ -194,21 +194,15 @@ namespace Mantle.Tests
         {
             const string sourceString = "My name is {FirstName} {LastName} and I am {Age}.";
 
-            var ex = Assert.Throws<ArgumentNullException>(() => sourceString.Merge(null));
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "data");
+            Assert.Throws<ArgumentNullException>(() => sourceString.Merge(null));
         }
 
         [Test]
-        public void When_merging_data_into_a_string_should_throw_ArgumentNullException_if_source_is_null()
+        public void When_merging_data_into_a_string_should_throw_ArgumenException_if_source_is_null()
         {
             var testObj = new {FirstName = "Casey", LastName = "Watson"};
 
-            var ex = Assert.Throws<ArgumentNullException>(() => default(string).Merge(testObj));
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "source");
+            Assert.Throws<ArgumentException>(() => default(string).Merge(testObj));
         }
 
         [Test]

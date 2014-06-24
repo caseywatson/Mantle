@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,7 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyQualifiedNameTypeTokenProviderTests.cs" />
+    <Compile Include="DataContractTypeTokenProviderTests.cs" />
     <Compile Include="DefaultDirectoryTests.cs" />
+    <Compile Include="FullNameTypeTokenProviderTests.cs" />
+    <Compile Include="NameTypeTokenProviderTests.cs" />
     <Compile Include="ObjectExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensionsTests.cs" />
