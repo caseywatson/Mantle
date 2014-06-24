@@ -54,7 +54,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
                 if (dictionary.ContainsKey(partitionId) == false)
                     return false;
 
-                if (dictionary[partitionId].ContainsKey(entityId))
+                if (dictionary[partitionId].ContainsKey(entityId) == false)
                     return false;
 
                 return true;
