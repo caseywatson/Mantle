@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage.Azure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging", "Mantle.Messaging\Mantle.Messaging.csproj", "{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage.FileSystem", "Mantle.BlobStorage.FileSystem\Mantle.BlobStorage.FileSystem.csproj", "{E63D4437-D470-49A3-926D-256CBA736508}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.DictionaryStorage.InMemory", "Mantle.DictionaryStorage.InMemory\Mantle.DictionaryStorage.InMemory.csproj", "{E1607A63-5A5A-4468-A178-7E69B63093AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +86,14 @@ Global
 		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63D4437-D470-49A3-926D-256CBA736508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63D4437-D470-49A3-926D-256CBA736508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63D4437-D470-49A3-926D-256CBA736508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63D4437-D470-49A3-926D-256CBA736508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1607A63-5A5A-4468-A178-7E69B63093AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1607A63-5A5A-4468-A178-7E69B63093AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1607A63-5A5A-4468-A178-7E69B63093AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1607A63-5A5A-4468-A178-7E69B63093AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +109,7 @@ Global
 		{83F5F9FF-341B-4E9E-8733-152952CAFEF7} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{B0EEA28B-6CB1-45A0-9541-7DE16B81C71D} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
 		{48F77C1A-CDB2-47D6-8BDE-099D857DE77F} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
+		{E63D4437-D470-49A3-926D-256CBA736508} = {2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}
+		{E1607A63-5A5A-4468-A178-7E69B63093AF} = {2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}
 	EndGlobalSection
 EndGlobal
