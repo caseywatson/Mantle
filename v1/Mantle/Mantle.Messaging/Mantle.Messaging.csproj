@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IMessageContext.cs" />
     <Compile Include="Interfaces\IMessageDistributor.cs" />
     <Compile Include="Interfaces\IMessageHandler.cs" />
     <Compile Include="Interfaces\IMessageSerializer.cs" />

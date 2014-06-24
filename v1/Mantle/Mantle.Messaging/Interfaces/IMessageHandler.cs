@@ -2,6 +2,6 @@
 {
     public interface IMessageHandler<T>
     {
-        bool Handle(T message);
+        bool Handle(IMessageContext<T> messageContext);
     }
 }
