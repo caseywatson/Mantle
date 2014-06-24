@@ -47,9 +47,11 @@
     <Compile Include="Attributes\ConfigurableAttribute.cs" />
     <Compile Include="Configurers\ConnectionStringsConfigurer.cs" />
     <Compile Include="ConfigurationSetting.cs" />
+    <Compile Include="Extensions\ConfigurationTargetExtensions.cs" />
+    <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Interfaces\IConfigurer.cs" />
-    <Compile Include="ConfigurationTarget.cs" />
-    <Compile Include="ConfigurationTargetProperty.cs" />
+    <Compile Include="ConfigurableObject.cs" />
+    <Compile Include="ConfigurableProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,14 +2,14 @@
 
 namespace Mantle.Configuration
 {
-    public class ConfigurationTarget<T>
+    public class ConfigurableObject<T>
     {
-        public ConfigurationTarget()
+        public ConfigurableObject()
         {
-            Properties = new List<ConfigurationTargetProperty>();
+            Properties = new List<ConfigurableProperty>();
         }
 
-        public List<ConfigurationTargetProperty> Properties { get; set; }
+        public List<ConfigurableProperty> Properties { get; set; }
         public T Target { get; set; }
         public string Name { get; set; }
         public TypeMetadata TypeMetadata { get; set; }

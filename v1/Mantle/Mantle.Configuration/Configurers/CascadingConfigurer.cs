@@ -15,7 +15,7 @@ namespace Mantle.Configuration.Configurers
             this.configurers = configurers;
         }
 
-        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(ConfigurationTarget<T> target)
+        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(ConfigurableObject<T> target)
         {
             var settingDictionary = new Dictionary<string, ConfigurationSetting>();
 

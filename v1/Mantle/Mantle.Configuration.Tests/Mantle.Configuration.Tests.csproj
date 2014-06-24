@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdHocConfigurerTests.cs" />
     <Compile Include="BaseConfigurerTests.cs" />
     <Compile Include="Configurers\TestConfigurer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,7 +8,7 @@ namespace Mantle.Tests
     public class StringExtensionsTests
     {
         [Test]
-        public void Should_merge_data_into_target_string()
+        public void Should_merge_anonymous_data_object_into_string()
         {
             const string sourceString = "My name is {FirstName} {LastName} and I am {Age}.";
             const string expectedString = "My name is Casey Watson and I am 33.";
@@ -77,7 +77,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_Date_Time_string()
+        public void Should_return_null_if_unable_to_parse_string_to_Date_Time_value()
         {
             var dateTimeResult = "invalid".TryParseDateTime();
 
@@ -85,7 +85,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_Guid_string()
+        public void Should_return_null_if_unable_to_parse_string_to_Guid_value()
         {
             var guidResult = "invalid".TryParseGuid();
 
@@ -93,7 +93,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_boolean_string()
+        public void Should_return_null_if_unable_to_parse_string_to_boolean_value()
         {
             var boolResult = "invalid".TryParseBoolean();
 
@@ -101,7 +101,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_double_string()
+        public void Should_return_null_if_unable_to_parse_string_to_double_value()
         {
             var doubleResult = "invalid".TryParseDouble();
 
@@ -109,7 +109,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_int_string()
+        public void Should_return_null_if_unable_to_parse_string_to_int_value()
         {
             var intResult = "invalid".TryParseInt();
 
@@ -117,7 +117,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_long_string()
+        public void Should_return_null_if_unable_to_parse_string_to_long_value()
         {
             var longResult = "invalid".TryParseLong();
 
@@ -161,7 +161,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void When_merging_data_into_a_string_should_ignore_fields_not_included_in_data_object()
+        public void When_merging_anonymous_data_object_into_string_should_ignore_fields_not_defined_in_data_object()
         {
             const string sourceString = "My name is {FirstName} {LastName} and I am {Age}.";
             const string expectedString = "My name is Casey Watson and I am {Age}.";
@@ -175,7 +175,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void When_merging_data_into_a_string_should_ignore_fields_not_included_in_string()
+        public void When_merging_anonymous_data_object_into_string_should_ignore_fields_not_defined_in_string()
         {
             const string sourceString = "My name is {FirstName} {LastName} and I am {Age}.";
             const string expectedString = "My name is Casey Watson and I am 33.";
@@ -190,23 +190,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void When_merging_data_into_a_string_should_throw_ArgumentNullException_if_data_is_null()
-        {
-            const string sourceString = "My name is {FirstName} {LastName} and I am {Age}.";
-
-            Assert.Throws<ArgumentNullException>(() => sourceString.Merge(null));
-        }
-
-        [Test]
-        public void When_merging_data_into_a_string_should_throw_ArgumenException_if_source_is_null()
-        {
-            var testObj = new {FirstName = "Casey", LastName = "Watson"};
-
-            Assert.Throws<ArgumentException>(() => default(string).Merge(testObj));
-        }
-
-        [Test]
-        public void When_merging_data_into_a_string_should_use_custom_delimiters_if_provided()
+        public void When_merging_anonymous_data_object_into_string_should_use_custom_delimiters_if_provided()
         {
             const string sourceString = "My name is |FirstName| |LastName| and I am |Age|.";
             const string expectedString = "My name is Casey Watson and I am 33.";
@@ -217,6 +201,22 @@ namespace Mantle.Tests
 
             Assert.IsNotNull(mergedString);
             Assert.AreEqual(expectedString, mergedString);
+        }
+
+        [Test]
+        public void When_merging_data_object_into_string_should_throw_ArgumentException_if_source_is_null()
+        {
+            var testObj = new {FirstName = "Casey", LastName = "Watson"};
+
+            Assert.Throws<ArgumentException>(() => default(string).Merge(testObj));
+        }
+
+        [Test]
+        public void When_merging_data_object_into_string_should_throw_ArgumentNullException_if_data_is_null()
+        {
+            const string sourceString = "My name is {FirstName} {LastName} and I am {Age}.";
+
+            Assert.Throws<ArgumentNullException>(() => sourceString.Merge(null));
         }
     }
 }

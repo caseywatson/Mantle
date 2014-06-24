@@ -11,7 +11,7 @@ namespace Mantle.Configuration.Tests
     public class BaseConfigurerTests
     {
         [Test]
-        public void Should_configure_Date_Time_property()
+        public void Should_configure_Date_Time_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -27,7 +27,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_Guid_property()
+        public void Should_configure_Guid_property_given_a_valid_configuration_setting()
         {
             var testGuid = Guid.NewGuid();
             var configurer =
@@ -44,7 +44,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_boolean_property()
+        public void Should_configure_boolean_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -60,7 +60,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_double_property()
+        public void Should_configure_double_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -76,7 +76,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_int_property()
+        public void Should_configure_int_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -92,7 +92,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_long_property()
+        public void Should_configure_long_property_given_a_valid_configuration_setting()
         {
             var configurer = new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
             {
@@ -107,7 +107,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_nullable_Date_Time_property()
+        public void Should_configure_nullable_Date_Time_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -124,7 +124,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_nullable_Guid_property()
+        public void Should_configure_nullable_Guid_property_given_a_valid_configuration_setting()
         {
             var testGuid = Guid.NewGuid();
 
@@ -143,7 +143,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_nullable_boolean_property()
+        public void Should_configure_nullable_boolean_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -160,7 +160,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_nullable_double_property()
+        public void Should_configure_nullable_double_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -177,7 +177,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_nullable_int_property()
+        public void Should_configure_nullable_int_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -194,7 +194,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_nullable_long_property()
+        public void Should_configure_nullable_long_property_given_a_valid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -231,7 +231,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_property_with_custom_setting_name_on_named_target()
+        public void Should_configure_property_with_custom_setting_name_on_named_instance()
         {
             const string targetName = "Test";
             const string testString = "Test";
@@ -252,7 +252,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_configure_string_property()
+        public void Should_configure_string_property_given_a_valid_configuration_setting()
         {
             const string testString = "Test";
 
@@ -270,7 +270,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_follow_default_naming_convention_when_configuring_property_on_named_instance()
+        public void Should_follow_setting_naming_convention_when_configuring_property_on_named_instance()
         {
             const string targetName = "TestTarget";
             const string testString = "Test";
@@ -290,7 +290,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_set_nullable_Date_Time_property_to_null_if_configuration_value_can_not_be_parsed()
+        public void Should_set_nullable_Date_Time_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -306,7 +306,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_set_nullable_Guid_property_to_null_if_configuration_value_can_not_be_parsed()
+        public void Should_set_nullable_Guid_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -322,7 +322,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_set_nullable_boolean_property_to_null_if_configuration_value_can_not_be_parsed()
+        public void Should_set_nullable_boolean_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -338,7 +338,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_set_nullable_double_property_to_null_if_configuration_value_can_not_be_parsed()
+        public void Should_set_nullable_double_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -354,7 +354,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_set_nullable_int_property_to_null_if_configuration_value_can_not_be_parsed()
+        public void Should_set_nullable_int_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -370,7 +370,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_set_nullable_long_property_to_null_if_configuration_value_can_not_be_parsed()
+        public void Should_set_nullable_long_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
@@ -387,7 +387,7 @@ namespace Mantle.Configuration.Tests
 
         [Test]
         public void
-            Should_throw_ConfigurationErrorsException_if_Date_Time_property_configuration_value_can_not_be_parsed()
+            Should_throw_ConfigurationErrorsException_if_Date_Time_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "DateTimeProperty";
             const string settingName = "SimpleTestTarget.DateTimeProperty";
@@ -405,7 +405,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_Guid_property_configuration_value_can_not_be_parsed()
+        public void Should_throw_ConfigurationErrorsException_if_Guid_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "GuidProperty";
             const string settingName = "SimpleTestTarget.GuidProperty";
@@ -423,7 +423,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_boolean_property_configuration_value_can_not_be_parsed()
+        public void Should_throw_ConfigurationErrorsException_if_boolean_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "BooleanProperty";
             const string settingName = "SimpleTestTarget.BooleanProperty";
@@ -441,7 +441,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_double_property_configuration_value_can_not_be_parsed()
+        public void Should_throw_ConfigurationErrorsException_if_double_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "DoubleProperty";
             const string settingName = "SimpleTestTarget.DoubleProperty";
@@ -459,7 +459,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_int_property_configuration_value_can_not_be_parsed()
+        public void Should_throw_ConfigurationErrorsException_if_int_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "IntProperty";
             const string settingName = "SimpleTestTarget.IntProperty";
@@ -477,7 +477,7 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_long_property_configuration_value_can_not_be_parsed()
+        public void Should_throw_ConfigurationErrorsException_if_long_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "LongProperty";
             const string settingName = "SimpleTestTarget.LongProperty";

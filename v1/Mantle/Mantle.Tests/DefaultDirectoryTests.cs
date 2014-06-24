@@ -9,7 +9,7 @@ namespace Mantle.Tests
     public class DefaultDirectoryTests
     {
         [Test]
-        public void Should_return_named_object_if_found()
+        public void Should_return_named_instance_if_found()
         {
             const string testObjName = "Test";
 
@@ -26,7 +26,7 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_named_object_is_not_found()
+        public void Should_return_null_if_named_instance_is_not_found()
         {
             const string testObjName = "Test";
 
@@ -46,10 +46,7 @@ namespace Mantle.Tests
             var mockDependencyResolver = new Mock<IDependencyResolver>();
             var directory = new DefaultDirectory<object>(mockDependencyResolver.Object);
 
-            var ex = Assert.Throws<ArgumentException>(() => { var obj = directory[String.Empty]; });
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "name");
+            Assert.Throws<ArgumentException>(() => { var obj = directory[String.Empty]; });
         }
 
         [Test]
@@ -58,10 +55,7 @@ namespace Mantle.Tests
             var mockDependencyResolver = new Mock<IDependencyResolver>();
             var directory = new DefaultDirectory<object>(mockDependencyResolver.Object);
 
-            var ex = Assert.Throws<ArgumentException>(() => { var obj = directory[null]; });
-
-            Assert.IsNotNull(ex);
-            Assert.AreEqual(ex.ParamName, "name");
+            Assert.Throws<ArgumentException>(() => { var obj = directory[null]; });
         }
     }
 }

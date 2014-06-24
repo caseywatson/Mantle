@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Mantle.Configuration.Attributes;
+using Mantle.Configuration.Extensions;
 using Mantle.Configuration.Interfaces;
 using Mantle.Extensions;
 
@@ -19,7 +19,7 @@ namespace Mantle.Configuration.Configurers
 
         public virtual T Configure(T target, string targetName = null)
         {
-            ConfigurationTarget<T> cfgTarget = ToConfigurationTarget(target, targetName);
+            ConfigurableObject<T> cfgTarget = target.ToConfigurableObject(targetName);
             IEnumerable<ConfigurationSetting> cfgSettings = GetConfigurationSettings(cfgTarget);
 
             ApplyConfigurationSettings(cfgTarget, cfgSettings);
@@ -27,46 +27,15 @@ namespace Mantle.Configuration.Configurers
             return cfgTarget.Target;
         }
 
-        public abstract IEnumerable<ConfigurationSetting> GetConfigurationSettings(ConfigurationTarget<T> cfgTarget);
+        public abstract IEnumerable<ConfigurationSetting> GetConfigurationSettings(ConfigurableObject<T> cfgTarget);
 
-        protected virtual ConfigurationTarget<T> ToConfigurationTarget(T target, string targetName = null)
-        {
-            var cfgTarget = new ConfigurationTarget<T>();
-
-            cfgTarget.Name = targetName;
-            cfgTarget.Target = target;
-            cfgTarget.TypeMetadata = TypeMetadata;
-
-            foreach (PropertyMetadata propertyMetadata in TypeMetadata.Properties)
-            {
-                ConfigurableAttribute cfgAttribute =
-                    propertyMetadata.Attributes.OfType<ConfigurableAttribute>().SingleOrDefault();
-
-                if (cfgAttribute != null)
-                {
-                    var cfgTargetProperty = new ConfigurationTargetProperty();
-
-                    cfgTargetProperty.IsRequired = cfgAttribute.IsRequired;
-                    cfgTargetProperty.PropertyMetadata = propertyMetadata;
-
-                    cfgTargetProperty.SettingName = (String.IsNullOrEmpty(cfgAttribute.SettingName)
-                        ? GetConventionalSettingName(cfgTarget, propertyMetadata)
-                        : cfgAttribute.SettingName.Merge(new {Name = targetName}));
-
-                    cfgTarget.Properties.Add(cfgTargetProperty);
-                }
-            }
-
-            return cfgTarget;
-        }
-
-        protected virtual ConfigurationTarget<T> ApplyConfigurationSettings(ConfigurationTarget<T> cfgTarget,
+        protected virtual ConfigurableObject<T> ApplyConfigurationSettings(ConfigurableObject<T> cfgTarget,
                                                                             IEnumerable<ConfigurationSetting>
                                                                                 cfgSettings)
         {
             List<ConfigurationSetting> cfgSettingsList = cfgSettings.ToList();
 
-            foreach (ConfigurationTargetProperty cfgTargetProperty in cfgTarget.Properties)
+            foreach (ConfigurableProperty cfgTargetProperty in cfgTarget.Properties)
             {
                 ConfigurationSetting cfgSetting =
                     cfgSettingsList.SingleOrDefault(s => (s.Name == cfgTargetProperty.SettingName));
@@ -85,21 +54,8 @@ namespace Mantle.Configuration.Configurers
             return cfgTarget;
         }
 
-        protected virtual string GetConventionalSettingName(ConfigurationTarget<T> cfgTarget,
-                                                            PropertyMetadata propertyMetadata)
-        {
-            if (String.IsNullOrEmpty(cfgTarget.Name))
-            {
-                return String.Format("{0}.{1}", cfgTarget.TypeMetadata.Type.Name,
-                                     propertyMetadata.PropertyInfo.Name);
-            }
-
-            return String.Format("{0}.{1}.{2}", cfgTarget.Name, cfgTarget.TypeMetadata.Type.Name,
-                                 propertyMetadata.PropertyInfo.Name);
-        }
-
-        private void ApplyConfigurationSetting(ConfigurationTarget<T> cfgTarget,
-                                               ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyConfigurationSetting(ConfigurableObject<T> cfgTarget,
+                                               ConfigurableProperty cfgTargetProperty,
                                                ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;
@@ -142,8 +98,8 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
-        private void ApplyBooleanConfigurationSetting(ConfigurationTarget<T> cfgTarget,
-                                                      ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyBooleanConfigurationSetting(ConfigurableObject<T> cfgTarget,
+                                                      ConfigurableProperty cfgTargetProperty,
                                                       ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;
@@ -169,8 +125,8 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
-        private void ApplyDateTimeConfigurationSetting(ConfigurationTarget<T> cfgTarget,
-                                                       ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyDateTimeConfigurationSetting(ConfigurableObject<T> cfgTarget,
+                                                       ConfigurableProperty cfgTargetProperty,
                                                        ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;
@@ -196,8 +152,8 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
-        private void ApplyDoubleConfigurationSetting(ConfigurationTarget<T> cfgTarget,
-                                                     ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyDoubleConfigurationSetting(ConfigurableObject<T> cfgTarget,
+                                                     ConfigurableProperty cfgTargetProperty,
                                                      ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;
@@ -223,8 +179,8 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
-        private void ApplyGuidConfigurationSetting(ConfigurationTarget<T> cfgTarget,
-                                                   ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyGuidConfigurationSetting(ConfigurableObject<T> cfgTarget,
+                                                   ConfigurableProperty cfgTargetProperty,
                                                    ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;
@@ -250,8 +206,8 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
-        private void ApplyIntConfigurationSetting(ConfigurationTarget<T> cfgTarget,
-                                                  ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyIntConfigurationSetting(ConfigurableObject<T> cfgTarget,
+                                                  ConfigurableProperty cfgTargetProperty,
                                                   ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;
@@ -277,8 +233,8 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
-        private void ApplyLongConfigurationSettings(ConfigurationTarget<T> cfgTarget,
-                                                    ConfigurationTargetProperty cfgTargetProperty,
+        private void ApplyLongConfigurationSettings(ConfigurableObject<T> cfgTarget,
+                                                    ConfigurableProperty cfgTargetProperty,
                                                     ConfigurationSetting cfgSetting)
         {
             Type propertyType = cfgTargetProperty.PropertyMetadata.PropertyInfo.PropertyType;

@@ -7,11 +7,11 @@ namespace Mantle.Configuration.Configurers
     public class AppSettingsConfigurer<T> : BaseConfigurer<T>
     {
         public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(
-            ConfigurationTarget<T> targetMetadata)
+            ConfigurableObject<T> targetMetadata)
         {
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
 
-            foreach (ConfigurationTargetProperty targetPropertyMetadata in targetMetadata.Properties)
+            foreach (ConfigurableProperty targetPropertyMetadata in targetMetadata.Properties)
             {
                 if (appSettings[targetPropertyMetadata.SettingName] != null)
                 {

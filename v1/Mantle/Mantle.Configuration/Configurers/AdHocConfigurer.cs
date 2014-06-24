@@ -15,10 +15,12 @@ namespace Mantle.Configuration.Configurers
         }
 
         public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(
-            ConfigurationTarget<T> targetMetadata)
+            ConfigurableObject<T> targetMetadata)
         {
-            foreach (ConfigurationTargetProperty targetPropertyMetadata in targetMetadata.Properties)
+            foreach (ConfigurableProperty targetPropertyMetadata in targetMetadata.Properties)
             {
+
+
                 if (configurationDictionary.ContainsKey(targetPropertyMetadata.SettingName))
                 {
                     yield return
