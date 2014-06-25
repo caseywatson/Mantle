@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AdHocConfigurerTests.cs" />
     <Compile Include="BaseConfigurerTests.cs" />
+    <Compile Include="CascadingConfigurerTests.cs" />
     <Compile Include="Configurers\TestConfigurer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Targets\RequiredTestTarget.cs" />
