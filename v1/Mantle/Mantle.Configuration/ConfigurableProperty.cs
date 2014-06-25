@@ -4,6 +4,6 @@
     {
         public bool IsRequired { get; set; }
         public PropertyMetadata PropertyMetadata { get; set; }
-        public string SettingName { get; set; }
+        public string[] PrioritizedSettingNames { get; set; }
     }
 }

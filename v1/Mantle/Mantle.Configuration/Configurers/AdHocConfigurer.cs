@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Mantle.Extensions;
 
 namespace Mantle.Configuration.Configurers
@@ -14,23 +14,9 @@ namespace Mantle.Configuration.Configurers
             configurationDictionary = configurationObject.ToDictionary();
         }
 
-        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(
-            ConfigurableObject<T> targetMetadata)
+        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings()
         {
-            foreach (ConfigurableProperty targetPropertyMetadata in targetMetadata.Properties)
-            {
-
-
-                if (configurationDictionary.ContainsKey(targetPropertyMetadata.SettingName))
-                {
-                    yield return
-                        new ConfigurationSetting
-                        {
-                            Name = targetPropertyMetadata.SettingName,
-                            Value = configurationDictionary[targetPropertyMetadata.SettingName].ToString()
-                        };
-                }
-            }
+            return configurationDictionary.Select(cs => new ConfigurationSetting(cs.Key, cs.Value.ToString()));
         }
     }
 }

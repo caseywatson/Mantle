@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using Mantle.Configuration.Attributes;
 using Mantle.Configuration.Configurers;
-using Mantle.Configuration.Extensions;
 using NUnit.Framework;
 
 namespace Mantle.Configuration.Tests
@@ -21,22 +15,22 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ArgumentNullException_if_instantiated_with_null_configuration_object()
+        public void Should_configure_property_if_setting_is_supplied()
         {
-            Assert.Throws<ArgumentNullException>(() => new AdHocConfigurer<string>(null));
+            var obj = new TestObject();
+            var cfgSettingsObj = new {Name = "Value"};
+            var configurer = new AdHocConfigurer<TestObject>(cfgSettingsObj);
+
+            configurer.Configure(obj);
+
+            Assert.IsNotNull(obj.Name);
+            Assert.AreEqual(obj.Name, cfgSettingsObj.Name);
         }
 
         [Test]
-        public void Should_serialize_configuration_object_properties_to_configuration_settings()
+        public void Should_throw_ArgumentNullException_if_instantiated_with_null_configuration_object()
         {
-            var testObj = new {Name = "Value"};
-            var testTarget = new TestObject();
-            var testConfigurer = new AdHocConfigurer<TestObject>(testObj);
-
-            var configurationSettings =
-                testConfigurer.GetConfigurationSettings(testTarget.ToConfigurableObject()).ToList();
-
-            Console.WriteLine(configurationSettings.ToList());
+            Assert.Throws<ArgumentNullException>(() => new AdHocConfigurer<TestObject>(null));
         }
     }
 }

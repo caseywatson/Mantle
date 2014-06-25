@@ -5,22 +5,14 @@ namespace Mantle.Configuration.Configurers
 {
     public class ConnectionStringsConfigurer<T> : BaseConfigurer<T>
     {
-        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(
-            ConfigurableObject<T> targetMetadata)
+        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings()
         {
             ConnectionStringSettingsCollection connectionStrings = ConfigurationManager.ConnectionStrings;
 
-            foreach (ConfigurableProperty targetPropertyMetadata in targetMetadata.Properties)
+            for (int i = 0; i < connectionStrings.Count; i++)
             {
-                if (connectionStrings[targetPropertyMetadata.SettingName] != null)
-                {
-                    yield return
-                        new ConfigurationSetting
-                        {
-                            Name = targetPropertyMetadata.SettingName,
-                            Value = connectionStrings[targetPropertyMetadata.SettingName].ConnectionString
-                        };
-                }
+                var connectionString = connectionStrings[i];
+                yield return new ConfigurationSetting(connectionString.Name, connectionString.ConnectionString);
             }
         }
     }

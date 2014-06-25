@@ -15,13 +15,13 @@ namespace Mantle.Configuration.Configurers
             this.configurers = configurers;
         }
 
-        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(ConfigurableObject<T> target)
+        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings()
         {
             var settingDictionary = new Dictionary<string, ConfigurationSetting>();
 
             foreach (var configurer in configurers)
             {
-                foreach (ConfigurationSetting setting in configurer.GetConfigurationSettings(target))
+                foreach (ConfigurationSetting setting in configurer.GetConfigurationSettings())
                 {
                     settingDictionary[setting.Name] = setting;
                 }

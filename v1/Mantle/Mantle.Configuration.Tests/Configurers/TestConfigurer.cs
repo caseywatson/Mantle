@@ -12,7 +12,7 @@ namespace Mantle.Configuration.Tests.Configurers
             this.configurationSettings = configurationSettings;
         }
 
-        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings(ConfigurableObject<T> target)
+        public override IEnumerable<ConfigurationSetting> GetConfigurationSettings()
         {
             return configurationSettings;
         }
