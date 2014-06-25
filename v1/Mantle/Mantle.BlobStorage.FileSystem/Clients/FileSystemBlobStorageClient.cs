@@ -38,7 +38,7 @@ namespace Mantle.BlobStorage.FileSystem.Clients
             return (File.Exists(System.IO.Path.Combine(Path, blobName)));
         }
 
-        public void InsertOrUpdateBlob(Stream blob, string blobName)
+        public void UploadBlob(Stream blob, string blobName)
         {
             blob.Require("blob");
             blobName.Require("blobName");
@@ -61,7 +61,7 @@ namespace Mantle.BlobStorage.FileSystem.Clients
             return Directory.GetFiles(Path).Select(System.IO.Path.GetFileName);
         }
 
-        public Stream LoadBlob(string blobName)
+        public Stream DownloadBlob(string blobName)
         {
             blobName.Require("blobName");
 

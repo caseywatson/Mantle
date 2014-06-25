@@ -42,6 +42,12 @@
     <Compile Include="Interfaces\IDictionaryStorageClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{14843F74-B007-4357-9AEA-4703D772B6AE}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

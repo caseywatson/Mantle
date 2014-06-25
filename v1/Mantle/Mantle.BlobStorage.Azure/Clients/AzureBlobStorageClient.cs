@@ -69,7 +69,7 @@ namespace Mantle.BlobStorage.Azure.Clients
             return container.GetBlockBlobReference(blobName).Exists();
         }
 
-        public void InsertOrUpdateBlob(Stream source, string blobName)
+        public void UploadBlob(Stream source, string blobName)
         {
             source.Require("source");
             blobName.Require("blobName");
@@ -100,7 +100,7 @@ namespace Mantle.BlobStorage.Azure.Clients
                 yield return blob.Name;
         }
 
-        public Stream LoadBlob(string blobName)
+        public Stream DownloadBlob(string blobName)
         {
             blobName.Require("blobName");
 
