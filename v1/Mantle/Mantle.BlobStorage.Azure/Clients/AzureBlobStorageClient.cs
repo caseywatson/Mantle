@@ -52,7 +52,7 @@ namespace Mantle.BlobStorage.Azure.Clients
 
             if (blob.Exists() == false)
                 throw new InvalidOperationException(String.Format("Blob [{0}/{1}] does not exist.", ContainerName,
-                    blobName));
+                                                                  blobName));
 
             blob.Delete();
         }
@@ -112,7 +112,8 @@ namespace Mantle.BlobStorage.Azure.Clients
             CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
 
             if (blob.Exists() == false)
-                return null;
+                throw new InvalidOperationException(String.Format("Blob [{0}/{1}] does not exist.", ContainerName,
+                                                                  blobName));
 
             var stream = new MemoryStream();
 
