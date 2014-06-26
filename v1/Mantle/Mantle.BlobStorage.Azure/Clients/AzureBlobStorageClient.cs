@@ -77,8 +77,7 @@ namespace Mantle.BlobStorage.Azure.Clients
             if (source.Length == 0)
                 throw new ArgumentException("Source is empty.", "source");
 
-            if (source.CanSeek)
-                source.Position = 0;
+            source.Rewind();
 
             CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
 
@@ -118,7 +117,7 @@ namespace Mantle.BlobStorage.Azure.Clients
             var stream = new MemoryStream();
 
             blob.DownloadToStream(stream);
-            stream.Position = 0;
+            stream.Rewind();
 
             return stream;
         }

@@ -46,8 +46,7 @@ namespace Mantle.BlobStorage.FileSystem.Clients
             if (Directory.Exists(Path) == false)
                 throw new InvalidOperationException(String.Format("Directory [{0}] does not exist.", Path));
 
-            if (blob.CanSeek)
-                blob.Position = 0;
+            blob.Rewind();
 
             using (FileStream fileStream = File.Create(System.IO.Path.Combine(Path, blobName)))
                 blob.CopyTo(fileStream);
