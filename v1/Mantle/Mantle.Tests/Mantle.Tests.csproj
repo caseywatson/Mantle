@@ -52,6 +52,7 @@
     <Compile Include="DataContractTypeTokenProviderTests.cs" />
     <Compile Include="DefaultDirectoryTests.cs" />
     <Compile Include="FullNameTypeTokenProviderTests.cs" />
+    <Compile Include="GenericExtensionsTests.cs" />
     <Compile Include="NameTypeTokenProviderTests.cs" />
     <Compile Include="ObjectExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
