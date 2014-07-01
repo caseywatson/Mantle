@@ -21,6 +21,8 @@ namespace Mantle.Hosting.Workers
             messageHandlers = new Dictionary<Type, List<Func<Message, bool>>>();
             messageTypeTokens = new Dictionary<string, Type>();
             typeTokenProviders = dependencyResolver.GetAll<ITypeTokenProvider>().ToList();
+
+            ApplyDefaultConfiguration();
         }
 
         [Configurable]
@@ -37,6 +39,15 @@ namespace Mantle.Hosting.Workers
 
         [Configurable(IsRequired = true)]
         public string SubscriberChannelName { get; set; }
+
+        private void ApplyDefaultConfiguration()
+        {
+            AutoAbandon = true;
+            AutoComplete = true;
+            AutoDeadLetter = true;
+
+            DeadLetterDeliveryLimit = 5;
+        }
 
         public override void Start()
         {
@@ -79,7 +90,7 @@ namespace Mantle.Hosting.Workers
 
         private bool HandleMessage<T>(Message message, Subscription<T> subscription)
         {
-            return true;
+            return false;
         }
     }
 }
