@@ -11,17 +11,15 @@ namespace Mantle.Hosting.Workers
     public class SubscriberWorker : BaseWorker
     {
         private readonly IDependencyResolver dependencyResolver;
-        private readonly Dictionary<Type, List<Action<Message>>> messageHandlers;
+        private readonly Dictionary<Type, List<Func<Message, bool>>> messageHandlers;
         private readonly Dictionary<string, Type> messageTypeTokens;
         private readonly List<ITypeTokenProvider> typeTokenProviders;
 
         public SubscriberWorker(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
-
-            messageHandlers = new Dictionary<Type, List<Action<Message>>>();
+            messageHandlers = new Dictionary<Type, List<Func<Message, bool>>>();
             messageTypeTokens = new Dictionary<string, Type>();
-
             typeTokenProviders = dependencyResolver.GetAll<ITypeTokenProvider>().ToList();
         }
 
@@ -76,11 +74,12 @@ namespace Mantle.Hosting.Workers
             }
 
             if (messageHandlers.ContainsKey(tType) == false)
-                messageHandlers.Add(tType, new List<Action<Message>>());
+                messageHandlers.Add(tType, new List<Func<Message, bool>>());
         }
 
-        private void HandleMessage<T>(Message message, Subscription<T> subscription)
+        private bool HandleMessage<T>(Message message, Subscription<T> subscription)
         {
+            return true;
         }
     }
 }
