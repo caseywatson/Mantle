@@ -2,6 +2,10 @@
 {
     public interface ISubscriber
     {
-        Message Receive();
+    }
+
+    public interface ISubscriber<T> : ISubscriber
+    {
+        void HandleMessage(IMessageContext<T> messageContext);
     }
 }
