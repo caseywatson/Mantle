@@ -2,13 +2,10 @@
 {
     public interface IMessageContext<T>
     {
-        T Body { get; set; }
-
-        Message OriginalMessage { get; set; }
+        T Model { get; set; }
 
         bool TryToAbandon();
         bool TryToComplete();
         bool TryToDeadLetter();
-        bool TryToRenewLock();
     }
 }

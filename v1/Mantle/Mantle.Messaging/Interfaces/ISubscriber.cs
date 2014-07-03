@@ -1,10 +1,6 @@
 ﻿namespace Mantle.Messaging.Interfaces
 {
-    public interface ISubscriber
-    {
-    }
-
-    public interface ISubscriber<T> : ISubscriber
+    public interface ISubscriber<T>
     {
         void HandleMessage(IMessageContext<T> messageContext);
     }

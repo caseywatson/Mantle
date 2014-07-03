@@ -55,6 +55,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
+    <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\ITypeTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyMetadata.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Providers\DataContractTypeTokenProvider.cs" />
     <Compile Include="Providers\FullNameTypeTokenProvider.cs" />
     <Compile Include="Providers\NameTypeTokenProvider.cs" />
+    <Compile Include="Serializers\JsonSerializer.cs" />
     <Compile Include="TypeMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
