@@ -1,24 +1,13 @@
 ﻿using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
-using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure.Channels
 {
-    public class AzureServiceBusTopicPublisherChannel<T> : IPublisherChannel<T>
+    public class AzureServiceBusTopicPublisherChannel<T> : BaseAzureServiceBusChannel, IPublisherChannel<T>
     {
-        private NamespaceManager namespaceManager;
         private TopicClient topicClient;
-
-        public NamespaceManager NamespaceManager
-        {
-            get
-            {
-                return (namespaceManager = (namespaceManager ??
-                                            NamespaceManager.CreateFromConnectionString(ServiceBusConnectionString)));
-            }
-        }
 
         public TopicClient TopicClient
         {
@@ -43,7 +32,7 @@ namespace Mantle.Messaging.Azure.Channels
         public bool AutoSetup { get; set; }
 
         [Configurable(IsRequired = true)]
-        public string ServiceBusConnectionString { get; set; }
+        public override string ServiceBusConnectionString { get; set; }
 
         [Configurable(IsRequired = true)]
         public string TopicName { get; set; }

@@ -73,6 +73,9 @@
     <Compile Include="Channels\AzureServiceBusTopicPublisherClient.cs" />
     <Compile Include="Channels\AzureStorageQueuePublisherChannel.cs" />
     <Compile Include="Channels\AzureStorageQueueSubscriberChannel.cs" />
+    <Compile Include="Channels\BaseAzureServiceBusChannel.cs" />
+    <Compile Include="Channels\BaseAzureServiceBusQueueChannel.cs" />
+    <Compile Include="Channels\BaseAzureStorageQueueChannel.cs" />
     <Compile Include="Context\AzureBrokeredMessageContext.cs" />
     <Compile Include="Context\AzureCloudQueueMessageContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,7 +16,6 @@ namespace Mantle.Messaging.Azure.Context
         }
 
         public BrokeredMessage BrokeredMessage { get; private set; }
-
         public T Message { get; private set; }
 
         public int? DeliveryCount
