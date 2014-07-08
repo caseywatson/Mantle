@@ -6,6 +6,7 @@ namespace Mantle.Messaging.Messages
     {
         public Message()
         {
+            BodyTypeTokens = new List<string>();
             Properties = new Dictionary<string, string>();
         }
 
@@ -14,7 +15,7 @@ namespace Mantle.Messaging.Messages
         public string Label { get; set; }
 
         public string Body { get; set; }
-        public string BodyTypeToken { get; set; }
+        public List<string> BodyTypeTokens { get; set; }
 
         public int TimeToLive { get; set; }
 
