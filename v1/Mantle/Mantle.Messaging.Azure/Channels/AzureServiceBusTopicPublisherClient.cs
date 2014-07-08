@@ -28,8 +28,8 @@ namespace Mantle.Messaging.Azure.Channels
                 {
                     if (AutoSetup)
                     {
-                        if (namespaceManager.TopicExists(TopicName) == false)
-                            namespaceManager.CreateTopic(TopicName);
+                        if (NamespaceManager.TopicExists(TopicName) == false)
+                            NamespaceManager.CreateTopic(TopicName);
                     }
 
                     topicClient = TopicClient.CreateFromConnectionString(ServiceBusConnectionString, TopicName);

@@ -28,8 +28,8 @@ namespace Mantle.Messaging.Azure.Channels
                 {
                     if (AutoSetup)
                     {
-                        if (namespaceManager.QueueExists(QueueName) == false)
-                            namespaceManager.CreateQueue(QueueName);
+                        if (NamespaceManager.QueueExists(QueueName) == false)
+                            NamespaceManager.CreateQueue(QueueName);
                     }
 
                     queueClient = QueueClient.CreateFromConnectionString(ServiceBusConnectionString, QueueName);
