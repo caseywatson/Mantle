@@ -12,7 +12,6 @@ namespace Mantle.Cache.Azure.Clients
         private readonly ISerializer<T> serializer;
 
         private ConnectionMultiplexer connectionMultiplexer;
-        private IDatabase database;
 
         public AzureRedisCacheClient(ISerializer<T> serializer)
         {
@@ -30,11 +29,6 @@ namespace Mantle.Cache.Azure.Clients
             }
         }
 
-        public IDatabase Database
-        {
-            get { return (database = (database ?? ConnectionMultiplexer.GetDatabase())); }
-        }
-
         [Configurable(IsRequired = true)]
         public string ConfigurationString { get; set; }
 
@@ -42,14 +36,14 @@ namespace Mantle.Cache.Azure.Clients
         {
             objectId.Require("objectId");
 
-            database.StringSet(objectId, serializer.Serialize(@object), cacheDuration);
+            ConnectionMultiplexer.GetDatabase().StringSet(objectId, serializer.Serialize(@object), cacheDuration);
         }
 
         public T Get(string objectId)
         {
             objectId.Require("objectId");
 
-            var cachedObject = database.StringGet(objectId);
+            var cachedObject = ConnectionMultiplexer.GetDatabase().StringGet(objectId);
 
             if (String.IsNullOrEmpty(cachedObject))
                 return default(T);

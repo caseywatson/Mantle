@@ -41,11 +41,14 @@
   <ItemGroup>
     <Compile Include="Interfaces\IDeadLetterStrategy.cs" />
     <Compile Include="Interfaces\IMessageContext.cs" />
+    <Compile Include="Interfaces\IPublisherChannel.cs" />
     <Compile Include="Interfaces\ISubscriber.cs" />
+    <Compile Include="Interfaces\ISubscriberChannel.cs" />
     <Compile Include="Interfaces\ISubscriptionConfiguration.cs" />
     <Compile Include="Interfaces\ISubscriptionConfigurer.cs" />
     <Compile Include="Interfaces\ISubscriptionConstraint.cs" />
     <Compile Include="Interfaces\ISubscriptionHost.cs" />
+    <Compile Include="Messages\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
