@@ -24,9 +24,7 @@ namespace Mantle.Messaging.Azure.Channels
 
         public IMessageContext<T> Receive(TimeSpan? timeout = null)
         {
-            var message = ((timeout.HasValue)
-                ? (CloudQueue.GetMessage(timeout))
-                : (CloudQueue.GetMessage()));
+            var message = ((timeout.HasValue) ? (CloudQueue.GetMessage(timeout)) : (CloudQueue.GetMessage()));
 
             if (message == null)
                 return null;
