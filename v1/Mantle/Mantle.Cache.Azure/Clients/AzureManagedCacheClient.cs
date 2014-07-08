@@ -14,7 +14,7 @@ namespace Mantle.Cache.Azure.Clients
 
         public DataCache DataCache
         {
-            get { return (dataCache = (dataCache ?? CreateDataCacheFactory())); }
+            get { return (dataCache = (dataCache ?? CreateDataCache())); }
         }
 
         [Configurable]
@@ -48,7 +48,7 @@ namespace Mantle.Cache.Azure.Clients
             return ((T) (cachedObject));
         }
 
-        private DataCache CreateDataCacheFactory()
+        private DataCache CreateDataCache()
         {
             var dcfConfiguration = new DataCacheFactoryConfiguration();
 
