@@ -6,10 +6,10 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure.Channels
 {
-    public class AzureServiceBusQueuePublisherChannel<T> : IPublisherChannel<T>
+    public class AzureServiceBusTopicPublisherChannel<T> : IPublisherChannel<T>
     {
         private NamespaceManager namespaceManager;
-        private QueueClient queueClient;
+        private TopicClient topicClient;
 
         public NamespaceManager NamespaceManager
         {
@@ -20,22 +20,22 @@ namespace Mantle.Messaging.Azure.Channels
             }
         }
 
-        public QueueClient QueueClient
+        public TopicClient TopicClient
         {
             get
             {
-                if (queueClient == null)
+                if (topicClient == null)
                 {
                     if (AutoSetup)
                     {
-                        if (namespaceManager.QueueExists(QueueName) == false)
-                            namespaceManager.CreateQueue(QueueName);
+                        if (namespaceManager.TopicExists(TopicName) == false)
+                            namespaceManager.CreateTopic(TopicName);
                     }
 
-                    queueClient = QueueClient.CreateFromConnectionString(ServiceBusConnectionString, QueueName);
+                    topicClient = TopicClient.CreateFromConnectionString(ServiceBusConnectionString, TopicName);
                 }
 
-                return queueClient;
+                return topicClient;
             }
         }
 
@@ -46,12 +46,12 @@ namespace Mantle.Messaging.Azure.Channels
         public string ServiceBusConnectionString { get; set; }
 
         [Configurable(IsRequired = true)]
-        public string QueueName { get; set; }
+        public string TopicName { get; set; }
 
         public void Publish(T message)
         {
             message.Require("message");
-            QueueClient.Send(new BrokeredMessage(message));
+            TopicClient.Send(new BrokeredMessage(message));
         }
     }
 }

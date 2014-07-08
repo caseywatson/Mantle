@@ -70,7 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channels\AzureServiceBusQueuePublisherChannel.cs" />
-    <Compile Include="Channels\AzureStorageBusQueuePublisherChannel.cs" />
+    <Compile Include="Channels\AzureServiceBusTopicPublisherClient.cs" />
+    <Compile Include="Channels\AzureStorageQueuePublisherChannel.cs" />
+    <Compile Include="Channels\AzureStorageQueueSubscriberChannel.cs" />
+    <Compile Include="Context\AzureBrokeredMessageContext.cs" />
+    <Compile Include="Context\AzureCloudQueueMessageContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +94,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Performance\Microsoft.ServiceBus.MessagingPerformanceCounters.man" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
