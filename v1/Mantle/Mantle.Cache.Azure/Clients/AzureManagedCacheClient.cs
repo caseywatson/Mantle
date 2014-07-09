@@ -25,9 +25,9 @@ namespace Mantle.Cache.Azure.Clients
             objectId.Require("objectId");
 
             if (cacheDuration == null)
-                DataCache.Add(objectId, @object);
+                DataCache.Put(objectId, @object);
             else
-                DataCache.Add(objectId, @object, cacheDuration.Value);
+                DataCache.Put(objectId, @object, cacheDuration.Value);
         }
 
         public T Get(string objectId)
