@@ -27,7 +27,6 @@ namespace Mantle.DictionaryStorage.Azure.Entities
         public T Data { get; set; }
         public string ETag { get; set; }
         public string PartitionKey { get; set; }
-
         public string RowKey { get; set; }
         public DateTimeOffset Timestamp { get; set; }
 
