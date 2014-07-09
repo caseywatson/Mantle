@@ -5,6 +5,7 @@ using Microsoft.WindowsAzure.Storage.Queue;
 namespace Mantle.Messaging.Azure.Context
 {
     public class AzureCloudQueueMessageContext<T> : IMessageContext<T>
+        where T : class
     {
         public AzureCloudQueueMessageContext(CloudQueue cloudQueue, CloudQueueMessage cloudQueueMessage, T message)
         {
@@ -19,6 +20,11 @@ namespace Mantle.Messaging.Azure.Context
 
         public CloudQueue CloudQueue { get; private set; }
         public CloudQueueMessage CloudQueueMessage { get; private set; }
+
+        public int? DeliveryCount
+        {
+            get { return null; }
+        }
 
         public T Message { get; private set; }
 
@@ -36,12 +42,6 @@ namespace Mantle.Messaging.Azure.Context
         public bool TryToDeadLetter()
         {
             return false;
-        }
-
-
-        public int? DeliveryCount
-        {
-            get { return null; }
         }
     }
 }

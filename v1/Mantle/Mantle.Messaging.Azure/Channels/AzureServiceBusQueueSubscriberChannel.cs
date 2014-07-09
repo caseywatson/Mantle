@@ -6,6 +6,7 @@ using Mantle.Messaging.Interfaces;
 namespace Mantle.Messaging.Azure.Channels
 {
     public class AzureServiceBusQueueSubscriberChannel<T> : BaseAzureServiceBusQueueChannel, ISubscriberChannel<T>
+        where T : class
     {
         [Configurable]
         public override bool AutoSetup { get; set; }

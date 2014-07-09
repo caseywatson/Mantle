@@ -28,6 +28,9 @@ namespace Mantle.DictionaryStorage.Azure.Entities
         public string ETag { get; set; }
         public string PartitionKey { get; set; }
 
+        public string RowKey { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
+
         public void ReadEntity(IDictionary<string, EntityProperty> properties, OperationContext operationContext)
         {
             var t = new T();
@@ -81,16 +84,13 @@ namespace Mantle.DictionaryStorage.Azure.Entities
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.StringValue);
                     else if (inputProperty.StringValue != null)
                         outputProperty.PropertyInfo.SetValue(t,
-                            JsonConvert.DeserializeObject(inputProperty.StringValue,
-                                propertyType));
+                                                             JsonConvert.DeserializeObject(inputProperty.StringValue,
+                                                                                           propertyType));
                 }
             }
 
             Data = t;
         }
-
-        public string RowKey { get; set; }
-        public DateTimeOffset Timestamp { get; set; }
 
         public IDictionary<string, EntityProperty> WriteEntity(OperationContext operationContext)
         {

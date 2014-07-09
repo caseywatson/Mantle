@@ -54,7 +54,13 @@ namespace Mantle.BlobStorage.Tests
             mockBlobStorageClient.Object.UploadBytes(testByteArray, BlobName);
 
             mockBlobStorageClient.Verify(
-                c => c.UploadBlob(It.Is<MemoryStream>(s => (s.ToArray().SequenceEqual(testByteArray))), BlobName));
+                                         c =>
+                                             c.UploadBlob(
+                                                          It.Is<MemoryStream>(
+                                                                              s =>
+                                                                                  (s.ToArray()
+                                                                                  .SequenceEqual(testByteArray))),
+                                                          BlobName));
         }
 
         [Test]
@@ -68,7 +74,13 @@ namespace Mantle.BlobStorage.Tests
             mockBlobStorageClient.Object.UploadText(testText, BlobName);
 
             mockBlobStorageClient.Verify(
-                c => c.UploadBlob(It.Is<MemoryStream>(s => (s.ToArray().SequenceEqual(testTextBytes))), BlobName));
+                                         c =>
+                                             c.UploadBlob(
+                                                          It.Is<MemoryStream>(
+                                                                              s =>
+                                                                                  (s.ToArray()
+                                                                                  .SequenceEqual(testTextBytes))),
+                                                          BlobName));
         }
 
         [Test]
@@ -148,7 +160,7 @@ namespace Mantle.BlobStorage.Tests
             var mockBlobStorageClient = new Mock<IBlobStorageClient>();
             var ex =
                 Assert.Throws<ArgumentException>(
-                    () => mockBlobStorageClient.Object.UploadBytes(new byte[] {0}, null));
+                                                 () => mockBlobStorageClient.Object.UploadBytes(new byte[] {0}, null));
 
             Assert.IsNotNull(ex);
             Assert.AreEqual(ex.ParamName, "blobName");

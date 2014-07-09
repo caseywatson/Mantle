@@ -45,15 +45,6 @@ namespace Mantle.BlobStorage.Extensions
             }
         }
 
-        public static void UploadFile(this IBlobStorageClient blobStorageClient, string filePath, string blobName)
-        {
-            blobStorageClient.Require("blobStorageClient");
-            filePath.Require("filePath");
-            blobName.Require("blobName");
-
-            blobStorageClient.UploadBlob(new MemoryStream(File.ReadAllBytes(filePath)), blobName);
-        }
-
         public static void UploadBytes(this IBlobStorageClient blobStorageClient, byte[] bytes, string blobName)
         {
             blobStorageClient.Require("blobStorageClient");
@@ -64,6 +55,15 @@ namespace Mantle.BlobStorage.Extensions
                 throw new ArgumentException("Byte array is empty.", "bytes");
 
             blobStorageClient.UploadBlob(new MemoryStream(bytes), blobName);
+        }
+
+        public static void UploadFile(this IBlobStorageClient blobStorageClient, string filePath, string blobName)
+        {
+            blobStorageClient.Require("blobStorageClient");
+            filePath.Require("filePath");
+            blobName.Require("blobName");
+
+            blobStorageClient.UploadBlob(new MemoryStream(File.ReadAllBytes(filePath)), blobName);
         }
 
         public static void UploadText(this IBlobStorageClient blobStorageClient, string text, string blobName)

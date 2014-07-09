@@ -7,50 +7,40 @@ using Mantle.Extensions;
 namespace Mantle.Cache.InMemory.Clients
 {
     public class InMemoryCacheClient<T> : ICacheClient<T>
+        where T : class
     {
-        private readonly TimeSpan defaultSlidingExpiration;
-
         private MemoryCache cache;
 
         public InMemoryCacheClient()
         {
-            defaultSlidingExpiration = TimeSpan.FromMinutes(20);
+            SetupDefaultConfiguration();
         }
+
+        public MemoryCache Cache
+        {
+            get { return GetCache(); }
+        }
+
+        [Configurable]
+        public TimeSpan CacheExpiration { get; set; }
 
         [Configurable]
         public string CacheName { get; set; }
 
         [Configurable]
-        public TimeSpan? AbsoluteExpiration { get; set; }
+        public bool UseSlidingExpiration { get; set; }
 
-        [Configurable]
-        public TimeSpan? SlidingExpiration { get; set; }
-
-        public MemoryCache Cache
-        {
-            get
-            {
-                return (cache = (cache ??
-                                 ((String.IsNullOrEmpty(CacheName))
-                                     ? MemoryCache.Default
-                                     : new MemoryCache(CacheName))));
-            }
-        }
-
-        public void Add(T @object, string objectId, TimeSpan? cacheDuration = null)
+        public void Add(T @object, string objectId, TimeSpan? cacheExpiration = null)
         {
             objectId.Require("objectId");
 
             var cachePolicy = new CacheItemPolicy();
+            var expiration = (cacheExpiration ?? CacheExpiration);
 
-            if (cacheDuration.HasValue)
-                cachePolicy.SlidingExpiration = cacheDuration.Value;
-            else if (AbsoluteExpiration.HasValue)
-                cachePolicy.AbsoluteExpiration = new DateTimeOffset(DateTime.Now, AbsoluteExpiration.Value);
-            else if (SlidingExpiration.HasValue)
-                cachePolicy.SlidingExpiration = SlidingExpiration.Value;
+            if (UseSlidingExpiration)
+                cachePolicy.SlidingExpiration = expiration;
             else
-                cachePolicy.SlidingExpiration = defaultSlidingExpiration;
+                cachePolicy.AbsoluteExpiration = new DateTimeOffset(DateTime.UtcNow.Add(expiration));
 
             cache.Set(objectId, @object, cachePolicy);
         }
@@ -63,6 +53,25 @@ namespace Mantle.Cache.InMemory.Clients
                 return ((T) (cache.Get(objectId)));
 
             return default(T);
+        }
+
+        private MemoryCache GetCache()
+        {
+            if (cache == null)
+            {
+                if (String.IsNullOrEmpty(CacheName))
+                    cache = MemoryCache.Default;
+                else
+                    cache = new MemoryCache(CacheName);
+            }
+
+            return cache;
+        }
+
+        private void SetupDefaultConfiguration()
+        {
+            UseSlidingExpiration = true;
+            CacheExpiration = TimeSpan.FromMinutes(10);
         }
     }
 }

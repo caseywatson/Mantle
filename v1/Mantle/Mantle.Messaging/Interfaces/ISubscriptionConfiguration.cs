@@ -4,6 +4,7 @@ using Mantle.Interfaces;
 namespace Mantle.Messaging.Interfaces
 {
     public interface ISubscriptionConfiguration<T>
+        where T : class
     {
         bool AutoAbandon { get; set; }
         bool AutoComplete { get; set; }

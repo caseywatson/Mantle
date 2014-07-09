@@ -8,12 +8,13 @@ namespace Mantle.DictionaryStorage.Interfaces
     {
         void DeleteEntity(string entityId, string partitionId);
         bool EntityExists(string entityId, string partitionId);
-        void InsertOrUpdateEntity(T entity, string entityId, string partitionId);
 
         void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
                                     Func<T, string> partitionIdSelector);
 
-        T LoadEntity(string entityId, string partitionId);
+        void InsertOrUpdateEntity(T entity, string entityId, string partitionId);
+
         IEnumerable<T> LoadAllEntities(string parititionId);
+        T LoadEntity(string entityId, string partitionId);
     }
 }

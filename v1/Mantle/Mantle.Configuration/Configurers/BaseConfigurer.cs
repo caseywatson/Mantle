@@ -17,6 +17,8 @@ namespace Mantle.Configuration.Configurers
             TypeMetadata = new TypeMetadata(typeof (T));
         }
 
+        public abstract IEnumerable<ConfigurationSetting> GetConfigurationSettings();
+
         public virtual T Configure(T @object, string objectName = null)
         {
             ConfigurableObject<T> cfgObject = ToConfigurableObject(@object, objectName);
@@ -26,8 +28,6 @@ namespace Mantle.Configuration.Configurers
 
             return cfgObject.Target;
         }
-
-        public abstract IEnumerable<ConfigurationSetting> GetConfigurationSettings();
 
         protected virtual ConfigurableObject<T> ApplyConfigurationSettings(ConfigurableObject<T> cfgObject,
                                                                            IEnumerable<ConfigurationSetting>
@@ -59,60 +59,30 @@ namespace Mantle.Configuration.Configurers
             return cfgObject;
         }
 
-        private ConfigurableObject<T> ToConfigurableObject(T @object, string objectName = null)
+        private void ApplyBooleanConfigurationSetting(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
+                                                      ConfigurationSetting cfgSetting)
         {
-            var cfgObject = new ConfigurableObject<T>();
+            Type propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
+            bool? value = cfgSetting.Value.TryParseBoolean();
 
-            cfgObject.Name = objectName;
-            cfgObject.Target = @object;
-            cfgObject.TypeMetadata = new TypeMetadata(typeof (T));
-
-            foreach (PropertyMetadata propertyMetadata in cfgObject.TypeMetadata.Properties)
+            if (propertyType == (typeof (bool)))
             {
-                ConfigurableAttribute cfgAttribute =
-                    propertyMetadata.Attributes.OfType<ConfigurableAttribute>().SingleOrDefault();
-
-                if (cfgAttribute != null)
+                if (value == null)
                 {
-                    var cfgProperty = new ConfigurableProperty();
-
-                    cfgProperty.IsRequired = cfgAttribute.IsRequired;
-                    cfgProperty.PropertyMetadata = propertyMetadata;
-
-                    if (String.IsNullOrEmpty(cfgAttribute.SettingName))
-                    {
-                        cfgProperty.PrioritizedSettingNames =
-                            GetPrioritizedConventionalSettingNames(cfgObject, cfgProperty).ToArray();
-                    }
-                    else
-                    {
-                        cfgProperty.PrioritizedSettingNames = new[]
-                        {cfgAttribute.SettingName.Merge(new {Name = objectName})};
-                    }
-
-                    cfgObject.Properties.Add(cfgProperty);
+                    throw new ConfigurationErrorsException(String.Format(
+                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a boolean value.",
+                                                                         cfgSetting.Name, cfgSetting.Value,
+                                                                         cfgObject.TypeMetadata.Type.Name,
+                                                                         cfgProperty.PropertyMetadata.PropertyInfo
+                                                                             .Name));
                 }
+
+                cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
             }
-
-            return cfgObject;
-        }
-
-        private IEnumerable<string> GetPrioritizedConventionalSettingNames(ConfigurableObject<T> cfgObject,
-                                                                           ConfigurableProperty cfgProperty)
-        {
-            if (String.IsNullOrEmpty(cfgObject.Name) == false)
+            else if (propertyType == (typeof (bool?)))
             {
-                yield return String.Format("{0}.{1}.{2}",
-                                           cfgObject.Name,
-                                           cfgObject.TypeMetadata.Type.Name,
-                                           cfgProperty.PropertyMetadata.PropertyInfo.Name);
+                cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value);
             }
-
-            yield return String.Format("{0}.{1}",
-                                       cfgObject.TypeMetadata.Type.Name,
-                                       cfgProperty.PropertyMetadata.PropertyInfo.Name);
-
-            yield return cfgProperty.PropertyMetadata.PropertyInfo.Name;
         }
 
         private void ApplyConfigurationSetting(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
@@ -155,32 +125,6 @@ namespace Mantle.Configuration.Configurers
                                   "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. The target property must be of type 'bool', 'bool?', 'DateTime', 'DateTime?', 'double', 'double?', 'Guid', 'Guid?', 'int', 'int?', 'long', 'long?' or 'string'.",
                                   cfgSetting.Name, cfgSetting.Value, cfgObject.TypeMetadata.Type.Name,
                                   cfgProperty.PropertyMetadata.PropertyInfo.Name));
-            }
-        }
-
-        private void ApplyBooleanConfigurationSetting(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
-                                                      ConfigurationSetting cfgSetting)
-        {
-            Type propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
-            bool? value = cfgSetting.Value.TryParseBoolean();
-
-            if (propertyType == (typeof (bool)))
-            {
-                if (value == null)
-                {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a boolean value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
-                }
-
-                cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
-            }
-            else if (propertyType == (typeof (bool?)))
-            {
-                cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value);
             }
         }
 
@@ -312,6 +256,62 @@ namespace Mantle.Configuration.Configurers
             {
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value);
             }
+        }
+
+        private IEnumerable<string> GetPrioritizedConventionalSettingNames(ConfigurableObject<T> cfgObject,
+                                                                           ConfigurableProperty cfgProperty)
+        {
+            if (String.IsNullOrEmpty(cfgObject.Name) == false)
+            {
+                yield return String.Format("{0}.{1}.{2}",
+                                           cfgObject.Name,
+                                           cfgObject.TypeMetadata.Type.Name,
+                                           cfgProperty.PropertyMetadata.PropertyInfo.Name);
+            }
+
+            yield return String.Format("{0}.{1}",
+                                       cfgObject.TypeMetadata.Type.Name,
+                                       cfgProperty.PropertyMetadata.PropertyInfo.Name);
+
+            yield return cfgProperty.PropertyMetadata.PropertyInfo.Name;
+        }
+
+        private ConfigurableObject<T> ToConfigurableObject(T @object, string objectName = null)
+        {
+            var cfgObject = new ConfigurableObject<T>();
+
+            cfgObject.Name = objectName;
+            cfgObject.Target = @object;
+            cfgObject.TypeMetadata = new TypeMetadata(typeof (T));
+
+            foreach (PropertyMetadata propertyMetadata in cfgObject.TypeMetadata.Properties)
+            {
+                ConfigurableAttribute cfgAttribute =
+                    propertyMetadata.Attributes.OfType<ConfigurableAttribute>().SingleOrDefault();
+
+                if (cfgAttribute != null)
+                {
+                    var cfgProperty = new ConfigurableProperty();
+
+                    cfgProperty.IsRequired = cfgAttribute.IsRequired;
+                    cfgProperty.PropertyMetadata = propertyMetadata;
+
+                    if (String.IsNullOrEmpty(cfgAttribute.SettingName))
+                    {
+                        cfgProperty.PrioritizedSettingNames =
+                            GetPrioritizedConventionalSettingNames(cfgObject, cfgProperty).ToArray();
+                    }
+                    else
+                    {
+                        cfgProperty.PrioritizedSettingNames = new[]
+                        {cfgAttribute.SettingName.Merge(new {Name = objectName})};
+                    }
+
+                    cfgObject.Properties.Add(cfgProperty);
+                }
+            }
+
+            return cfgObject;
         }
     }
 }

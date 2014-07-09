@@ -7,6 +7,7 @@ using Mantle.Messaging.Interfaces;
 namespace Mantle.Messaging.Azure.Channels
 {
     public class AzureStorageQueueSubscriberChannel<T> : BaseAzureStorageQueueChannel<T>, ISubscriberChannel<T>
+        where T : class
     {
         public AzureStorageQueueSubscriberChannel(ISerializer<T> serializer)
             : base(serializer)
@@ -17,14 +18,16 @@ namespace Mantle.Messaging.Azure.Channels
         public override bool AutoSetup { get; set; }
 
         [Configurable(IsRequired = true)]
-        public override string StorageConnectionString { get; set; }
+        public override string QueueName { get; set; }
 
         [Configurable(IsRequired = true)]
-        public override string QueueName { get; set; }
+        public override string StorageConnectionString { get; set; }
 
         public IMessageContext<T> Receive(TimeSpan? timeout = null)
         {
-            var message = ((timeout.HasValue) ? (CloudQueue.GetMessage(timeout)) : (CloudQueue.GetMessage()));
+            var message = ((timeout.HasValue)
+                ? (CloudQueue.GetMessage(timeout))
+                : (CloudQueue.GetMessage()));
 
             if (message == null)
                 return null;

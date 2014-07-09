@@ -6,15 +6,17 @@ namespace Mantle.Messaging.Azure.Channels
     {
         private NamespaceManager namespaceManager;
 
+        public abstract string ServiceBusConnectionString { get; set; }
+
         public NamespaceManager NamespaceManager
         {
-            get
-            {
-                return (namespaceManager = (namespaceManager ??
-                                            NamespaceManager.CreateFromConnectionString(ServiceBusConnectionString)));
-            }
+            get { return GetNamespaceManager(); }
         }
 
-        public abstract string ServiceBusConnectionString { get; set; }
+        private NamespaceManager GetNamespaceManager()
+        {
+            return (namespaceManager = (namespaceManager ??
+                                        NamespaceManager.CreateFromConnectionString(ServiceBusConnectionString)));
+        }
     }
 }

@@ -8,6 +8,7 @@ using StackExchange.Redis;
 namespace Mantle.Cache.Azure.Clients
 {
     public class AzureRedisCacheClient<T> : ICacheClient<T>
+        where T : class
     {
         private readonly ISerializer<T> serializer;
 
@@ -18,37 +19,50 @@ namespace Mantle.Cache.Azure.Clients
             this.serializer = serializer;
         }
 
-        public ConnectionMultiplexer ConnectionMultiplexer
-        {
-            get
-            {
-                if ((connectionMultiplexer != null) && (connectionMultiplexer.IsConnected))
-                    return connectionMultiplexer;
-
-                return (connectionMultiplexer = ConnectionMultiplexer.Connect(ConfigurationString));
-            }
-        }
-
         [Configurable(IsRequired = true)]
         public string ConfigurationString { get; set; }
 
+        public ConnectionMultiplexer ConnectionMultiplexer
+        {
+            get { return GetConnectionMultiplexer(); }
+        }
+
+        public IDatabase Database
+        {
+            get { return GetDatabase(); }
+        }
+
         public void Add(T @object, string objectId, TimeSpan? cacheDuration = null)
         {
+            @object.Require("object");
             objectId.Require("objectId");
 
-            ConnectionMultiplexer.GetDatabase().StringSet(objectId, serializer.Serialize(@object), cacheDuration);
+            Database.StringSet(objectId, serializer.Serialize(@object), cacheDuration);
         }
 
         public T Get(string objectId)
         {
             objectId.Require("objectId");
 
-            var cachedObject = ConnectionMultiplexer.GetDatabase().StringGet(objectId);
+            var cachedObject = Database.StringGet(objectId);
 
             if (String.IsNullOrEmpty(cachedObject))
                 return default(T);
 
             return serializer.Deserialize(cachedObject);
+        }
+
+        private ConnectionMultiplexer GetConnectionMultiplexer()
+        {
+            if ((connectionMultiplexer == null) || (connectionMultiplexer.IsConnected == false))
+                connectionMultiplexer = ConnectionMultiplexer.Connect(ConfigurationString);
+
+            return connectionMultiplexer;
+        }
+
+        private IDatabase GetDatabase()
+        {
+            return ConnectionMultiplexer.GetDatabase();
         }
     }
 }

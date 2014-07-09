@@ -36,8 +36,8 @@ namespace Mantle.Tests
             var tokenProvider = new DataContractTypeTokenProvider();
 
             Assert.AreEqual(
-                tokenProvider.GetTypeToken<TestClassWithDataContractAttribute>(),
-                (typeof (TestClassWithDataContractAttribute).Name));
+                            tokenProvider.GetTypeToken<TestClassWithDataContractAttribute>(),
+                            (typeof (TestClassWithDataContractAttribute).Name));
         }
 
         [Test]
@@ -53,8 +53,8 @@ namespace Mantle.Tests
             var tokenProvider = new DataContractTypeTokenProvider();
 
             Assert.AreEqual(
-                tokenProvider.GetTypeToken<TestClassWithDataContractAttributeWithNameAndNamespace>(),
-                String.Format("{0}|{1}", TestClassNamespace, TestClassName));
+                            tokenProvider.GetTypeToken<TestClassWithDataContractAttributeWithNameAndNamespace>(),
+                            String.Format("{0}|{1}", TestClassNamespace, TestClassName));
         }
 
         [Test]

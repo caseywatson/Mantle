@@ -17,43 +17,49 @@ namespace Mantle.Messaging.Azure.Channels
             Serializer = serializer;
         }
 
-        public CloudStorageAccount CloudStorageAccount
+        public abstract bool AutoSetup { get; set; }
+
+        public abstract string QueueName { get; set; }
+        public abstract string StorageConnectionString { get; set; }
+
+        public CloudQueue CloudQueue
         {
-            get
-            {
-                return (cloudStorageAccount = (cloudStorageAccount ??
-                                               CloudStorageAccount.Parse(StorageConnectionString)));
-            }
+            get { return GetCloudQueue(); }
         }
 
         public CloudQueueClient CloudQueueClient
         {
-            get
-            {
-                return (cloudQueueClient = (cloudQueueClient ??
-                                            CloudStorageAccount.CreateCloudQueueClient()));
-            }
+            get { return GetCloudQueueClient(); }
         }
 
-        public CloudQueue CloudQueue
+        public CloudStorageAccount CloudStorageAccount
         {
-            get
-            {
-                if (cloudQueue != null)
-                {
-                    cloudQueue = CloudQueueClient.GetQueueReference(QueueName);
-
-                    if (AutoSetup)
-                        cloudQueue.CreateIfNotExists();
-                }
-
-                return cloudQueue;
-            }
+            get { return GetCloudStorageAccount(); }
         }
 
-        public abstract bool AutoSetup { get; set; }
+        private CloudQueue GetCloudQueue()
+        {
+            if (cloudQueue != null)
+            {
+                cloudQueue = CloudQueueClient.GetQueueReference(QueueName);
 
-        public abstract string StorageConnectionString { get; set; }
-        public abstract string QueueName { get; set; }
+                if (AutoSetup)
+                    cloudQueue.CreateIfNotExists();
+            }
+
+            return cloudQueue;
+        }
+
+        private CloudQueueClient GetCloudQueueClient()
+        {
+            return (cloudQueueClient = (cloudQueueClient ??
+                                        CloudStorageAccount.CreateCloudQueueClient()));
+        }
+
+        private CloudStorageAccount GetCloudStorageAccount()
+        {
+            return (cloudStorageAccount = (cloudStorageAccount ??
+                                           CloudStorageAccount.Parse(StorageConnectionString)));
+        }
     }
 }

@@ -75,6 +75,18 @@ namespace Mantle.Extensions
             return null;
         }
 
+        public static Guid? TryParseGuid(this string source)
+        {
+            source.Require("source");
+
+            Guid temp;
+
+            if (Guid.TryParse(source, out temp))
+                return temp;
+
+            return null;
+        }
+
         public static int? TryParseInt(this string source)
         {
             source.Require("source");
@@ -94,18 +106,6 @@ namespace Mantle.Extensions
             long temp;
 
             if (long.TryParse(source, out temp))
-                return temp;
-
-            return null;
-        }
-
-        public static Guid? TryParseGuid(this string source)
-        {
-            source.Require("source");
-
-            Guid temp;
-
-            if (Guid.TryParse(source, out temp))
                 return temp;
 
             return null;

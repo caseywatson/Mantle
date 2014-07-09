@@ -6,33 +6,20 @@ using Microsoft.ServiceBus.Messaging;
 namespace Mantle.Messaging.Azure.Channels
 {
     public class AzureServiceBusTopicPublisherChannel<T> : BaseAzureServiceBusChannel, IPublisherChannel<T>
+        where T : class
     {
         private TopicClient topicClient;
 
-        public TopicClient TopicClient
-        {
-            get
-            {
-                if (topicClient == null)
-                {
-                    if (AutoSetup)
-                    {
-                        if (NamespaceManager.TopicExists(TopicName) == false)
-                            NamespaceManager.CreateTopic(TopicName);
-                    }
-
-                    topicClient = TopicClient.CreateFromConnectionString(ServiceBusConnectionString, TopicName);
-                }
-
-                return topicClient;
-            }
-        }
+        [Configurable(IsRequired = true)]
+        public override string ServiceBusConnectionString { get; set; }
 
         [Configurable]
         public bool AutoSetup { get; set; }
 
-        [Configurable(IsRequired = true)]
-        public override string ServiceBusConnectionString { get; set; }
+        public TopicClient TopicClient
+        {
+            get { return GetTopicClient(); }
+        }
 
         [Configurable(IsRequired = true)]
         public string TopicName { get; set; }
@@ -41,6 +28,22 @@ namespace Mantle.Messaging.Azure.Channels
         {
             message.Require("message");
             TopicClient.Send(new BrokeredMessage(message));
+        }
+
+        private TopicClient GetTopicClient()
+        {
+            if (topicClient == null)
+            {
+                if (AutoSetup)
+                {
+                    if (NamespaceManager.TopicExists(TopicName) == false)
+                        NamespaceManager.CreateTopic(TopicName);
+                }
+
+                topicClient = TopicClient.CreateFromConnectionString(ServiceBusConnectionString, TopicName);
+            }
+
+            return topicClient;
         }
     }
 }

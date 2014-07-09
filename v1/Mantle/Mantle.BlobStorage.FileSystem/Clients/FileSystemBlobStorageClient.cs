@@ -13,6 +13,16 @@ namespace Mantle.BlobStorage.FileSystem.Clients
         [Configurable(IsRequired = true)]
         public string Path { get; set; }
 
+        public bool BlobExists(string blobName)
+        {
+            blobName.Require("blobName");
+
+            if (Directory.Exists(Path) == false)
+                return false;
+
+            return (File.Exists(System.IO.Path.Combine(Path, blobName)));
+        }
+
         public void DeleteBlob(string blobName)
         {
             blobName.Require("blobName");
@@ -28,14 +38,27 @@ namespace Mantle.BlobStorage.FileSystem.Clients
             File.Delete(filePath);
         }
 
-        public bool BlobExists(string blobName)
+        public Stream DownloadBlob(string blobName)
         {
             blobName.Require("blobName");
 
             if (Directory.Exists(Path) == false)
-                return false;
+                throw new InvalidOperationException(String.Format("Directory [{0}] does not exist.", Path));
 
-            return (File.Exists(System.IO.Path.Combine(Path, blobName)));
+            string filePath = System.IO.Path.Combine(Path, blobName);
+
+            if (File.Exists(filePath) == false)
+                throw new InvalidOperationException(String.Format("File [{0}] does not exist.", filePath));
+
+            return (new MemoryStream(File.ReadAllBytes(filePath)) {Position = 0});
+        }
+
+        public IEnumerable<string> ListBlobs()
+        {
+            if (Directory.Exists(Path) == false)
+                throw new InvalidOperationException(String.Format("Directory [{0}] does not exist.", Path));
+
+            return Directory.GetFiles(Path).Select(System.IO.Path.GetFileName);
         }
 
         public void UploadBlob(Stream blob, string blobName)
@@ -50,29 +73,6 @@ namespace Mantle.BlobStorage.FileSystem.Clients
 
             using (FileStream fileStream = File.Create(System.IO.Path.Combine(Path, blobName)))
                 blob.CopyTo(fileStream);
-        }
-
-        public IEnumerable<string> ListBlobs()
-        {
-            if (Directory.Exists(Path) == false)
-                throw new InvalidOperationException(String.Format("Directory [{0}] does not exist.", Path));
-
-            return Directory.GetFiles(Path).Select(System.IO.Path.GetFileName);
-        }
-
-        public Stream DownloadBlob(string blobName)
-        {
-            blobName.Require("blobName");
-
-            if (Directory.Exists(Path) == false)
-                throw new InvalidOperationException(String.Format("Directory [{0}] does not exist.", Path));
-
-            string filePath = System.IO.Path.Combine(Path, blobName);
-
-            if (File.Exists(filePath) == false)
-                throw new InvalidOperationException(String.Format("File [{0}] does not exist.", filePath));
-
-            return (new MemoryStream(File.ReadAllBytes(filePath)) {Position = 0});
         }
     }
 }

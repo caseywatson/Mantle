@@ -423,7 +423,8 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_boolean_property_configuration_setting_can_not_be_parsed()
+        public void
+            Should_throw_ConfigurationErrorsException_if_boolean_property_configuration_setting_can_not_be_parsed()
         {
             const string propertyName = "BooleanProperty";
             const string settingName = "SimpleTestTarget.BooleanProperty";
@@ -441,7 +442,8 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
-        public void Should_throw_ConfigurationErrorsException_if_double_property_configuration_setting_can_not_be_parsed()
+        public void Should_throw_ConfigurationErrorsException_if_double_property_configuration_setting_can_not_be_parsed
+            ()
         {
             const string propertyName = "DoubleProperty";
             const string settingName = "SimpleTestTarget.DoubleProperty";

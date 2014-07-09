@@ -8,17 +8,17 @@ namespace Mantle.Configuration.Tests.Targets
         [Configurable]
         public bool BooleanProperty { get; set; }
 
-        [Configurable]
-        public double DoubleProperty { get; set; }
+        [Configurable(SettingName = "CustomSettingNameProperty")]
+        public string CustomSettingNameProperty { get; set; }
 
         [Configurable]
         public DateTime DateTimeProperty { get; set; }
 
         [Configurable]
-        public Guid GuidProperty { get; set; }
+        public double DoubleProperty { get; set; }
 
         [Configurable]
-        public string StringProperty { get; set; }
+        public Guid GuidProperty { get; set; }
 
         [Configurable]
         public int IntProperty { get; set; }
@@ -26,14 +26,17 @@ namespace Mantle.Configuration.Tests.Targets
         [Configurable]
         public long LongProperty { get; set; }
 
+        [Configurable(SettingName = "{Name}.CustomSettingNameProperty")]
+        public string NamedTargetCustomSettingNameProperty { get; set; }
+
         [Configurable]
         public bool? NullableBooleanProperty { get; set; }
 
         [Configurable]
-        public double? NullableDoubleProperty { get; set; }
+        public DateTime? NullableDateTimeProperty { get; set; }
 
         [Configurable]
-        public DateTime? NullableDateTimeProperty { get; set; }
+        public double? NullableDoubleProperty { get; set; }
 
         [Configurable]
         public Guid? NullableGuidProperty { get; set; }
@@ -44,10 +47,7 @@ namespace Mantle.Configuration.Tests.Targets
         [Configurable]
         public long? NullableLongProperty { get; set; }
 
-        [Configurable(SettingName = "CustomSettingNameProperty")]
-        public string CustomSettingNameProperty { get; set; }
-
-        [Configurable(SettingName = "{Name}.CustomSettingNameProperty")]
-        public string NamedTargetCustomSettingNameProperty { get; set; }
+        [Configurable]
+        public string StringProperty { get; set; }
     }
 }

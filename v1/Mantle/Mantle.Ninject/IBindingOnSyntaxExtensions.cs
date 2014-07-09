@@ -13,7 +13,8 @@ namespace Mantle.Ninject
         {
             return
                 bindingSyntax.OnActivation(
-                    t => configurer.Configure(t, bindingSyntax.BindingConfiguration.Metadata.Name));
+                                           t =>
+                                               configurer.Configure(t, bindingSyntax.BindingConfiguration.Metadata.Name));
         }
 
         public static IBindingOnSyntax<T> ConfigureUsing<T>(this IBindingOnSyntax<T> bindingSyntax,
@@ -21,7 +22,9 @@ namespace Mantle.Ninject
         {
             return
                 bindingSyntax.OnActivation(
-                    (c, t) => configurerFactory(c).Configure(t, bindingSyntax.BindingConfiguration.Metadata.Name));
+                                           (c, t) =>
+                                               configurerFactory(c)
+                                               .Configure(t, bindingSyntax.BindingConfiguration.Metadata.Name));
         }
     }
 }

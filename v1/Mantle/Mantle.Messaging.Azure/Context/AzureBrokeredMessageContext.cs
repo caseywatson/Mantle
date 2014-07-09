@@ -5,6 +5,7 @@ using Microsoft.ServiceBus.Messaging;
 namespace Mantle.Messaging.Azure.Context
 {
     public class AzureBrokeredMessageContext<T> : IMessageContext<T>
+        where T : class
     {
         public AzureBrokeredMessageContext(BrokeredMessage brokeredMessage, T message)
         {
@@ -16,12 +17,13 @@ namespace Mantle.Messaging.Azure.Context
         }
 
         public BrokeredMessage BrokeredMessage { get; private set; }
-        public T Message { get; private set; }
 
         public int? DeliveryCount
         {
             get { return BrokeredMessage.DeliveryCount; }
         }
+
+        public T Message { get; private set; }
 
         public bool TryToAbandon()
         {

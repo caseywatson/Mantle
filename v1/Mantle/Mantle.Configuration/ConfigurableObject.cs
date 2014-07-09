@@ -9,9 +9,10 @@ namespace Mantle.Configuration
             Properties = new List<ConfigurableProperty>();
         }
 
+        public string Name { get; set; }
+
         public List<ConfigurableProperty> Properties { get; set; }
         public T Target { get; set; }
-        public string Name { get; set; }
         public TypeMetadata TypeMetadata { get; set; }
     }
 }

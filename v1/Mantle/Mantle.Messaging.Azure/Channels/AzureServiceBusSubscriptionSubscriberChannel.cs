@@ -7,34 +7,20 @@ using Microsoft.ServiceBus.Messaging;
 namespace Mantle.Messaging.Azure.Channels
 {
     public class AzureServiceBusSubscriptionSubscriberChannel<T> : BaseAzureServiceBusChannel, ISubscriberChannel<T>
+        where T : class
     {
         private SubscriptionClient subscriptionClient;
 
-        public SubscriptionClient SubscriptionClient
-        {
-            get
-            {
-                if (subscriptionClient == null)
-                {
-                    if (AutoSetup)
-                    {
-                        if (NamespaceManager.SubscriptionExists(TopicName, SubscriptionName) == false)
-                            NamespaceManager.CreateSubscription(TopicName, SubscriptionName);
-                    }
-
-                    subscriptionClient = SubscriptionClient.CreateFromConnectionString(ServiceBusConnectionString,
-                                                                                       TopicName, SubscriptionName);
-                }
-
-                return subscriptionClient;
-            }
-        }
+        [Configurable(IsRequired = true)]
+        public override string ServiceBusConnectionString { get; set; }
 
         [Configurable]
         public bool AutoSetup { get; set; }
 
-        [Configurable(IsRequired = true)]
-        public override string ServiceBusConnectionString { get; set; }
+        public SubscriptionClient SubscriptionClient
+        {
+            get { return GetSubscriptionClient(); }
+        }
 
         [Configurable(IsRequired = true)]
         public string SubscriptionName { get; set; }
@@ -52,6 +38,23 @@ namespace Mantle.Messaging.Azure.Channels
                 return null;
 
             return new AzureBrokeredMessageContext<T>(message, message.GetBody<T>());
+        }
+
+        private SubscriptionClient GetSubscriptionClient()
+        {
+            if (subscriptionClient == null)
+            {
+                if (AutoSetup)
+                {
+                    if (NamespaceManager.SubscriptionExists(TopicName, SubscriptionName) == false)
+                        NamespaceManager.CreateSubscription(TopicName, SubscriptionName);
+                }
+
+                subscriptionClient = SubscriptionClient.CreateFromConnectionString(ServiceBusConnectionString,
+                                                                                   TopicName, SubscriptionName);
+            }
+
+            return subscriptionClient;
         }
     }
 }

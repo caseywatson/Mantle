@@ -5,10 +5,10 @@ namespace Mantle.BlobStorage.Interfaces
 {
     public interface IBlobStorageClient
     {
-        void DeleteBlob(string blobName);
         bool BlobExists(string blobName);
-        void UploadBlob(Stream blob, string blobName);
-        IEnumerable<string> ListBlobs();
+        void DeleteBlob(string blobName);
         Stream DownloadBlob(string blobName);
+        IEnumerable<string> ListBlobs();
+        void UploadBlob(Stream blob, string blobName);
     }
 }

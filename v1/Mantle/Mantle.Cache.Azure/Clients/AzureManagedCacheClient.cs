@@ -7,27 +7,21 @@ using Microsoft.ApplicationServer.Caching;
 namespace Mantle.Cache.Azure.Clients
 {
     public class AzureManagedCacheClient<T> : ICacheClient<T>
+        where T : class
     {
-        private const int CachePort = 22233;
-
         private DataCache dataCache;
-
-        public DataCache DataCache
-        {
-            get { return (dataCache = (dataCache ?? CreateDataCache())); }
-        }
 
         [Configurable]
         public string CacheName { get; set; }
 
-        [Configurable(IsRequired = true)]
-        public string AuthorizationToken { get; set; }
-
-        [Configurable(IsRequired = true)]
-        public string CacheUrl { get; set; }
+        public DataCache DataCache
+        {
+            get { return GetDataCache(); }
+        }
 
         public void Add(T @object, string objectId, TimeSpan? cacheDuration = null)
         {
+            @object.Require("object");
             objectId.Require("objectId");
 
             if (cacheDuration == null)
@@ -48,19 +42,9 @@ namespace Mantle.Cache.Azure.Clients
             return ((T) (cachedObject));
         }
 
-        private DataCache CreateDataCache()
+        private DataCache GetDataCache()
         {
-            var dcfConfiguration = new DataCacheFactoryConfiguration();
-
-            dcfConfiguration.SecurityProperties = new DataCacheSecurity(AuthorizationToken);
-            dcfConfiguration.Servers = new[] {new DataCacheServerEndpoint(CacheUrl, CachePort)};
-
-            var factory = new DataCacheFactory(dcfConfiguration);
-
-            if (String.IsNullOrEmpty(CacheName))
-                return factory.GetDefaultCache();
-
-            return factory.GetCache(CacheName);
+            return (dataCache = (dataCache ?? (new DataCache(CacheName ?? "default"))));
         }
     }
 }

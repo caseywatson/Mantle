@@ -21,9 +21,9 @@ namespace Mantle
             Load(type);
         }
 
-        public Type Type { get; set; }
         public List<Attribute> Attributes { get; set; }
         public List<PropertyMetadata> Properties { get; set; }
+        public Type Type { get; set; }
 
         private void Load(Type type)
         {

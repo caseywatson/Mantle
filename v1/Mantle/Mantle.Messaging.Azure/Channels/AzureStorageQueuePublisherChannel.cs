@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage.Queue;
 namespace Mantle.Messaging.Azure.Channels
 {
     public class AzureStorageQueuePublisherChannel<T> : BaseAzureStorageQueueChannel<T>, IPublisherChannel<T>
+        where T : class
     {
         public AzureStorageQueuePublisherChannel(ISerializer<T> serializer)
             : base(serializer)
@@ -17,10 +18,10 @@ namespace Mantle.Messaging.Azure.Channels
         public override bool AutoSetup { get; set; }
 
         [Configurable(IsRequired = true)]
-        public override string StorageConnectionString { get; set; }
+        public override string QueueName { get; set; }
 
         [Configurable(IsRequired = true)]
-        public override string QueueName { get; set; }
+        public override string StorageConnectionString { get; set; }
 
         public void Publish(T message)
         {

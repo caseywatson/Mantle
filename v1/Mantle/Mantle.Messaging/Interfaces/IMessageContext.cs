@@ -1,10 +1,10 @@
 ﻿namespace Mantle.Messaging.Interfaces
 {
     public interface IMessageContext<T>
+        where T : class
     {
-        T Message { get; }
-
         int? DeliveryCount { get; }
+        T Message { get; }
 
         bool TryToAbandon();
         bool TryToComplete();

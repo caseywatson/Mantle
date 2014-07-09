@@ -6,15 +6,16 @@ using Microsoft.ServiceBus.Messaging;
 namespace Mantle.Messaging.Azure.Channels
 {
     public class AzureServiceBusQueuePublisherChannel<T> : BaseAzureServiceBusQueueChannel, IPublisherChannel<T>
+        where T : class
     {
         [Configurable]
         public override bool AutoSetup { get; set; }
 
         [Configurable(IsRequired = true)]
-        public override string ServiceBusConnectionString { get; set; }
+        public override string QueueName { get; set; }
 
         [Configurable(IsRequired = true)]
-        public override string QueueName { get; set; }
+        public override string ServiceBusConnectionString { get; set; }
 
         public void Publish(T message)
         {
