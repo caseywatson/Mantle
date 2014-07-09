@@ -30,7 +30,7 @@ namespace Mantle.Cache.InMemory.Clients
         [Configurable]
         public bool UseSlidingExpiration { get; set; }
 
-        public void Add(T @object, string objectId, TimeSpan? cacheExpiration = null)
+        public void Put(T @object, string objectId, TimeSpan? cacheExpiration = null)
         {
             objectId.Require("objectId");
 

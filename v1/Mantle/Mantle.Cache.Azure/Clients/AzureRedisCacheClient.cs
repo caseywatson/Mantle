@@ -32,7 +32,7 @@ namespace Mantle.Cache.Azure.Clients
             get { return GetDatabase(); }
         }
 
-        public void Add(T @object, string objectId, TimeSpan? cacheDuration = null)
+        public void Put(T @object, string objectId, TimeSpan? cacheDuration = null)
         {
             @object.Require("object");
             objectId.Require("objectId");
