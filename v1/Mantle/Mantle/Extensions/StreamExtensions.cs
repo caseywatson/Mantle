@@ -4,7 +4,7 @@ namespace Mantle.Extensions
 {
     public static class StreamExtensions
     {
-        public static void Rewind(this Stream stream)
+        public static bool TryToRewind(this Stream stream)
         {
             stream.Require("stream");
 
