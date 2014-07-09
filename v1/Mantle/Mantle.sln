@@ -54,6 +54,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Cache.InMemory", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Azure", "Mantle.Messaging.Azure\Mantle.Messaging.Azure.csproj", "{51C2A50E-F90D-49A7-9B15-1A3279C5B6E9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aws", "Aws", "{9C97F4B5-48DA-4590-BB8B-A8DBE82AB67D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Console", "Mantle.Hosting.Console\Mantle.Hosting.Console.csproj", "{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +140,10 @@ Global
 		{51C2A50E-F90D-49A7-9B15-1A3279C5B6E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51C2A50E-F90D-49A7-9B15-1A3279C5B6E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51C2A50E-F90D-49A7-9B15-1A3279C5B6E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,5 +168,6 @@ Global
 		{74B7032F-8880-4CE1-BEDB-9DD176B81FDF} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
 		{3ED07639-757D-4BC0-A07B-DEC8091730AF} = {2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}
 		{51C2A50E-F90D-49A7-9B15-1A3279C5B6E9} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
+		{5E7B03AA-3CBD-47CB-BD7B-96252447F95A} = {2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}
 	EndGlobalSection
 EndGlobal
