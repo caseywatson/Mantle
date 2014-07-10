@@ -6,6 +6,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
+using Mantle.Messaging.Msmq.Contexts;
 
 namespace Mantle.Messaging.Msmq.Channels
 {
@@ -52,10 +53,11 @@ namespace Mantle.Messaging.Msmq.Channels
                     body = null;
                 }
 
-
+                return new MsmqMessageContext<T>(body, msmqMessage, transaction);
             }
-            catch (Exception)
+            catch
             {
+                transaction.Abort();
                 throw;
             }
         }
