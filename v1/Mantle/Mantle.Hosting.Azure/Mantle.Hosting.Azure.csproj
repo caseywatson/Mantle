@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}</ProjectGuid>
+    <ProjectGuid>{C42622EA-6646-4682-A7EF-E9F9E8416C02}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Hosting.Console</RootNamespace>
-    <AssemblyName>Mantle.Hosting.Console</AssemblyName>
+    <RootNamespace>Mantle.Hosting.Azure</RootNamespace>
+    <AssemblyName>Mantle.Hosting.Azure</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleWorkerHost.cs" />
+    <Compile Include="AzureCloudServiceRoleWorkerHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
