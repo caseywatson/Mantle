@@ -6,6 +6,7 @@ namespace Mantle.Messaging.Interfaces
         where T : class
     {
         void AddConstraint(ISubscriptionConstraint<T> constraint);
+        void Configure(ISubscriptionConfiguration<T> configuration);
         void DoAutoAbandon();
         void DoAutoComplete();
         void DoAutoDeadLetter();
@@ -13,6 +14,7 @@ namespace Mantle.Messaging.Interfaces
         void DoNotAutoComplete();
         void DoNotAutoDeadLetter();
         void SetDeadLetterDeliveryLimit(int deliveryLimit);
+        void SetSubscriber(ISubscriber<T> subscriber);
         void UseDeadLetterStrategy(IDeadLetterStrategy<T> deadLetterStrategy);
         void UseSerializer(ISerializer<T> serializer);
     }

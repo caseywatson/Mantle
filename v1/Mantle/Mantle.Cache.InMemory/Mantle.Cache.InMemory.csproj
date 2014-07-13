@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mantle.Cache\Mantle.Cache.csproj">
-      <Project>{98B792E8-263F-4CB6-9F94-5BD3D567F83F}</Project>
+      <Project>{4977622F-590A-4C7A-AD8B-5D2629EB567D}</Project>
       <Name>Mantle.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">

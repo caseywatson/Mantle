@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\DefaultSubscriptionConfiguration.cs" />
+    <Compile Include="Configurers\DefaultSubscriptionConfigurer.cs" />
     <Compile Include="Interfaces\IDeadLetterStrategy.cs" />
     <Compile Include="Interfaces\IMessageContext.cs" />
     <Compile Include="Interfaces\IPublisherChannel.cs" />
@@ -47,17 +50,21 @@
     <Compile Include="Interfaces\ISubscriptionConfiguration.cs" />
     <Compile Include="Interfaces\ISubscriptionConfigurer.cs" />
     <Compile Include="Interfaces\ISubscriptionConstraint.cs" />
-    <Compile Include="Interfaces\ISubscriptionHost.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategies\DefaultDeadLetterStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{14843F74-B007-4357-9AEA-4703D772B6AE}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>
       <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
