@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Aws", "Man
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Cache", "Mantle.Cache\Mantle.Cache.csproj", "{4977622F-590A-4C7A-AD8B-5D2629EB567D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Messaging", "Mantle.Hosting.Messaging\Mantle.Hosting.Messaging.csproj", "{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,10 @@ Global
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,5 +196,6 @@ Global
 		{C42622EA-6646-4682-A7EF-E9F9E8416C02} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
 		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD} = {9C97F4B5-48DA-4590-BB8B-A8DBE82AB67D}
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
+		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 	EndGlobalSection
 EndGlobal

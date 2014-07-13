@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}</ProjectGuid>
+    <ProjectGuid>{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Messaging</RootNamespace>
-    <AssemblyName>Mantle.Messaging</AssemblyName>
+    <RootNamespace>Mantle.Hosting.Messaging</RootNamespace>
+    <AssemblyName>Mantle.Hosting.Messaging</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,34 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\DefaultSubscriptionConfiguration.cs" />
-    <Compile Include="Configurers\DefaultSubscriptionConfigurer.cs" />
-    <Compile Include="Contexts\SubscriptionMessageContext.cs" />
-    <Compile Include="Interfaces\IDeadLetterStrategy.cs" />
-    <Compile Include="Interfaces\IMessageContext.cs" />
-    <Compile Include="Interfaces\IPublisherChannel.cs" />
-    <Compile Include="Interfaces\ISubscriber.cs" />
-    <Compile Include="Interfaces\ISubscriberChannel.cs" />
-    <Compile Include="Interfaces\ISubscription.cs" />
-    <Compile Include="Interfaces\ISubscriptionConfiguration.cs" />
-    <Compile Include="Interfaces\ISubscriptionConfigurer.cs" />
-    <Compile Include="Interfaces\ISubscriptionConstraint.cs" />
-    <Compile Include="Messages\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategies\DefaultDeadLetterStrategy.cs" />
-    <Compile Include="Subscriptions\DefaultSubscription.cs" />
+    <Compile Include="Workers\SubscriptionWorker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
-      <Project>{14843F74-B007-4357-9AEA-4703D772B6AE}</Project>
-      <Name>Mantle.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mantle\Mantle.csproj">
-      <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>
-      <Name>Mantle</Name>
+    <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
+      <Project>{E2225D04-8C48-4295-8741-3019B668C06A}</Project>
+      <Name>Mantle.Hosting</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
