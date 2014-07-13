@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\DefaultSubscriptionConfiguration.cs" />
-    <Compile Include="Configurers\DefaultSubscriptionConfigurer.cs" />
+    <Compile Include="Builders\DefaultSubscriptionConfigurer.cs" />
     <Compile Include="Contexts\SubscriptionMessageContext.cs" />
     <Compile Include="Interfaces\IDeadLetterStrategy.cs" />
     <Compile Include="Interfaces\IMessageContext.cs" />
@@ -50,7 +50,7 @@
     <Compile Include="Interfaces\ISubscriberChannel.cs" />
     <Compile Include="Interfaces\ISubscription.cs" />
     <Compile Include="Interfaces\ISubscriptionConfiguration.cs" />
-    <Compile Include="Interfaces\ISubscriptionConfigurer.cs" />
+    <Compile Include="Interfaces\ISubscriptionConfigurationBuilder.cs" />
     <Compile Include="Interfaces\ISubscriptionConstraint.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

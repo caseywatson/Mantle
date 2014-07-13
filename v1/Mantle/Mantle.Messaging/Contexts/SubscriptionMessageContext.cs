@@ -36,7 +36,7 @@ namespace Mantle.Messaging.Contexts
 
         public bool TryToDeadLetter()
         {
-            return false;
+            return OriginalMessageContext.TryToDeadLetter();
         }
     }
 }

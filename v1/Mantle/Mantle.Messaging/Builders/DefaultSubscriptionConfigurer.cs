@@ -1,10 +1,11 @@
 ﻿using Mantle.Extensions;
 using Mantle.Interfaces;
+using Mantle.Messaging.Configuration;
 using Mantle.Messaging.Interfaces;
 
 namespace Mantle.Messaging.Configurers
 {
-    public class SubscriptionConfigurer<T> : ISubscriptionConfigurer<T>
+    public class SubscriptionConfigurer<T> : ISubscriptionConfigurationBuilder<T>
         where T : class
     {
         private readonly IDependencyResolver dependencyResolver;
@@ -22,24 +23,21 @@ namespace Mantle.Messaging.Configurers
             templateConfiguration.Constraints.Add(constraint);
         }
 
-        public void Configure(ISubscriptionConfiguration<T> configuration)
+        public ISubscriptionConfiguration<T> ToConfiguration()
         {
-            configuration.Require("configuration");
-
-            configuration.AutoAbandon = templateConfiguration.AutoAbandon;
-            configuration.AutoComplete = templateConfiguration.AutoComplete;
-            configuration.AutoDeadLetter = templateConfiguration.AutoDeadLetter;
-
-            configuration.DeadLetterDeliveryLimit = templateConfiguration.DeadLetterDeliveryLimit;
-
-            configuration.DeadLetterStrategy = (templateConfiguration.DeadLetterStrategy ??
-                                                dependencyResolver.Get<IDeadLetterStrategy<T>>());
-
-            configuration.Serializer = (templateConfiguration.Serializer ??
-                                        dependencyResolver.Get<ISerializer<T>>());
-
-            configuration.Subscriber = (templateConfiguration.Subscriber ??
-                                        dependencyResolver.Get<ISubscriber<T>>());
+            return new DefaultSubscriptionConfiguration<T>
+            {
+                AutoAbandon = templateConfiguration.AutoAbandon,
+                AutoComplete = templateConfiguration.AutoComplete,
+                AutoDeadLetter = templateConfiguration.AutoDeadLetter,
+                DeadLetterDeliveryLimit = templateConfiguration.DeadLetterDeliveryLimit,
+                DeadLetterStrategy = (templateConfiguration.DeadLetterStrategy ??
+                                      dependencyResolver.Get<IDeadLetterStrategy<T>>()),
+                Serializer = (templateConfiguration.Serializer ??
+                              dependencyResolver.Get<ISerializer<T>>()),
+                Subscriber = (templateConfiguration.Subscriber ??
+                              dependencyResolver.Get<ISubscriber<T>>())
+            };
         }
 
         public void DoAutoAbandon()

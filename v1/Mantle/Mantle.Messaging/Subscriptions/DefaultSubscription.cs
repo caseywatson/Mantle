@@ -19,7 +19,7 @@ namespace Mantle.Messaging.Subscriptions
             this.configuration = configuration;
         }
 
-        public void HandleMessage(IMessageContext<Message> messageContext)
+        public bool HandleMessage(IMessageContext<Message> messageContext)
         {
             messageContext.Require("messageContext");
 
@@ -27,10 +27,7 @@ namespace Mantle.Messaging.Subscriptions
             var context = new SubscriptionMessageContext<T>(messageContext, body);
 
             if (configuration.Constraints.Any(c => (c.Match(context) == false)))
-            {
-                context.TryToComplete();
-                return;
-            }
+                return false;
 
             if (configuration.AutoDeadLetter)
             {
@@ -38,7 +35,7 @@ namespace Mantle.Messaging.Subscriptions
                     (messageContext.DeliveryCount.Value >= configuration.DeadLetterDeliveryLimit.Value))
                 {
                     configuration.DeadLetterStrategy.HandleDeadLetterMessage(context);
-                    return;
+                    return true;
                 }
             }
 
@@ -56,6 +53,8 @@ namespace Mantle.Messaging.Subscriptions
 
                 throw;
             }
+
+            return true;
         }
     }
 }

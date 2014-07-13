@@ -43,9 +43,21 @@
     <Compile Include="Workers\SubscriptionWorker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{14843F74-B007-4357-9AEA-4703D772B6AE}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
       <Project>{E2225D04-8C48-4295-8741-3019B668C06A}</Project>
       <Name>Mantle.Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{48F77C1A-CDB2-47D6-8BDE-099D857DE77F}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>
+      <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
