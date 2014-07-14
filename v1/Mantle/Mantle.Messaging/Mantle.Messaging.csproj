@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channels\MultiplexingSubscriberChannel.cs" />
     <Compile Include="Configuration\DefaultSubscriptionConfiguration.cs" />
     <Compile Include="Builders\DefaultSubscriptionConfigurer.cs" />
     <Compile Include="Contexts\SubscriptionMessageContext.cs" />
