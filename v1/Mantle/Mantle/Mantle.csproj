@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="DefaultDirectory.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
+    <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
