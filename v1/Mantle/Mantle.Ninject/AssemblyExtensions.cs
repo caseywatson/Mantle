@@ -11,7 +11,7 @@ namespace Mantle.Ninject
                                                                             params string[] profileNames)
         {
             sourceAssembly.Require("sourceAssembly");
-            sourceAssembly.LoadAllFromProfile<INinjectModule>(profileNames);
+            return sourceAssembly.LoadAllFromProfile<INinjectModule>(profileNames);
         }
     }
 }
