@@ -5,6 +5,11 @@ namespace Mantle.Extensions
 {
     public static class StringExtensions
     {
+        public static bool IsNullOrEmpty(this string source)
+        {
+            return String.IsNullOrEmpty(source);
+        }
+
         public static string Merge(this string source, object data, char fieldStartDelimiter = '{',
                                    char fieldEndDelimiter = '}')
         {
