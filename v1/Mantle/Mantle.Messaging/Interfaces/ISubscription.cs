@@ -5,6 +5,6 @@ namespace Mantle.Messaging.Interfaces
     public interface ISubscription<T>
         where T : class
     {
-        bool HandleMessage(IMessageContext<Message> messageContext);
+        bool HandleMessage(IMessageContext<MessageEnvelope> messageContext);
     }
 }

@@ -13,21 +13,21 @@ namespace Mantle.Hosting.Messaging.Workers
 {
     public class SubscriptionWorker : BaseWorker
     {
-        private readonly IDeadLetterStrategy<Message> defaultDeadLetterStrategy;
+        private readonly IDeadLetterStrategy<MessageEnvelope> defaultDeadLetterStrategy;
         private readonly IDependencyResolver dependencyResolver;
-        private readonly Dictionary<Type, List<Func<IMessageContext<Message>, bool>>> messageHandlers;
+        private readonly Dictionary<Type, List<Func<IMessageContext<MessageEnvelope>, bool>>> messageHandlers;
         private readonly List<ITypeTokenProvider> typeTokenProviders;
         private readonly Dictionary<string, Type> typeTokens;
 
         private bool doStop;
-        private ISubscriberChannel<Message> subscriberChannel;
+        private ISubscriberChannel<MessageEnvelope> subscriberChannel;
 
         public SubscriptionWorker(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
 
-            defaultDeadLetterStrategy = dependencyResolver.Get<IDeadLetterStrategy<Message>>();
-            messageHandlers = new Dictionary<Type, List<Func<IMessageContext<Message>, bool>>>();
+            defaultDeadLetterStrategy = dependencyResolver.Get<IDeadLetterStrategy<MessageEnvelope>>();
+            messageHandlers = new Dictionary<Type, List<Func<IMessageContext<MessageEnvelope>, bool>>>();
             typeTokenProviders = dependencyResolver.GetAll<ITypeTokenProvider>().ToList();
             typeTokens = new Dictionary<string, Type>();
         }
@@ -43,13 +43,13 @@ namespace Mantle.Hosting.Messaging.Workers
             doStop = false;
 
             subscriberChannel = (subscriberChannel ??
-                                 dependencyResolver.Get<ISubscriberChannel<Message>>());
+                                 dependencyResolver.Get<ISubscriberChannel<MessageEnvelope>>());
 
             while (true)
             {
                 if (doStop) return;
 
-                IMessageContext<Message> message = subscriberChannel.Receive();
+                IMessageContext<MessageEnvelope> message = subscriberChannel.Receive();
 
                 if (message != null)
                 {
@@ -109,13 +109,13 @@ namespace Mantle.Hosting.Messaging.Workers
             messageHandlers[typeof (T)].Add(subscription.HandleMessage);
         }
 
-        public void UseSubscriberChannel(ISubscriberChannel<Message> subscriberChannel)
+        public void UseSubscriberChannel(ISubscriberChannel<MessageEnvelope> subscriberChannel)
         {
             subscriberChannel.Require("subscriberChannel");
             this.subscriberChannel = subscriberChannel;
         }
 
-        private bool HandleMessage(IMessageContext<Message> messageContext)
+        private bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
             foreach (string typeToken in messageContext.Message.BodyTypeTokens)
             {
@@ -141,7 +141,7 @@ namespace Mantle.Hosting.Messaging.Workers
                 foreach (ITypeTokenProvider typeTokenProvider in typeTokenProviders)
                     typeTokens.Add(typeTokenProvider.GetTypeToken<T>(), tType);
 
-                messageHandlers.Add(tType, new List<Func<IMessageContext<Message>, bool>>());
+                messageHandlers.Add(tType, new List<Func<IMessageContext<MessageEnvelope>, bool>>());
             }
         }
     }

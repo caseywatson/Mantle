@@ -2,9 +2,9 @@
 
 namespace Mantle.Messaging.Messages
 {
-    public class Message
+    public class MessageEnvelope
     {
-        public Message()
+        public MessageEnvelope()
         {
             BodyTypeTokens = new List<string>();
             Properties = new Dictionary<string, string>();

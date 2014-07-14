@@ -19,7 +19,7 @@ namespace Mantle.Messaging.Subscriptions
             this.configuration = configuration;
         }
 
-        public bool HandleMessage(IMessageContext<Message> messageContext)
+        public bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
             messageContext.Require("messageContext");
 
