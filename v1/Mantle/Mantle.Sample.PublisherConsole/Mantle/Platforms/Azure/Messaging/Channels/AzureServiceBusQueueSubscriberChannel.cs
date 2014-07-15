@@ -1,6 +1,7 @@
 ﻿using System;
 using Mantle.Configuration.Attributes;
 using Mantle.Messaging.Interfaces;
+using Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.Messaging.Contexts;
 
 namespace Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.Messaging.Channels
 {
