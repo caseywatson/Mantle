@@ -6,7 +6,7 @@ using Mantle.Messaging.Messages;
 
 namespace Mantle.Messaging.Subscriptions
 {
-    public class DefaultSubscription<T> : ISubscription<T>
+    public class DefaultSubscription<T> : ISubscription
         where T : class
     {
         private readonly ISubscriptionConfiguration<T> configuration;
@@ -15,7 +15,6 @@ namespace Mantle.Messaging.Subscriptions
         {
             configuration.Require("configuration");
             configuration.Validate();
-
             this.configuration = configuration;
         }
 
@@ -32,6 +31,7 @@ namespace Mantle.Messaging.Subscriptions
             if (configuration.AutoDeadLetter)
             {
                 if ((messageContext.DeliveryCount.HasValue) && (configuration.DeadLetterDeliveryLimit.HasValue) &&
+
                     (messageContext.DeliveryCount.Value >= configuration.DeadLetterDeliveryLimit.Value))
                 {
                     configuration.DeadLetterStrategy.HandleDeadLetterMessage(context);

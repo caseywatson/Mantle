@@ -2,8 +2,7 @@
 
 namespace Mantle.Messaging.Interfaces
 {
-    public interface ISubscription<T>
-        where T : class
+    public interface ISubscription
     {
         bool HandleMessage(IMessageContext<MessageEnvelope> messageContext);
     }

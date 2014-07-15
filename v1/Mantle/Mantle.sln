@@ -68,6 +68,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Messaging", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{6C125BDA-9CF1-4B00-A9B0-FFBADE1671A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.PublisherConsole", "Mantle.Sample.PublisherConsole\Mantle.Sample.PublisherConsole.csproj", "{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,10 @@ Global
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -199,5 +205,6 @@ Global
 		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD} = {9C97F4B5-48DA-4590-BB8B-A8DBE82AB67D}
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
+		{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE} = {6C125BDA-9CF1-4B00-A9B0-FFBADE1671A2}
 	EndGlobalSection
 EndGlobal

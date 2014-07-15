@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 
@@ -7,7 +8,28 @@ namespace Mantle.Extensions
 {
     public static class AssemblyExtensions
     {
-        public static IEnumerable<T> LoadAllFromProfile<T>(this Assembly sourceAssembly, params string[] profileNames)
+        public static IEnumerable<T> LoadAllFromConfiguredProfiles<T>(this Assembly sourceAssembly,
+                                                                      string appSettingName = "MantleProfiles")
+        {
+            sourceAssembly.Require("sourceAssembly");
+            appSettingName.Require("appSettingName");
+
+            var appSettings = ConfigurationManager.AppSettings;
+
+            if (appSettings[appSettingName] == null)
+                throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] not configured.",
+                                                                     appSettingName));
+
+            var profileNames = appSettings[appSettingName].Split(',', ';').Where(n => (n.Length > 0)).ToArray();
+
+            if (profileNames.Length == 0)
+                throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] configuration invalid.",
+                                                                     appSettingName));
+
+            return sourceAssembly.LoadAllFromProfiles<T>(profileNames);
+        }
+
+        public static IEnumerable<T> LoadAllFromProfiles<T>(this Assembly sourceAssembly, params string[] profileNames)
         {
             sourceAssembly.Require("sourceAssembly");
 
