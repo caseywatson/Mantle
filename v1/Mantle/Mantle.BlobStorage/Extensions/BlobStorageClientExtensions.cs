@@ -33,6 +33,15 @@ namespace Mantle.BlobStorage.Extensions
             }
         }
 
+        public static T DownloadObject<T>(this IBlobStorageClient blobStorageClient, string blobName)
+            where T : class
+        {
+            blobStorageClient.Require("blobStorageClient");
+            blobName.Require("blobName");
+
+            return blobStorageClient.DownloadText(blobName).FromJson<T>();
+        }
+
         public static string DownloadText(this IBlobStorageClient blobStorageClient, string blobName)
         {
             blobStorageClient.Require("blobStorageClient");
@@ -64,6 +73,16 @@ namespace Mantle.BlobStorage.Extensions
             blobName.Require("blobName");
 
             blobStorageClient.UploadBlob(new MemoryStream(File.ReadAllBytes(filePath)), blobName);
+        }
+
+        public static void UploadObject<T>(this IBlobStorageClient blobStorageClient, T @object, string blobName)
+            where T : class
+        {
+            blobStorageClient.Require("blobStorageClient");
+            @object.Require("object");
+            blobName.Require("blobName");
+
+            blobStorageClient.UploadText(@object.ToJson(), blobName);
         }
 
         public static void UploadText(this IBlobStorageClient blobStorageClient, string text, string blobName)
