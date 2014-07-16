@@ -81,14 +81,14 @@ namespace Mantle.Sample.PublisherConsole.Module.Workers
             var sampleModel = CreateSampleModel();
             var blobStorageClient = blobStorageClients["AzureBlobs"];
 
-            blobStorageClient.UploadText(sampleModelSerializer.Serialize(sampleModel), blobName);
+            blobStorageClient.UploadObject(sampleModel, blobName);
 
             Console.WriteLine(blobStorageClient.BlobExists(blobName));
 
             foreach (var listBlobName in blobStorageClient.ListBlobs())
                 Console.WriteLine(listBlobName);
 
-            sampleModel = sampleModelSerializer.Deserialize(blobStorageClient.DownloadText(blobName));
+            sampleModel = blobStorageClient.DownloadObject<SampleModel>(blobName);
 
             blobStorageClient.DeleteBlob(blobName);
         }
