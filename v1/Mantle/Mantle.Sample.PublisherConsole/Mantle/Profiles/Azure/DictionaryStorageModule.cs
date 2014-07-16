@@ -1,8 +1,8 @@
-﻿using System;
-using Mantle.Configuration.Configurers;
+﻿using Mantle.Configuration.Configurers;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Ninject;
 using Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.DictionaryStorage.Clients;
+using Mantle.Sample.PublisherConsole.Module.Models;
 using Ninject.Modules;
 
 namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
@@ -11,14 +11,14 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
     {
         public override void Load()
         {
-            //Bind<IDictionaryStorageClient<Object>>()
-            //    .To<AzureTableDictionaryStorageClient<Object>>()
-            //    .InTransientScope()
-            //    .Named("Default")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureTableDictionaryStorageClient<Object>>(
-            //                        new AppSettingsConfigurer<AzureTableDictionaryStorageClient<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureTableDictionaryStorageClient<Object>>()));
+            Bind<IDictionaryStorageClient<SampleModel>>()
+                .To<AzureTableDictionaryStorageClient<SampleModel>>()
+                .InTransientScope()
+                .Named("AzDictionary")
+                .ConfigureUsing(
+                                new CascadingConfigurer<AzureTableDictionaryStorageClient<SampleModel>>(
+                                    new AppSettingsConfigurer<AzureTableDictionaryStorageClient<SampleModel>>(),
+                                    new ConnectionStringsConfigurer<AzureTableDictionaryStorageClient<SampleModel>>()));
         }
     }
 }

@@ -114,9 +114,9 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.DictionaryStorag
                     else if (propertyType == typeof (byte[]))
                         dictionary[propertyName] = new EntityProperty((byte[]) (propertyValue));
                     else if (propertyType == typeof (decimal))
-                        dictionary[propertyName] = new EntityProperty((double) (propertyValue));
+                        dictionary[propertyName] = new EntityProperty((double) (decimal) (propertyValue));
                     else if (propertyType == typeof (decimal?))
-                        dictionary[propertyName] = new EntityProperty((double?) (propertyValue));
+                        dictionary[propertyName] = new EntityProperty((double?) (decimal?) (propertyValue));
                     else if (propertyType == typeof (DateTime))
                         dictionary[propertyName] = new EntityProperty((DateTime) (propertyValue));
                     else if (propertyType == typeof (DateTime?))

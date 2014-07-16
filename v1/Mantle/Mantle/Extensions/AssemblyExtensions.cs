@@ -20,7 +20,8 @@ namespace Mantle.Extensions
                 throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] not configured.",
                                                                      appSettingName));
 
-            var profileNames = appSettings[appSettingName].Split(',', ';').Where(n => (n.Length > 0)).ToArray();
+            var profileNames =
+                appSettings[appSettingName].Split(',', ';').Select(n => n.Trim()).Where(n => (n.Length > 0)).ToArray();
 
             if (profileNames.Length == 0)
                 throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] configuration invalid.",

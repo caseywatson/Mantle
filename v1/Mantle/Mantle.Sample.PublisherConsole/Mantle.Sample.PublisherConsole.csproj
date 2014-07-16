@@ -76,8 +76,9 @@
     <Reference Include="Microsoft.WindowsFabric.Data.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.3.1.0\lib\net40-full\Microsoft.WindowsFabric.Data.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -121,6 +122,7 @@
     <Compile Include="Mantle\Profiles\Azure\MessagingModule.cs" />
     <Compile Include="Mantle\Profiles\Default\MantleModule.cs" />
     <Compile Include="Mantle\Profiles\Default\MessagingModule.cs" />
+    <Compile Include="Mantle\Profiles\Default\WorkerModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -161,6 +163,10 @@
     <ProjectReference Include="..\Mantle.Ninject\Mantle.Ninject.csproj">
       <Project>{05556B9F-4A46-4CC8-9F36-30C17F22DF3A}</Project>
       <Name>Mantle.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Sample.PublisherConsole.Module\Mantle.Sample.PublisherConsole.Module.csproj">
+      <Project>{20616F8C-E790-435F-B3F3-BB0CB54317D7}</Project>
+      <Name>Mantle.Sample.PublisherConsole.Module</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>

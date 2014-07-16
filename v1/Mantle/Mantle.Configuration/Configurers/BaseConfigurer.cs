@@ -267,6 +267,10 @@ namespace Mantle.Configuration.Configurers
                                            cfgObject.Name,
                                            cfgObject.TypeMetadata.Type.Name,
                                            cfgProperty.PropertyMetadata.PropertyInfo.Name);
+
+                yield return String.Format("{0}.{1}",
+                                           cfgObject.Name,
+                                           cfgProperty.PropertyMetadata.PropertyInfo.Name);
             }
 
             yield return String.Format("{0}.{1}",

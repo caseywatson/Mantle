@@ -39,7 +39,7 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.Messaging.Channe
 
         private CloudQueue GetCloudQueue()
         {
-            if (cloudQueue != null)
+            if (cloudQueue == null)
             {
                 cloudQueue = CloudQueueClient.GetQueueReference(QueueName);
 

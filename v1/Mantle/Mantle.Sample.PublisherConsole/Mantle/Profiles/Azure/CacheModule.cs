@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mantle.Cache.Interfaces;
+﻿using Mantle.Cache.Interfaces;
 using Mantle.Configuration.Configurers;
 using Mantle.Ninject;
 using Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.Cache.Clients;
+using Mantle.Sample.PublisherConsole.Module.Models;
 using Ninject.Modules;
 
 namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
@@ -15,23 +11,23 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
     {
         public override void Load()
         {
-            //Bind<ICacheClient<Object>>()
-            //    .To<AzureRedisCacheClient<Object>>()
+            //Bind<ICacheClient<SampleModel>>()
+            //    .To<AzureRedisCacheClient<SampleModel>>()
             //    .InTransientScope()
-            //    .Named("Default")
+            //    .Named("AzRedisCache")
             //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureRedisCacheClient<Object>>(
-            //                        new AppSettingsConfigurer<AzureRedisCacheClient<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureRedisCacheClient<Object>>()));
+            //                    new CascadingConfigurer<AzureRedisCacheClient<SampleModel>>(
+            //                        new AppSettingsConfigurer<AzureRedisCacheClient<SampleModel>>(),
+            //                        new ConnectionStringsConfigurer<AzureRedisCacheClient<SampleModel>>()));
 
-            //Bind<ICacheClient<Object>>()
-            //    .To<AzureManagedCacheClient<Object>>()
-            //    .InTransientScope()
-            //    .Named("Default")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureManagedCacheClient<Object>>(
-            //                        new AppSettingsConfigurer<AzureManagedCacheClient<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureManagedCacheClient<Object>>()));
+            Bind<ICacheClient<SampleModel>>()
+                .To<AzureManagedCacheClient<SampleModel>>()
+                .InTransientScope()
+                .Named("AzManagedCache")
+                .ConfigureUsing(
+                                new CascadingConfigurer<AzureManagedCacheClient<SampleModel>>(
+                                    new AppSettingsConfigurer<AzureManagedCacheClient<SampleModel>>(),
+                                    new ConnectionStringsConfigurer<AzureManagedCacheClient<SampleModel>>()));
         }
     }
 }

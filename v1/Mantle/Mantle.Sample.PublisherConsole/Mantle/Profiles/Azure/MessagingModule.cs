@@ -1,6 +1,6 @@
-﻿using System;
-using Mantle.Configuration.Configurers;
+﻿using Mantle.Configuration.Configurers;
 using Mantle.Messaging.Interfaces;
+using Mantle.Messaging.Messages;
 using Mantle.Ninject;
 using Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.Messaging.Channels;
 using Ninject.Modules;
@@ -17,32 +17,34 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
 
         private void SetupPublisherChannels()
         {
-            //Bind<IPublisherChannel<Object>>()
-            //    .To<AzureServiceBusQueuePublisherChannel<Object>>()
-            //    .InTransientScope()
-            //    .Named("Default")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureServiceBusQueuePublisherChannel<Object>>(
-            //                        new AppSettingsConfigurer<AzureServiceBusQueuePublisherChannel<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureServiceBusQueuePublisherChannel<Object>>()));
+            Bind<IPublisherChannel<MessageEnvelope>>()
+                .To<AzureServiceBusQueuePublisherChannel<MessageEnvelope>>()
+                .InTransientScope()
+                .Named("AzServiceBusQueue")
+                .ConfigureUsing(
+                                new CascadingConfigurer<AzureServiceBusQueuePublisherChannel<MessageEnvelope>>(
+                                    new AppSettingsConfigurer<AzureServiceBusQueuePublisherChannel<MessageEnvelope>>(),
+                                    new ConnectionStringsConfigurer
+                                        <AzureServiceBusQueuePublisherChannel<MessageEnvelope>>()));
 
-            //Bind<IPublisherChannel<Object>>()
-            //    .To<AzureServiceBusTopicPublisherChannel<Object>>()
-            //    .InTransientScope()
-            //    .Named("Default")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureServiceBusTopicPublisherChannel<Object>>(
-            //                        new AppSettingsConfigurer<AzureServiceBusTopicPublisherChannel<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureServiceBusTopicPublisherChannel<Object>>()));
+            Bind<IPublisherChannel<MessageEnvelope>>()
+                .To<AzureServiceBusTopicPublisherChannel<MessageEnvelope>>()
+                .InTransientScope()
+                .Named("AzServiceBusTopic")
+                .ConfigureUsing(
+                                new CascadingConfigurer<AzureServiceBusTopicPublisherChannel<MessageEnvelope>>(
+                                    new AppSettingsConfigurer<AzureServiceBusTopicPublisherChannel<MessageEnvelope>>(),
+                                    new ConnectionStringsConfigurer
+                                        <AzureServiceBusTopicPublisherChannel<MessageEnvelope>>()));
 
-            //Bind<IPublisherChannel<Object>>()
-            //    .To<AzureStorageQueuePublisherChannel<Object>>()
-            //    .InTransientScope()
-            //    .Named("Default")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureStorageQueuePublisherChannel<Object>>(
-            //                        new AppSettingsConfigurer<AzureStorageQueuePublisherChannel<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureStorageQueuePublisherChannel<Object>>()));
+            Bind<IPublisherChannel<MessageEnvelope>>()
+                .To<AzureStorageQueuePublisherChannel<MessageEnvelope>>()
+                .InTransientScope()
+                .Named("AzStorageQueue")
+                .ConfigureUsing(
+                                new CascadingConfigurer<AzureStorageQueuePublisherChannel<MessageEnvelope>>(
+                                    new AppSettingsConfigurer<AzureStorageQueuePublisherChannel<MessageEnvelope>>(),
+                                    new ConnectionStringsConfigurer<AzureStorageQueuePublisherChannel<MessageEnvelope>>()));
         }
 
         private void SetupSubscriberChannels()
