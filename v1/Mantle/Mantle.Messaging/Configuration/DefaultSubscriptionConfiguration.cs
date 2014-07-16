@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
-using Mantle.Configuration.Attributes;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 
@@ -14,18 +13,14 @@ namespace Mantle.Messaging.Configuration
             Constraints = new List<ISubscriptionConstraint<T>>();
         }
 
-        [Configurable]
         public bool AutoAbandon { get; set; }
 
-        [Configurable]
         public bool AutoComplete { get; set; }
 
-        [Configurable]
         public bool AutoDeadLetter { get; set; }
 
         public IList<ISubscriptionConstraint<T>> Constraints { get; set; }
 
-        [Configurable]
         public int? DeadLetterDeliveryLimit { get; set; }
 
         public IDeadLetterStrategy<T> DeadLetterStrategy { get; set; }

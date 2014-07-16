@@ -5,6 +5,8 @@ using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Hosting.Workers;
 using Mantle.Interfaces;
+using Mantle.Messaging.Configuration;
+using Mantle.Messaging.Configurers;
 using Mantle.Messaging.Interfaces;
 using Mantle.Messaging.Messages;
 using Mantle.Messaging.Subscriptions;
@@ -86,16 +88,33 @@ namespace Mantle.Hosting.Messaging.Workers
             SubscribeTo<T>(c => { });
         }
 
-        public void SubscribeTo<T>(Action<ISubscriptionConfigurer<T>> configurer)
+        public void SubscribeTo<T>(Action<ISubscriptionConfigurer<T>> configurerAction)
             where T : class
         {
-            configurer.Require("configurer");
+            configurerAction.Require("configurerAction");
 
-            var configurationBuilder = new Default
+            var configuration = new DefaultSubscriptionConfiguration<T>
+            {
+                AutoAbandon = AutoAbandon,
+                AutoComplete = AutoComplete,
+                AutoDeadLetter = AutoDeadLetter,
+                DeadLetterDeliveryLimit = DeadLetterDeliveryLimit
+            };
 
-            configurer(configurationBuilder);
+            var configurer = new DefaultSubscriptionConfigurer<T>(configuration);
 
-            SubscribeTo(configurationBuilder.ToConfiguration());
+            configurerAction(configurer);
+
+            configuration.DeadLetterStrategy = (configuration.DeadLetterStrategy ??
+                                                dependencyResolver.Get<IDeadLetterStrategy<T>>());
+
+            configuration.Serializer = (configuration.Serializer ??
+                                        dependencyResolver.Get<ISerializer<T>>());
+
+            configuration.Subscriber = (configuration.Subscriber ??
+                                        dependencyResolver.Get<ISubscriber<T>>());
+
+            SubscribeTo(configuration);
         }
 
         public void SubscribeTo<T>(ISubscriptionConfiguration<T> configuration)

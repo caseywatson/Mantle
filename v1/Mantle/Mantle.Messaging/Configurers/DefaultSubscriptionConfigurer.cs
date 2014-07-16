@@ -1,6 +1,7 @@
-﻿using Mantle.Extensions;
+﻿using System;
+using Mantle.Extensions;
 using Mantle.Interfaces;
-using Mantle.Messaging.Configuration;
+using Mantle.Messaging.Constraints;
 using Mantle.Messaging.Interfaces;
 
 namespace Mantle.Messaging.Configurers
@@ -8,89 +9,77 @@ namespace Mantle.Messaging.Configurers
     public class DefaultSubscriptionConfigurer<T> : ISubscriptionConfigurer<T>
         where T : class
     {
-        private readonly IDependencyResolver dependencyResolver;
-        private readonly ISubscriptionConfiguration<T> templateConfiguration;
+        private readonly ISubscriptionConfiguration<T> configuration;
 
-        public DefaultSubscriptionConfigurer(IDependencyResolver dependencyResolver)
+        public DefaultSubscriptionConfigurer(ISubscriptionConfiguration<T> configuration)
         {
-            this.dependencyResolver = dependencyResolver;
-            templateConfiguration = dependencyResolver.Get<ISubscriptionConfiguration<T>>();
+            configuration.Require("configuration");
+            this.configuration = configuration;
         }
 
         public void AddConstraint(ISubscriptionConstraint<T> constraint)
         {
             constraint.Require("constraint");
-            templateConfiguration.Constraints.Add(constraint);
+            configuration.Constraints.Add(constraint);
         }
 
-        public ISubscriptionConfiguration<T> ToConfiguration()
+        public void AddConstraint(Func<IMessageContext<T>, bool> condition)
         {
-            return new DefaultSubscriptionConfiguration<T>
-            {
-                AutoAbandon = templateConfiguration.AutoAbandon,
-                AutoComplete = templateConfiguration.AutoComplete,
-                AutoDeadLetter = templateConfiguration.AutoDeadLetter,
-                DeadLetterDeliveryLimit = templateConfiguration.DeadLetterDeliveryLimit,
-                DeadLetterStrategy = (templateConfiguration.DeadLetterStrategy ??
-                                      dependencyResolver.Get<IDeadLetterStrategy<T>>()),
-                Serializer = (templateConfiguration.Serializer ??
-                              dependencyResolver.Get<ISerializer<T>>()),
-                Subscriber = (templateConfiguration.Subscriber ??
-                              dependencyResolver.Get<ISubscriber<T>>())
-            };
+            condition.Require("condition");
+            configuration.Constraints.Add(new FunctionalSubscriptionConstraint<T>(condition));
         }
 
         public void DoAutoAbandon()
         {
-            templateConfiguration.AutoAbandon = true;
+            configuration.AutoAbandon = true;
         }
 
         public void DoAutoComplete()
         {
-            templateConfiguration.AutoComplete = true;
+            configuration.AutoComplete = true;
         }
 
         public void DoAutoDeadLetter()
         {
-            templateConfiguration.AutoDeadLetter = true;
+            configuration.AutoDeadLetter = true;
         }
 
         public void DoNotAutoAbandon()
         {
-            templateConfiguration.AutoAbandon = false;
+            configuration.AutoAbandon = false;
         }
 
         public void DoNotAutoComplete()
         {
-            templateConfiguration.AutoComplete = false;
+            configuration.AutoComplete = false;
         }
 
         public void DoNotAutoDeadLetter()
         {
-            templateConfiguration.AutoDeadLetter = false;
+            configuration.AutoDeadLetter = false;
         }
 
         public void SetDeadLetterDeliveryLimit(int deliveryLimit)
         {
-            templateConfiguration.DeadLetterDeliveryLimit = deliveryLimit;
+            configuration.DeadLetterDeliveryLimit = deliveryLimit;
         }
 
         public void SetSubscriber(ISubscriber<T> subscriber)
         {
             subscriber.Require("subscriber");
-            templateConfiguration.Subscriber = subscriber;
+            configuration.Subscriber = subscriber;
         }
 
         public void UseDeadLetterStrategy(IDeadLetterStrategy<T> deadLetterStrategy)
         {
             deadLetterStrategy.Require("deadLetterStrategy");
-            templateConfiguration.DeadLetterStrategy = deadLetterStrategy;
+            configuration.DeadLetterStrategy = deadLetterStrategy;
         }
 
         public void UseSerializer(ISerializer<T> serializer)
         {
             serializer.Require("serializer");
-            templateConfiguration.Serializer = serializer;
+            configuration.Serializer = serializer;
         }
     }
 }

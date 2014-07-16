@@ -1,4 +1,5 @@
-﻿using Mantle.Interfaces;
+﻿using System;
+using Mantle.Interfaces;
 
 namespace Mantle.Messaging.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Mantle.Messaging.Interfaces
         where T : class
     {
         void AddConstraint(ISubscriptionConstraint<T> constraint);
-        void ApplyConfiguration(ISubscriptionConfiguration<T> configuration);
+        void AddConstraint(Func<IMessageContext<T>, bool> condition);
         void DoAutoAbandon();
         void DoAutoComplete();
         void DoAutoDeadLetter();
