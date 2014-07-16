@@ -38,5 +38,10 @@ namespace Mantle.Messaging.Contexts
         {
             return OriginalMessageContext.TryToDeadLetter();
         }
+
+        public bool TryToRenewLock()
+        {
+            return OriginalMessageContext.TryToRenewLock();
+        }
     }
 }

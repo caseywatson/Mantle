@@ -67,5 +67,10 @@ namespace Mantle.Messaging.Msmq.Contexts
         {
             return false;
         }
+
+        public bool TryToRenewLock()
+        {
+            return false;
+        }
     }
 }

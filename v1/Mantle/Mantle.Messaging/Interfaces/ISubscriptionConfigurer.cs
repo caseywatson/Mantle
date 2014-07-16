@@ -2,11 +2,11 @@
 
 namespace Mantle.Messaging.Interfaces
 {
-    public interface ISubscriptionConfigurationBuilder<T>
+    public interface ISubscriptionConfigurer<T>
         where T : class
     {
         void AddConstraint(ISubscriptionConstraint<T> constraint);
-        ISubscriptionConfiguration<T> ToConfiguration();
+        void ApplyConfiguration(ISubscriptionConfiguration<T> configuration);
         void DoAutoAbandon();
         void DoAutoComplete();
         void DoAutoDeadLetter();

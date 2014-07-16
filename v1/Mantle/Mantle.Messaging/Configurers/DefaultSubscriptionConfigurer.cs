@@ -5,13 +5,13 @@ using Mantle.Messaging.Interfaces;
 
 namespace Mantle.Messaging.Configurers
 {
-    public class SubscriptionConfigurer<T> : ISubscriptionConfigurationBuilder<T>
+    public class DefaultSubscriptionConfigurer<T> : ISubscriptionConfigurer<T>
         where T : class
     {
         private readonly IDependencyResolver dependencyResolver;
         private readonly ISubscriptionConfiguration<T> templateConfiguration;
 
-        public SubscriptionConfigurer(IDependencyResolver dependencyResolver)
+        public DefaultSubscriptionConfigurer(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
             templateConfiguration = dependencyResolver.Get<ISubscriptionConfiguration<T>>();

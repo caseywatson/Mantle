@@ -70,5 +70,24 @@ namespace Mantle.Messaging.Aws.Contexts
         {
             return false;
         }
+
+        public bool TryToRenewLock()
+        {
+            try
+            {
+                Channel.SqsClient.ChangeMessageVisibility(new ChangeMessageVisibilityRequest
+                {
+                    QueueUrl = Channel.QueueUrl,
+                    ReceiptHandle = MessageReceiptHandle,
+                    VisibilityTimeout = 60
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Mantle.Extensions;
+﻿using System;
+using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
 using Microsoft.ServiceBus.Messaging;
 
@@ -56,6 +57,19 @@ namespace Mantle.Messaging.Azure.Context
             try
             {
                 BrokeredMessage.DeadLetter();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool TryToRenewLock()
+        {
+            try
+            {
+                BrokeredMessage.RenewLock();
                 return true;
             }
             catch

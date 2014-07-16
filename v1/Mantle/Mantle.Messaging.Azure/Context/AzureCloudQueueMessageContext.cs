@@ -1,4 +1,5 @@
-﻿using Mantle.Extensions;
+﻿using System;
+using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
 using Microsoft.WindowsAzure.Storage.Queue;
 
@@ -42,6 +43,19 @@ namespace Mantle.Messaging.Azure.Context
         public bool TryToDeadLetter()
         {
             return false;
+        }
+
+        public bool TryToRenewLock()
+        {
+            try
+            {
+                CloudQueue.UpdateMessage(CloudQueueMessage, TimeSpan.FromMinutes(1), MessageUpdateFields.Visibility);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

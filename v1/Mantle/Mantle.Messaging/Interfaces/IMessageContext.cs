@@ -9,5 +9,6 @@
         bool TryToAbandon();
         bool TryToComplete();
         bool TryToDeadLetter();
+        bool TryToRenewLock();
     }
 }

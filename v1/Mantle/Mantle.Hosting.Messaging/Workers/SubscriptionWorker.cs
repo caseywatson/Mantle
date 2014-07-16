@@ -33,6 +33,12 @@ namespace Mantle.Hosting.Messaging.Workers
         }
 
         [Configurable]
+        public bool AutoAbandon { get; set; }
+
+        [Configurable]
+        public bool AutoComplete { get; set; }
+
+        [Configurable]
         public bool AutoDeadLetter { get; set; }
 
         [Configurable]
@@ -80,12 +86,12 @@ namespace Mantle.Hosting.Messaging.Workers
             SubscribeTo<T>(c => { });
         }
 
-        public void SubscribeTo<T>(Action<ISubscriptionConfigurationBuilder<T>> configurer)
+        public void SubscribeTo<T>(Action<ISubscriptionConfigurer<T>> configurer)
             where T : class
         {
             configurer.Require("configurer");
 
-            var configurationBuilder = dependencyResolver.Get<ISubscriptionConfigurationBuilder<T>>();
+            var configurationBuilder = new Default
 
             configurer(configurationBuilder);
 
