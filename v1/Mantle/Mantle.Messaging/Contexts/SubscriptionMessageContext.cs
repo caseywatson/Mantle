@@ -7,13 +7,15 @@ namespace Mantle.Messaging.Contexts
     public class SubscriptionMessageContext<T> : IMessageContext<T>
         where T : class
     {
-        public SubscriptionMessageContext(IMessageContext<MessageEnvelope> originalMessageContext, T message)
+        public SubscriptionMessageContext(IMessageContext<MessageEnvelope> originalMessageContext, T message, ISubscription<T> subscription) 
         {
             originalMessageContext.Require("originalMessageContext");
             message.Require("message");
+            subscription.Require("subscription");
 
             OriginalMessageContext = originalMessageContext;
             Message = message;
+            Subscription = subscription;
         }
 
         public int? DeliveryCount
@@ -23,6 +25,7 @@ namespace Mantle.Messaging.Contexts
 
         public T Message { get; private set; }
         public IMessageContext<MessageEnvelope> OriginalMessageContext { get; private set; }
+        public ISubscription<T> Subscription { get; private set; } 
 
         public bool TryToAbandon()
         {

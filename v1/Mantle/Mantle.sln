@@ -72,6 +72,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.PublisherCons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.PublisherConsole.Module", "Mantle.Sample.PublisherConsole.Module\Mantle.Sample.PublisherConsole.Module.csproj", "{20616F8C-E790-435F-B3F3-BB0CB54317D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.SubscriberConsole", "Mantle.Sample.SubscriberConsole\Mantle.Sample.SubscriberConsole.csproj", "{FA02E116-E9A0-49A5-AEA5-018F56A75B94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.SubscriberConsole.Module", "Mantle.Sample.SubscriberConsole.Module\Mantle.Sample.SubscriberConsole.Module.csproj", "{5D052273-E6BF-487E-BF94-333B7158ABA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +186,14 @@ Global
 		{20616F8C-E790-435F-B3F3-BB0CB54317D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20616F8C-E790-435F-B3F3-BB0CB54317D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20616F8C-E790-435F-B3F3-BB0CB54317D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D052273-E6BF-487E-BF94-333B7158ABA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D052273-E6BF-487E-BF94-333B7158ABA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D052273-E6BF-487E-BF94-333B7158ABA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D052273-E6BF-487E-BF94-333B7158ABA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,5 +225,7 @@ Global
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{CDBF8DDF-1C2D-4990-83DF-EBAD3A86E3CE} = {6C125BDA-9CF1-4B00-A9B0-FFBADE1671A2}
 		{20616F8C-E790-435F-B3F3-BB0CB54317D7} = {6C125BDA-9CF1-4B00-A9B0-FFBADE1671A2}
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94} = {6C125BDA-9CF1-4B00-A9B0-FFBADE1671A2}
+		{5D052273-E6BF-487E-BF94-333B7158ABA9} = {6C125BDA-9CF1-4B00-A9B0-FFBADE1671A2}
 	EndGlobalSection
 EndGlobal

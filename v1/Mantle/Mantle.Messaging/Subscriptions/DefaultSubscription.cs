@@ -9,45 +9,46 @@ namespace Mantle.Messaging.Subscriptions
     public class DefaultSubscription<T> : ISubscription<T>
         where T : class
     {
-        private readonly ISubscriptionConfiguration<T> configuration;
-
         public DefaultSubscription(ISubscriptionConfiguration<T> configuration)
         {
             configuration.Require("configuration");
             configuration.Validate();
-            this.configuration = configuration;
+
+            Configuration = configuration;
         }
+
+        public ISubscriptionConfiguration<T> Configuration { get; private set; }
 
         public bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
             messageContext.Require("messageContext");
 
-            T body = configuration.Serializer.Deserialize(messageContext.Message.Body);
-            var context = new SubscriptionMessageContext<T>(messageContext, body);
+            T body = Configuration.Serializer.Deserialize(messageContext.Message.Body);
+            var context = new SubscriptionMessageContext<T>(messageContext, body, this);
 
-            if (configuration.Constraints.Any(c => (c.Match(context) == false)))
+            if (Configuration.Constraints.Any(c => (c.Match(context) == false)))
                 return false;
 
-            if (configuration.AutoDeadLetter)
+            if (Configuration.AutoDeadLetter)
             {
-                if ((messageContext.DeliveryCount.HasValue) && (configuration.DeadLetterDeliveryLimit.HasValue) &&
-                    (messageContext.DeliveryCount.Value >= configuration.DeadLetterDeliveryLimit.Value))
+                if ((messageContext.DeliveryCount.HasValue) && (Configuration.DeadLetterDeliveryLimit.HasValue) &&
+                    (messageContext.DeliveryCount.Value >= Configuration.DeadLetterDeliveryLimit.Value))
                 {
-                    configuration.DeadLetterStrategy.HandleDeadLetterMessage(context);
+                    Configuration.DeadLetterStrategy.HandleDeadLetterMessage(context);
                     return true;
                 }
             }
 
             try
             {
-                configuration.Subscriber.HandleMessage(context);
+                Configuration.Subscriber.HandleMessage(context);
 
-                if (configuration.AutoComplete)
+                if (Configuration.AutoComplete)
                     context.TryToComplete();
             }
             catch
             {
-                if (configuration.AutoAbandon)
+                if (Configuration.AutoAbandon)
                     context.TryToAbandon();
 
                 throw;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Hosting.Workers;
 using Mantle.Interfaces;
@@ -16,6 +15,7 @@ namespace Mantle.Hosting.Messaging.Workers
     public class SubscriptionWorker : BaseWorker
     {
         private readonly IDeadLetterStrategy<MessageEnvelope> defaultDeadLetterStrategy;
+        private readonly ISubscriptionConfiguration defaultSubscriptionConfiguration;
         private readonly IDependencyResolver dependencyResolver;
         private readonly Dictionary<Type, List<Func<IMessageContext<MessageEnvelope>, bool>>> messageHandlers;
         private readonly List<ITypeTokenProvider> typeTokenProviders;
@@ -29,22 +29,11 @@ namespace Mantle.Hosting.Messaging.Workers
             this.dependencyResolver = dependencyResolver;
 
             defaultDeadLetterStrategy = dependencyResolver.Get<IDeadLetterStrategy<MessageEnvelope>>();
+            defaultSubscriptionConfiguration = dependencyResolver.Get<ISubscriptionConfiguration>();
             messageHandlers = new Dictionary<Type, List<Func<IMessageContext<MessageEnvelope>, bool>>>();
             typeTokenProviders = dependencyResolver.GetAll<ITypeTokenProvider>().ToList();
             typeTokens = new Dictionary<string, Type>();
         }
-
-        [Configurable]
-        public bool AutoAbandon { get; set; }
-
-        [Configurable]
-        public bool AutoComplete { get; set; }
-
-        [Configurable]
-        public bool AutoDeadLetter { get; set; }
-
-        [Configurable]
-        public int? DeadLetterDeliveryLimit { get; set; }
 
         public override void Start()
         {
@@ -63,8 +52,11 @@ namespace Mantle.Hosting.Messaging.Workers
                 {
                     if ((message.Message == null) || (HandleMessage(message) == false))
                     {
-                        if ((AutoDeadLetter && DeadLetterDeliveryLimit.HasValue && message.DeliveryCount.HasValue) &&
-                            (message.DeliveryCount.Value >= DeadLetterDeliveryLimit.Value))
+                        if ((defaultSubscriptionConfiguration.AutoAbandon &&
+                             defaultSubscriptionConfiguration.DeadLetterDeliveryLimit.HasValue &&
+                             message.DeliveryCount.HasValue) &&
+                            (message.DeliveryCount.Value >=
+                             defaultSubscriptionConfiguration.DeadLetterDeliveryLimit.Value))
                         {
                             defaultDeadLetterStrategy.HandleDeadLetterMessage(message);
                         }
@@ -95,10 +87,10 @@ namespace Mantle.Hosting.Messaging.Workers
 
             var configuration = new DefaultSubscriptionConfiguration<T>
             {
-                AutoAbandon = AutoAbandon,
-                AutoComplete = AutoComplete,
-                AutoDeadLetter = AutoDeadLetter,
-                DeadLetterDeliveryLimit = DeadLetterDeliveryLimit
+                AutoAbandon = defaultSubscriptionConfiguration.AutoAbandon,
+                AutoComplete = defaultSubscriptionConfiguration.AutoComplete,
+                AutoDeadLetter = defaultSubscriptionConfiguration.AutoDeadLetter,
+                DeadLetterDeliveryLimit = defaultSubscriptionConfiguration.DeadLetterDeliveryLimit
             };
 
             var configurer = new DefaultSubscriptionConfigurer<T>(configuration);
@@ -144,7 +136,7 @@ namespace Mantle.Hosting.Messaging.Workers
         {
             foreach (string typeToken in messageContext.Message.BodyTypeTokens)
             {
-                if (typeTokens.ContainsKey(typeToken))
+                if ((typeToken != null) && (typeTokens.ContainsKey(typeToken)))
                 {
                     foreach (var handlerFunction in messageHandlers[typeTokens[typeToken]])
                     {
@@ -164,7 +156,12 @@ namespace Mantle.Hosting.Messaging.Workers
             if (messageHandlers.ContainsKey(tType) == false)
             {
                 foreach (ITypeTokenProvider typeTokenProvider in typeTokenProviders)
-                    typeTokens.Add(typeTokenProvider.GetTypeToken<T>(), tType);
+                {
+                    var typeToken = typeTokenProvider.GetTypeToken<T>();
+
+                    if (typeToken != null)
+                        typeTokens.Add(typeToken, tType);
+                }
 
                 messageHandlers.Add(tType, new List<Func<IMessageContext<MessageEnvelope>, bool>>());
             }

@@ -8,7 +8,7 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Default
     {
         public override void Load()
         {
-            Bind<IWorker>().To<PublisherWorker>().InSingletonScope();
+            Bind<IWorker>().To<SamplePublisherWorker>().InSingletonScope();
         }
     }
 }

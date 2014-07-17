@@ -12,7 +12,7 @@ using Mantle.Sample.PublisherConsole.Module.Models;
 
 namespace Mantle.Sample.PublisherConsole.Module.Workers
 {
-    public class PublisherWorker : BaseWorker
+    public class SamplePublisherWorker : BaseWorker
     {
         private readonly IDirectory<IBlobStorageClient> blobStorageClients;
         private readonly IDirectory<ICacheClient<SampleModel>> cacheClients;
@@ -21,12 +21,12 @@ namespace Mantle.Sample.PublisherConsole.Module.Workers
         private readonly ISerializer<SampleModel> sampleModelSerializer;
         private readonly ITypeTokenProvider[] typeTokenProviders;
 
-        public PublisherWorker(IDirectory<IBlobStorageClient> blobStorageClients,
-                               IDirectory<ICacheClient<SampleModel>> cacheClients,
-                               IDirectory<IDictionaryStorageClient<SampleModel>> dictionaryStorageClients,
-                               IDirectory<IPublisherChannel<MessageEnvelope>> publisherChannels,
-                               ISerializer<SampleModel> sampleModelSerializer,
-                               ITypeTokenProvider[] typeTokenProviders)
+        public SamplePublisherWorker(IDirectory<IBlobStorageClient> blobStorageClients,
+                                     IDirectory<ICacheClient<SampleModel>> cacheClients,
+                                     IDirectory<IDictionaryStorageClient<SampleModel>> dictionaryStorageClients,
+                                     IDirectory<IPublisherChannel<MessageEnvelope>> publisherChannels,
+                                     ISerializer<SampleModel> sampleModelSerializer,
+                                     ITypeTokenProvider[] typeTokenProviders)
         {
             this.blobStorageClients = blobStorageClients;
             this.cacheClients = cacheClients;
@@ -39,9 +39,9 @@ namespace Mantle.Sample.PublisherConsole.Module.Workers
         public override void Start()
         {
             // RunDictionaryStorageIntegrationTests();
-            // RunMessagingIntegrationTests();
+            RunMessagingIntegrationTests();
             // RunCachingIntegrationTests();
-            RunBlobStorageIntegrationTests();
+            // RunBlobStorageIntegrationTests();
         }
 
         public override void Stop()
@@ -131,23 +131,26 @@ namespace Mantle.Sample.PublisherConsole.Module.Workers
 
         private void RunMessagingIntegrationTests()
         {
-            var sampleModel = CreateSampleModel();
+            for (int i = 0; i < 10; i ++)
+            {
+                var sampleModel = CreateSampleModel();
 
-            var serviceBusQueuePublisher = publisherChannels["AzServiceBusQueue"];
-            var serviceBusTopicPublisher = publisherChannels["AzServiceBusTopic"];
-            var storageQueuePublisher = publisherChannels["AzStorageQueue"];
+                var serviceBusQueuePublisher = publisherChannels["AzServiceBusQueue"];
+                var serviceBusTopicPublisher = publisherChannels["AzServiceBusTopic"];
+                var storageQueuePublisher = publisherChannels["AzStorageQueue"];
 
-            var envelope = new MessageEnvelope();
+                var envelope = new MessageEnvelope();
 
-            envelope.Body = sampleModelSerializer.Serialize(sampleModel);
-            envelope.BodyTypeTokens = typeTokenProviders.Select(ttp => ttp.GetTypeToken<SampleModel>()).ToList();
-            envelope.CorrelationId = Guid.NewGuid().ToString();
-            envelope.Id = Guid.NewGuid().ToString();
-            envelope.TimeToLive = 10;
+                envelope.Body = sampleModelSerializer.Serialize(sampleModel);
+                envelope.BodyTypeTokens = typeTokenProviders.Select(ttp => ttp.GetTypeToken<SampleModel>()).ToList();
+                envelope.CorrelationId = Guid.NewGuid().ToString();
+                envelope.Id = Guid.NewGuid().ToString();
+                envelope.TimeToLive = 10;
 
-            serviceBusQueuePublisher.Publish(envelope);
-            serviceBusTopicPublisher.Publish(envelope);
-            storageQueuePublisher.Publish(envelope);
+                serviceBusQueuePublisher.Publish(envelope);
+                serviceBusTopicPublisher.Publish(envelope);
+                storageQueuePublisher.Publish(envelope);
+            }
         }
     }
 }

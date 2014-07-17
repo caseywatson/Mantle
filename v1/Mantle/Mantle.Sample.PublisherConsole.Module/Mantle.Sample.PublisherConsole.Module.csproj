@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Models\SampleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Workers\PublisherWorker.cs" />
+    <Compile Include="Workers\SamplePublisherWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mantle.BlobStorage\Mantle.BlobStorage.csproj">
