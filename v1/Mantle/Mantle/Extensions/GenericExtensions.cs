@@ -29,6 +29,23 @@ namespace Mantle.Extensions
             return JsonConvert.DeserializeObject<T>(objectString);
         }
 
+        public static T FromXml<T>(this string source)
+        {
+            source.Require("source");
+
+            using (var sourceStream = new MemoryStream())
+            using (var streamWriter = new StreamWriter(sourceStream))
+            {
+                streamWriter.Write(source);
+                streamWriter.Flush();
+                sourceStream.TryToRewind();
+
+                var serializer = new DataContractSerializer(typeof (T));
+
+                return ((T) (serializer.ReadObject(sourceStream)));
+            }
+        }
+
         public static T Inflate<T>(this Flattened<T> flattened)
             where T : class
         {
@@ -60,6 +77,20 @@ namespace Mantle.Extensions
         public static string ToJson<T>(this T @object)
         {
             return JsonConvert.SerializeObject(@object);
+        }
+
+        public static string ToXml<T>(this T source)
+        {
+            using (var sourceStream = new MemoryStream())
+            {
+                var serializer = new DataContractSerializer(typeof (T));
+
+                serializer.WriteObject(sourceStream, source);
+                sourceStream.TryToRewind();
+
+                using (var streamReader = new StreamReader(sourceStream))
+                    return streamReader.ReadToEnd();
+            }
         }
     }
 }

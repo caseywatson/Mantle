@@ -66,6 +66,7 @@
     <Compile Include="Providers\DataContractTypeTokenProvider.cs" />
     <Compile Include="Providers\FullNameTypeTokenProvider.cs" />
     <Compile Include="Providers\NameTypeTokenProvider.cs" />
+    <Compile Include="Serializers\XmlSerializer.cs" />
     <Compile Include="Serializers\JsonSerializer.cs" />
     <Compile Include="TypeMetadata.cs" />
   </ItemGroup>
