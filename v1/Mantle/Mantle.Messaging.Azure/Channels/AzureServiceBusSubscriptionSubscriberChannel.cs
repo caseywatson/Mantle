@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Mantle.Configuration.Attributes;
 using Mantle.Messaging.Azure.Context;
 using Mantle.Messaging.Interfaces;
@@ -33,6 +34,17 @@ namespace Mantle.Messaging.Azure.Channels
             var message = ((timeout.HasValue)
                 ? (SubscriptionClient.Receive(timeout.Value))
                 : (SubscriptionClient.Receive()));
+
+            if (message == null)
+                return null;
+
+            return new AzureBrokeredMessageContext<T>(message, message.GetBody<T>());
+        }
+
+
+        public async Task<IMessageContext<T>> ReceiveAsync()
+        {
+            var message = await SubscriptionClient.ReceiveAsync();
 
             if (message == null)
                 return null;

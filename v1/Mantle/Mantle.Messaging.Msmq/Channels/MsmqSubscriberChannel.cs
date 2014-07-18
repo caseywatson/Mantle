@@ -61,5 +61,11 @@ namespace Mantle.Messaging.Msmq.Channels
                 throw;
             }
         }
+
+
+        public System.Threading.Tasks.Task<IMessageContext<T>> ReceiveAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

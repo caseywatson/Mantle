@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Mantle.Extensions;
 using Mantle.Hosting.Workers;
 using Mantle.Interfaces;
@@ -14,64 +15,53 @@ namespace Mantle.Hosting.Messaging.Workers
 {
     public class SubscriptionWorker : BaseWorker
     {
+        private readonly CancellationTokenSource cancellationTokenSource;
         private readonly IDeadLetterStrategy<MessageEnvelope> defaultDeadLetterStrategy;
         private readonly ISubscriptionConfiguration defaultSubscriptionConfiguration;
         private readonly IDependencyResolver dependencyResolver;
         private readonly Dictionary<Type, List<Func<IMessageContext<MessageEnvelope>, bool>>> messageHandlers;
+        private readonly List<ISubscriberChannel<MessageEnvelope>> subscriberChannels;
         private readonly List<ITypeTokenProvider> typeTokenProviders;
         private readonly Dictionary<string, Type> typeTokens;
-
-        private bool doStop;
-        private ISubscriberChannel<MessageEnvelope> subscriberChannel;
 
         public SubscriptionWorker(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
 
+            cancellationTokenSource = new CancellationTokenSource();
             defaultDeadLetterStrategy = dependencyResolver.Get<IDeadLetterStrategy<MessageEnvelope>>();
             defaultSubscriptionConfiguration = dependencyResolver.Get<ISubscriptionConfiguration>();
             messageHandlers = new Dictionary<Type, List<Func<IMessageContext<MessageEnvelope>, bool>>>();
+            subscriberChannels = new List<ISubscriberChannel<MessageEnvelope>>();
             typeTokenProviders = dependencyResolver.GetAll<ITypeTokenProvider>().ToList();
             typeTokens = new Dictionary<string, Type>();
         }
 
         public override void Start()
         {
-            doStop = false;
+            if (subscriberChannels.None())
+                subscriberChannels.AddRange(dependencyResolver.GetAll<ISubscriberChannel<MessageEnvelope>>());
 
-            subscriberChannel = (subscriberChannel ??
-                                 dependencyResolver.Get<ISubscriberChannel<MessageEnvelope>>());
-
-            while (true)
+            foreach (var subscriberChannel in subscriberChannels)
             {
-                if (doStop) return;
+                var channel = subscriberChannel;
+                var channelThread = new Thread(() => SubscribeToChannel(channel, cancellationTokenSource.Token));
 
-                IMessageContext<MessageEnvelope> message = subscriberChannel.Receive();
-
-                if (message != null)
-                {
-                    if ((message.Message == null) || (HandleMessage(message) == false))
-                    {
-                        if ((defaultSubscriptionConfiguration.AutoAbandon &&
-                             defaultSubscriptionConfiguration.DeadLetterDeliveryLimit.HasValue &&
-                             message.DeliveryCount.HasValue) &&
-                            (message.DeliveryCount.Value >=
-                             defaultSubscriptionConfiguration.DeadLetterDeliveryLimit.Value))
-                        {
-                            defaultDeadLetterStrategy.HandleDeadLetterMessage(message);
-                        }
-                        else
-                        {
-                            message.TryToComplete();
-                        }
-                    }
-                }
+                channelThread.IsBackground = false;
+                channelThread.Start();
             }
         }
 
         public override void Stop()
         {
-            doStop = true;
+            if (cancellationTokenSource.IsCancellationRequested == false)
+                cancellationTokenSource.Cancel();
+        }
+
+        public void AddSubscriberChannel(ISubscriberChannel<MessageEnvelope> subscriberChannel)
+        {
+            subscriberChannel.Require("subscriberChannel");
+            subscriberChannels.Add(subscriberChannel);
         }
 
         public void SubscribeTo<T>()
@@ -126,12 +116,6 @@ namespace Mantle.Hosting.Messaging.Workers
             messageHandlers[typeof (T)].Add(subscription.HandleMessage);
         }
 
-        public void UseSubscriberChannel(ISubscriberChannel<MessageEnvelope> subscriberChannel)
-        {
-            subscriberChannel.Require("subscriberChannel");
-            this.subscriberChannel = subscriberChannel;
-        }
-
         private bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
             foreach (string typeToken in messageContext.Message.BodyTypeTokens)
@@ -149,6 +133,28 @@ namespace Mantle.Hosting.Messaging.Workers
             return false;
         }
 
+        private void HandleMessageEnvelope(IMessageContext<MessageEnvelope> messageEnvelope)
+        {
+            if (messageEnvelope != null)
+            {
+                if ((messageEnvelope.Message == null) || (HandleMessage(messageEnvelope) == false))
+                {
+                    if ((defaultSubscriptionConfiguration.AutoAbandon &&
+                         defaultSubscriptionConfiguration.DeadLetterDeliveryLimit.HasValue &&
+                         messageEnvelope.DeliveryCount.HasValue) &&
+                        (messageEnvelope.DeliveryCount.Value >=
+                         defaultSubscriptionConfiguration.DeadLetterDeliveryLimit.Value))
+                    {
+                        defaultDeadLetterStrategy.HandleDeadLetterMessage(messageEnvelope);
+                    }
+                    else
+                    {
+                        messageEnvelope.TryToComplete();
+                    }
+                }
+            }
+        }
+
         private void SetupSubscriptionType<T>()
         {
             Type tType = (typeof (T));
@@ -162,8 +168,22 @@ namespace Mantle.Hosting.Messaging.Workers
                     if (typeToken != null)
                         typeTokens.Add(typeToken, tType);
                 }
-
                 messageHandlers.Add(tType, new List<Func<IMessageContext<MessageEnvelope>, bool>>());
+            }
+        }
+
+        private void SubscribeToChannel(ISubscriberChannel<MessageEnvelope> channel,
+                                        CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                var messageContext = channel.Receive();
+
+                lock (this)
+                    HandleMessageEnvelope(messageContext);
+
+                if (cancellationToken.IsCancellationRequested)
+                    return;
             }
         }
     }

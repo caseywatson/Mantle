@@ -81,6 +81,8 @@ namespace Mantle.BlobStorage.Azure.Clients
             blob.DownloadToStream(stream);
             stream.TryToRewind();
 
+
+
             return stream;
         }
 

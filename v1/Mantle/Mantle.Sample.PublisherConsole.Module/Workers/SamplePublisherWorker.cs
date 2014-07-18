@@ -131,7 +131,7 @@ namespace Mantle.Sample.PublisherConsole.Module.Workers
 
         private void RunMessagingIntegrationTests()
         {
-            for (int i = 0; i < 10; i ++)
+            for (int i = 0; i < 100; i ++)
             {
                 var sampleModel = CreateSampleModel();
 
@@ -150,6 +150,8 @@ namespace Mantle.Sample.PublisherConsole.Module.Workers
                 serviceBusQueuePublisher.Publish(envelope);
                 serviceBusTopicPublisher.Publish(envelope);
                 storageQueuePublisher.Publish(envelope);
+
+                OnMessageOccurred("Wrote message [{0}] of 100.", i + 1);
             }
         }
     }

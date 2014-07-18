@@ -35,5 +35,11 @@ namespace Mantle.Messaging.Aws.Channels
 
             return new AwsSqsMessageContext<T>(this, Serializer.Deserialize(message.Body), message.ReceiptHandle);
         }
+
+
+        public System.Threading.Tasks.Task<IMessageContext<T>> ReceiveAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

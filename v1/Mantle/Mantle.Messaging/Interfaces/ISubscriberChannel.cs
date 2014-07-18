@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Mantle.Messaging.Interfaces
 {
@@ -6,5 +7,6 @@ namespace Mantle.Messaging.Interfaces
         where T : class
     {
         IMessageContext<T> Receive(TimeSpan? timeout = null);
+        Task<IMessageContext<T>> ReceiveAsync();
     }
 }

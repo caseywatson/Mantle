@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Mantle.Configuration.Attributes;
 using Mantle.Interfaces;
 using Mantle.Messaging.Azure.Context;
@@ -28,6 +29,17 @@ namespace Mantle.Messaging.Azure.Channels
             var message = ((timeout.HasValue)
                 ? (CloudQueue.GetMessage(timeout))
                 : (CloudQueue.GetMessage()));
+
+            if (message == null)
+                return null;
+
+            return new AzureCloudQueueMessageContext<T>(CloudQueue, message, Serializer.Deserialize(message.AsString));
+        }
+
+
+        public async Task<IMessageContext<T>> ReceiveAsync()
+        {
+            var message = await CloudQueue.GetMessageAsync();
 
             if (message == null)
                 return null;
