@@ -11,7 +11,7 @@ namespace Mantle.Sample.SubscriberConsole.Module.Workers
         public SampleSubscriberWorker(IDependencyResolver dependencyResolver)
             : base(dependencyResolver)
         {
-            UseSubscriberChannel(dependencyResolver.Get<ISubscriberChannel<MessageEnvelope>>("AzServiceBusQueue"));
+            UseSubscriberChannel(dependencyResolver.Get<ISubscriberChannel<MessageEnvelope>>("AzStorageQueue"));
 
             SubscribeTo<SampleModel>();
         }
