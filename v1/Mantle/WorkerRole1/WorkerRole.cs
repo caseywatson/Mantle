@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using Mantle;
 using Mantle.Hosting.Azure;
 using Mantle.Hosting.Interfaces;
 using Mantle.Ninject;
@@ -27,8 +28,12 @@ namespace WorkerRole1
             var kernel =
                 new StandardKernel(Assembly.GetExecutingAssembly().LoadConfiguredProfileMantleModules().ToArray());
 
-            var workerHost =
-                new AzureCloudServiceRoleWorkerHost(new NinjectDependencyResolver(kernel).Get<IWorker>());
+            var dependencyResolver = new NinjectDependencyResolver(kernel);
+
+            MantleContext.Current = new MantleContext();
+            MantleContext.Current.DependencyResolver = dependencyResolver;
+
+            var workerHost = new AzureCloudServiceRoleWorkerHost(dependencyResolver.Get<IWorker>());
 
             workerHost.Start();
         }

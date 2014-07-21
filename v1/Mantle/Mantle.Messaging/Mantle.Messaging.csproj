@@ -44,6 +44,7 @@
     <Compile Include="Configurers\DefaultSubscriptionConfigurer.cs" />
     <Compile Include="Constraints\FunctionalSubscriptionConstraint.cs" />
     <Compile Include="Contexts\SubscriptionMessageContext.cs" />
+    <Compile Include="Extensions\IPublisherChannelExtensions.cs" />
     <Compile Include="Interfaces\IDeadLetterStrategy.cs" />
     <Compile Include="Interfaces\IMessageContext.cs" />
     <Compile Include="Interfaces\IPublisherChannel.cs" />

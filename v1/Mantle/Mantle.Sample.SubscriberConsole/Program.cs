@@ -14,8 +14,12 @@ namespace Mantle.Sample.SubscriberConsole
             var kernel =
                 new StandardKernel(Assembly.GetExecutingAssembly().LoadConfiguredProfileMantleModules().ToArray());
 
-            var workerHost =
-                new ConsoleWorkerHost(new NinjectDependencyResolver(kernel).Get<IWorker>());
+            var dependencyResolver = new NinjectDependencyResolver(kernel);
+
+            MantleContext.Current = new MantleContext();
+            MantleContext.Current.DependencyResolver = dependencyResolver;
+
+            var workerHost = new ConsoleWorkerHost(dependencyResolver.Get<IWorker>());
 
             workerHost.Start();
         }
