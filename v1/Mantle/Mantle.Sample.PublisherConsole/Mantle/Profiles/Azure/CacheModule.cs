@@ -11,23 +11,25 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
     {
         public override void Load()
         {
-            //Bind<ICacheClient<SampleModel>>()
-            //    .To<AzureRedisCacheClient<SampleModel>>()
-            //    .InTransientScope()
-            //    .Named("AzRedisCache")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureRedisCacheClient<SampleModel>>(
-            //                        new AppSettingsConfigurer<AzureRedisCacheClient<SampleModel>>(),
-            //                        new ConnectionStringsConfigurer<AzureRedisCacheClient<SampleModel>>()));
+            // TODO: Set up your cache client(s).
 
-            Bind<ICacheClient<SampleModel>>()
-                .To<AzureManagedCacheClient<SampleModel>>()
-                .InTransientScope()
-                .Named("AzManagedCache")
-                .ConfigureUsing(
-                                new CascadingConfigurer<AzureManagedCacheClient<SampleModel>>(
-                                    new AppSettingsConfigurer<AzureManagedCacheClient<SampleModel>>(),
-                                    new ConnectionStringsConfigurer<AzureManagedCacheClient<SampleModel>>()));
+            //Bind<ICacheClient<object>>()
+            //    .To<AzureRedisCacheClient<object>>()
+            //    .InTransientScope()
+            //    .Named("Your Azure Redis Cache Client Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureRedisCacheClient<object>>(
+            //                        new AppSettingsConfigurer<AzureRedisCacheClient<object>>(),
+            //                        new ConnectionStringsConfigurer<AzureRedisCacheClient<object>>()));
+
+            //Bind<ICacheClient<object>>()
+            //    .To<AzureManagedCacheClient<object>>()
+            //    .InTransientScope()
+            //    .Named("Your Azure Managed Cache Client Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureManagedCacheClient<object>>(
+            //                        new AppSettingsConfigurer<AzureManagedCacheClient<object>>(),
+            //                        new ConnectionStringsConfigurer<AzureManagedCacheClient<object>>()));
         }
     }
 }

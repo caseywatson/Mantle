@@ -10,14 +10,16 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
     {
         public override void Load()
         {
-            Bind<IBlobStorageClient>()
-                .To<AzureBlobStorageClient>()
-                .InTransientScope()
-                .Named("AzureBlobs")
-                .ConfigureUsing(
-                                new CascadingConfigurer<AzureBlobStorageClient>(
-                                    new AppSettingsConfigurer<AzureBlobStorageClient>(),
-                                    new ConnectionStringsConfigurer<AzureBlobStorageClient>()));
+            // TODO: Set up your blob storage client(s).
+
+            //Bind<IBlobStorageClient>()
+            //    .To<AzureBlobStorageClient>()
+            //    .InTransientScope()
+            //    .Named("Your Blob Storage Client Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureBlobStorageClient>(
+            //                        new AppSettingsConfigurer<AzureBlobStorageClient>(),
+            //                        new ConnectionStringsConfigurer<AzureBlobStorageClient>()));
         }
     }
 }

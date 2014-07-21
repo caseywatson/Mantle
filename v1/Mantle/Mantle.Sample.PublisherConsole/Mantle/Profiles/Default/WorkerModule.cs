@@ -1,5 +1,4 @@
 ﻿using Mantle.Hosting.Interfaces;
-using Mantle.Sample.PublisherConsole.Module.Workers;
 using Ninject.Modules;
 
 namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Default
@@ -8,7 +7,8 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Default
     {
         public override void Load()
         {
-            Bind<IWorker>().To<SamplePublisherWorker>().InSingletonScope();
+            // TODO: Wire up your worker class from the module project here.
+            // Bind<IWorker>().To<SamplePublisherWorker>().InSingletonScope();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Mantle.Configuration.Configurers;
 using Mantle.Messaging.Interfaces;
-using Mantle.Messaging.Messages;
 using Mantle.Ninject;
 using Mantle.Sample.PublisherConsole.Mantle.Platforms.Azure.Messaging.Channels;
 using Ninject.Modules;
@@ -17,66 +16,70 @@ namespace Mantle.Sample.PublisherConsole.Mantle.Profiles.Azure
 
         private void SetupPublisherChannels()
         {
-            Bind<IPublisherChannel<MessageEnvelope>>()
-                .To<AzureServiceBusQueuePublisherChannel<MessageEnvelope>>()
-                .InTransientScope()
-                .Named("AzServiceBusQueue")
-                .ConfigureUsing(
-                                new CascadingConfigurer<AzureServiceBusQueuePublisherChannel<MessageEnvelope>>(
-                                    new AppSettingsConfigurer<AzureServiceBusQueuePublisherChannel<MessageEnvelope>>(),
-                                    new ConnectionStringsConfigurer
-                                        <AzureServiceBusQueuePublisherChannel<MessageEnvelope>>()));
+            // TODO: Set up your publisher channel(s).
 
-            Bind<IPublisherChannel<MessageEnvelope>>()
-                .To<AzureServiceBusTopicPublisherChannel<MessageEnvelope>>()
-                .InTransientScope()
-                .Named("AzServiceBusTopic")
-                .ConfigureUsing(
-                                new CascadingConfigurer<AzureServiceBusTopicPublisherChannel<MessageEnvelope>>(
-                                    new AppSettingsConfigurer<AzureServiceBusTopicPublisherChannel<MessageEnvelope>>(),
-                                    new ConnectionStringsConfigurer
-                                        <AzureServiceBusTopicPublisherChannel<MessageEnvelope>>()));
+            //Bind<IPublisherChannel<object>>()
+            //    .To<AzureServiceBusQueuePublisherChannel<object>>()
+            //    .InTransientScope()
+            //    .Named("Your Azure Service Bus Queue Publisher Channel Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureServiceBusQueuePublisherChannel<object>>(
+            //                        new AppSettingsConfigurer<AzureServiceBusQueuePublisherChannel<object>>(),
+            //                        new ConnectionStringsConfigurer
+            //                            <AzureServiceBusQueuePublisherChannel<object>>()));
 
-            Bind<IPublisherChannel<MessageEnvelope>>()
-                .To<AzureStorageQueuePublisherChannel<MessageEnvelope>>()
-                .InTransientScope()
-                .Named("AzStorageQueue")
-                .ConfigureUsing(
-                                new CascadingConfigurer<AzureStorageQueuePublisherChannel<MessageEnvelope>>(
-                                    new AppSettingsConfigurer<AzureStorageQueuePublisherChannel<MessageEnvelope>>(),
-                                    new ConnectionStringsConfigurer<AzureStorageQueuePublisherChannel<MessageEnvelope>>()));
+            //Bind<IPublisherChannel<object>>()
+            //    .To<AzureServiceBusTopicPublisherChannel<object>>()
+            //    .InTransientScope()
+            //    .Named("Your Azure Service Bus Topic Publisher Channel Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureServiceBusTopicPublisherChannel<object>>(
+            //                        new AppSettingsConfigurer<AzureServiceBusTopicPublisherChannel<object>>(),
+            //                        new ConnectionStringsConfigurer
+            //                            <AzureServiceBusTopicPublisherChannel<object>>()));
+
+            //Bind<IPublisherChannel<object>>()
+            //    .To<AzureStorageQueuePublisherChannel<object>>()
+            //    .InTransientScope()
+            //    .Named("Your Azure Storage Queue Publisher Channel Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureStorageQueuePublisherChannel<object>>(
+            //                        new AppSettingsConfigurer<AzureStorageQueuePublisherChannel<object>>(),
+            //                        new ConnectionStringsConfigurer<AzureStorageQueuePublisherChannel<object>>()));
         }
 
         private void SetupSubscriberChannels()
         {
-            //Bind<ISubscriberChannel<Object>>()
-            //    .To<AzureServiceBusQueueSubscriberChannel<Object>>()
-            //    .InTransientScope()
-            //    .Named("Default")
-            //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureServiceBusQueueSubscriberChannel<Object>>(
-            //                        new AppSettingsConfigurer<AzureServiceBusQueueSubscriberChannel<Object>>(),
-            //                        new ConnectionStringsConfigurer<AzureServiceBusQueueSubscriberChannel<Object>>()));
+            // TODO: Set up your subscriber channel(s).
 
-            //Bind<ISubscriberChannel<Object>>()
-            //    .To<AzureServiceBusSubscriptionSubscriberChannel<Object>>()
+            //Bind<ISubscriberChannel<object>>()
+            //    .To<AzureServiceBusQueueSubscriberChannel<object>>()
             //    .InTransientScope()
-            //    .Named("Default")
+            //    .Named("Your Azure Service Bus Queue Subscriber Channel Name")
             //    .ConfigureUsing(
-            //                    new CascadingConfigurer<AzureServiceBusSubscriptionSubscriberChannel<Object>>(
-            //                        new AppSettingsConfigurer<AzureServiceBusSubscriptionSubscriberChannel<Object>>(),
+            //                    new CascadingConfigurer<AzureServiceBusQueueSubscriberChannel<object>>(
+            //                        new AppSettingsConfigurer<AzureServiceBusQueueSubscriberChannel<object>>(),
+            //                        new ConnectionStringsConfigurer<AzureServiceBusQueueSubscriberChannel<object>>()));
+
+            //Bind<ISubscriberChannel<object>>()
+            //    .To<AzureServiceBusSubscriptionSubscriberChannel<object>>()
+            //    .InTransientScope()
+            //    .Named("Your Azure Service Bus Subscription Subscriber Channel Name")
+            //    .ConfigureUsing(
+            //                    new CascadingConfigurer<AzureServiceBusSubscriptionSubscriberChannel<object>>(
+            //                        new AppSettingsConfigurer<AzureServiceBusSubscriptionSubscriberChannel<object>>(),
             //                        new ConnectionStringsConfigurer
-            //                            <AzureServiceBusSubscriptionSubscriberChannel<Object>>()));
+            //                            <AzureServiceBusSubscriptionSubscriberChannel<object>>()));
 
-            //Bind<ISubscriberChannel<Object>>()
-            //   .To<AzureStorageQueueSubscriberChannel<Object>>()
+            //Bind<ISubscriberChannel<object>>()
+            //   .To<AzureStorageQueueSubscriberChannel<object>>()
             //   .InTransientScope()
-            //   .Named("Default")
+            //   .Named("Your Azure Storage Queue Subscriber Channel Name")
             //   .ConfigureUsing(
-            //                   new CascadingConfigurer<AzureStorageQueueSubscriberChannel<Object>>(
-            //                       new AppSettingsConfigurer<AzureStorageQueueSubscriberChannel<Object>>(),
+            //                   new CascadingConfigurer<AzureStorageQueueSubscriberChannel<object>>(
+            //                       new AppSettingsConfigurer<AzureStorageQueueSubscriberChannel<object>>(),
             //                       new ConnectionStringsConfigurer
-            //                           <AzureStorageQueueSubscriberChannel<Object>>()));
+            //                           <AzureStorageQueueSubscriberChannel<object>>()));
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mantle.Messaging.Interfaces;
+﻿using Mantle.Messaging.Interfaces;
 using Mantle.Messaging.Strategies;
 using Ninject.Modules;
 
