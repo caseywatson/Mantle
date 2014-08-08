@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30626.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4F5E248D-0A3C-489E-A481-8E749D5F740E}"
 EndProject
@@ -65,6 +65,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Cache", "Mantle.Cache\Mantle.Cache.csproj", "{4977622F-590A-4C7A-AD8B-5D2629EB567D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Messaging", "Mantle.Hosting.Messaging\Mantle.Hosting.Messaging.csproj", "{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Sample.SubscriberConsole", "Mantle.Sample.SubscriberConsole\Mantle.Sample.SubscriberConsole.csproj", "{FA02E116-E9A0-49A5-AEA5-018F56A75B94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -168,6 +170,10 @@ Global
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA02E116-E9A0-49A5-AEA5-018F56A75B94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

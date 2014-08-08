@@ -1,4 +1,5 @@
 ﻿using Mantle.Interfaces;
+using Mantle.Ninject;
 using Mantle.Providers;
 using Mantle.Serializers;
 using Ninject.Modules;
