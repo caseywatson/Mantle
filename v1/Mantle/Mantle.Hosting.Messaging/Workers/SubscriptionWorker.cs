@@ -58,15 +58,6 @@ namespace Mantle.Hosting.Messaging.Workers
                     channelThread.Start();
                 }
             }
-
-            foreach (var subscriberChannel in subscriberChannels)
-            {
-                var channel = subscriberChannel;
-                var channelThread = new Thread(() => SubscribeToChannel(channel, cancellationTokenSource.Token));
-
-                channelThread.IsBackground = false;
-                channelThread.Start();
-            }
         }
 
         public override void Stop()
