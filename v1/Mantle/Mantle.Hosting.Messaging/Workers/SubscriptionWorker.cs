@@ -42,6 +42,23 @@ namespace Mantle.Hosting.Messaging.Workers
             if (subscriberChannels.None())
                 subscriberChannels.AddRange(dependencyResolver.GetAll<ISubscriberChannel<MessageEnvelope>>());
 
+            for (int i = 0; i < subscriberChannels.Count; i++)
+            {
+                var subscriberChannel = subscriberChannels[i];
+
+                if (i == (subscriberChannels.Count - 1))
+                {
+                    SubscribeToChannel(subscriberChannel, cancellationTokenSource.Token);
+                }
+                else
+                {
+                    var channelThread =
+                        new Thread(() => SubscribeToChannel(subscriberChannel, cancellationTokenSource.Token));
+
+                    channelThread.Start();
+                }
+            }
+
             foreach (var subscriberChannel in subscriberChannels)
             {
                 var channel = subscriberChannel;
