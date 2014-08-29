@@ -29,6 +29,12 @@ namespace Mantle.Messaging.Configurers
             configuration.Constraints.Add(new FunctionalSubscriptionConstraint<T>(condition));
         }
 
+        public void AddFilter(ISubscriptionFilter<T> filter)
+        {
+            filter.Require("filter");
+            configuration.Filters.Add(filter);
+        }
+
         public void DoAutoAbandon()
         {
             configuration.AutoAbandon = true;

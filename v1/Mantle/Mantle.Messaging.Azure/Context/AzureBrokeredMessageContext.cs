@@ -1,5 +1,4 @@
-﻿using System;
-using Mantle.Extensions;
+﻿using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
 using Microsoft.ServiceBus.Messaging;
 
@@ -24,6 +23,10 @@ namespace Mantle.Messaging.Azure.Context
             get { return BrokeredMessage.DeliveryCount; }
         }
 
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
+
         public T Message { get; private set; }
 
         public bool TryToAbandon()
@@ -31,7 +34,7 @@ namespace Mantle.Messaging.Azure.Context
             try
             {
                 BrokeredMessage.Abandon();
-                return true;
+                return (IsAbandoned = true);
             }
             catch
             {
@@ -44,7 +47,7 @@ namespace Mantle.Messaging.Azure.Context
             try
             {
                 BrokeredMessage.Complete();
-                return true;
+                return (IsCompleted = true);
             }
             catch
             {
@@ -57,7 +60,7 @@ namespace Mantle.Messaging.Azure.Context
             try
             {
                 BrokeredMessage.DeadLetter();
-                return true;
+                return (IsDeadLettered = true);
             }
             catch
             {

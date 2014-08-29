@@ -23,6 +23,10 @@ namespace Mantle.Sample.SubscriberConsole.Mantle.Platforms.Azure.Messaging.Conte
             get { return BrokeredMessage.DeliveryCount; }
         }
 
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
+
         public T Message { get; private set; }
 
         public bool TryToAbandon()
@@ -30,7 +34,7 @@ namespace Mantle.Sample.SubscriberConsole.Mantle.Platforms.Azure.Messaging.Conte
             try
             {
                 BrokeredMessage.Abandon();
-                return true;
+                return (IsAbandoned = true);
             }
             catch
             {
@@ -43,7 +47,7 @@ namespace Mantle.Sample.SubscriberConsole.Mantle.Platforms.Azure.Messaging.Conte
             try
             {
                 BrokeredMessage.Complete();
-                return true;
+                return (IsCompleted = true);
             }
             catch
             {
@@ -56,7 +60,7 @@ namespace Mantle.Sample.SubscriberConsole.Mantle.Platforms.Azure.Messaging.Conte
             try
             {
                 BrokeredMessage.DeadLetter();
-                return true;
+                return (IsDeadLettered = true);
             }
             catch
             {

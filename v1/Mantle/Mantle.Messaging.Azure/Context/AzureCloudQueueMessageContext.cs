@@ -27,6 +27,10 @@ namespace Mantle.Messaging.Azure.Context
             get { return null; }
         }
 
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
+
         public T Message { get; private set; }
 
         public bool TryToAbandon()
@@ -37,7 +41,7 @@ namespace Mantle.Messaging.Azure.Context
         public bool TryToComplete()
         {
             CloudQueue.DeleteMessage(CloudQueueMessage);
-            return true;
+            return (IsCompleted = true);
         }
 
         public bool TryToDeadLetter()

@@ -27,6 +27,7 @@ namespace Mantle.Messaging.Configuration
         public DefaultSubscriptionConfiguration()
         {
             Constraints = new List<ISubscriptionConstraint<T>>();
+            Filters = new List<ISubscriptionFilter<T>>();
         }
 
         [Configurable]
@@ -39,6 +40,8 @@ namespace Mantle.Messaging.Configuration
         public bool AutoDeadLetter { get; set; }
 
         public IList<ISubscriptionConstraint<T>> Constraints { get; set; }
+
+        public IList<ISubscriptionFilter<T>> Filters { get; set; }
 
         [Configurable]
         public int? DeadLetterDeliveryLimit { get; set; }

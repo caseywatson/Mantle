@@ -54,6 +54,7 @@
     <Compile Include="Interfaces\ISubscriptionConfiguration.cs" />
     <Compile Include="Interfaces\ISubscriptionConfigurer.cs" />
     <Compile Include="Interfaces\ISubscriptionConstraint.cs" />
+    <Compile Include="Interfaces\ISubscriptionFilter.cs" />
     <Compile Include="Messages\MessageEnvelope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategies\DefaultDeadLetterStrategy.cs" />

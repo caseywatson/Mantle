@@ -8,6 +8,7 @@ namespace Mantle.Messaging.Interfaces
     {
         void AddConstraint(ISubscriptionConstraint<T> constraint);
         void AddConstraint(Func<IMessageContext<T>, bool> condition);
+        void AddFilter(ISubscriptionFilter<T> filter);
         void DoAutoAbandon();
         void DoAutoComplete();
         void DoAutoDeadLetter();

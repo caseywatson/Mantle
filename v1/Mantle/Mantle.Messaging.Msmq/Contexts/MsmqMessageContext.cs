@@ -23,6 +23,10 @@ namespace Mantle.Messaging.Msmq.Contexts
             get { return null; }
         }
 
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
+
         public T Message { get; private set; }
         public Message MsmqMessage { get; private set; }
         public MessageQueueTransaction MsmqTransaction { get; private set; }
@@ -34,7 +38,7 @@ namespace Mantle.Messaging.Msmq.Contexts
                 try
                 {
                     MsmqTransaction.Abort();
-                    return true;
+                    return (IsAbandoned = true);
                 }
                 finally
                 {
@@ -52,7 +56,7 @@ namespace Mantle.Messaging.Msmq.Contexts
                 try
                 {
                     MsmqTransaction.Commit();
-                    return true;
+                    return (IsCompleted = true);
                 }
                 finally
                 {

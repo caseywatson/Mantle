@@ -26,6 +26,10 @@ namespace Mantle.Messaging.Aws.Contexts
             get { return null; }
         }
 
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
+
         public T Message { get; private set; }
         public string MessageReceiptHandle { get; private set; }
 
@@ -40,7 +44,7 @@ namespace Mantle.Messaging.Aws.Contexts
                     VisibilityTimeout = 0
                 });
 
-                return true;
+                return (IsAbandoned = true);
             }
             catch
             {
@@ -58,7 +62,7 @@ namespace Mantle.Messaging.Aws.Contexts
                     ReceiptHandle = MessageReceiptHandle
                 });
 
-                return true;
+                return (IsCompleted = true);
             }
             catch
             {

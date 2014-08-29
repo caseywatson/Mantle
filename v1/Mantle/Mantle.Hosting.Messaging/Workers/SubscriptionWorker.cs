@@ -95,6 +95,9 @@ namespace Mantle.Hosting.Messaging.Workers
 
             configurerAction(configurer);
 
+            if (configuration.Filters.None())
+                configuration.Filters = dependencyResolver.GetAll<ISubscriptionFilter<T>>().ToList();
+
             configuration.DeadLetterStrategy = (configuration.DeadLetterStrategy ??
                                                 dependencyResolver.Get<IDeadLetterStrategy<T>>());
 

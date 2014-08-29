@@ -14,6 +14,7 @@ namespace Mantle.Messaging.Interfaces
     public interface ISubscriptionConfiguration<T> : ISubscriptionConfiguration
         where T : class
     {
+        IList<ISubscriptionFilter<T>> Filters { get; set; } 
         IList<ISubscriptionConstraint<T>> Constraints { get; set; }
         IDeadLetterStrategy<T> DeadLetterStrategy { get; set; }
         ISerializer<T> Serializer { get; set; }

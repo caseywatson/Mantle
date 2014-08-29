@@ -29,22 +29,26 @@ namespace Mantle.Messaging.Contexts
 
         public bool TryToAbandon()
         {
-            return OriginalMessageContext.TryToAbandon();
+            return (IsAbandoned = OriginalMessageContext.TryToAbandon());
         }
 
         public bool TryToComplete()
         {
-            return OriginalMessageContext.TryToComplete();
+            return (IsCompleted = OriginalMessageContext.TryToComplete());
         }
 
         public bool TryToDeadLetter()
         {
-            return OriginalMessageContext.TryToDeadLetter();
+            return (IsDeadLettered = OriginalMessageContext.TryToDeadLetter());
         }
 
         public bool TryToRenewLock()
         {
             return OriginalMessageContext.TryToRenewLock();
         }
+
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
     }
 }

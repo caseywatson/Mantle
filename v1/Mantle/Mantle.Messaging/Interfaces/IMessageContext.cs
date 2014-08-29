@@ -10,5 +10,9 @@
         bool TryToComplete();
         bool TryToDeadLetter();
         bool TryToRenewLock();
+
+        bool IsAbandoned { get; }
+        bool IsCompleted { get; }
+        bool IsDeadLettered { get; }
     }
 }
