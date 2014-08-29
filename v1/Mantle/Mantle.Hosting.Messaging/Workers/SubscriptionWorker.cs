@@ -93,7 +93,7 @@ namespace Mantle.Hosting.Messaging.Workers
 
             var configurer = new DefaultSubscriptionConfigurer<T>(configuration);
 
-            configurerAction(configurer);
+            configurerAction(configurer); 
 
             if (configuration.Filters.None())
                 configuration.Filters = dependencyResolver.GetAll<ISubscriptionFilter<T>>().ToList();

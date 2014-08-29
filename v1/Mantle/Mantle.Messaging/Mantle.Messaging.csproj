@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channels\NullPublisherChannel.cs" />
     <Compile Include="Configuration\DefaultSubscriptionConfiguration.cs" />
     <Compile Include="Configurers\DefaultSubscriptionConfigurer.cs" />
     <Compile Include="Constraints\FunctionalSubscriptionConstraint.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Messages\MessageEnvelope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategies\DefaultDeadLetterStrategy.cs" />
+    <Compile Include="Strategies\NullDeadLetterStrategy.cs" />
     <Compile Include="Subscriptions\DefaultSubscription.cs" />
   </ItemGroup>
   <ItemGroup>
