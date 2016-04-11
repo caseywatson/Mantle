@@ -1,6 +1,7 @@
 ﻿using System;
 using Mantle.Extensions;
 using Mantle.Hosting.Interfaces;
+using static System.String;
 
 namespace Mantle.Hosting.Workers
 {
@@ -14,18 +15,18 @@ namespace Mantle.Hosting.Workers
 
         protected virtual void OnErrorOccurred(string message, params object[] parameters)
         {
-            message.Require("message");
-            parameters.Require("parameters");
+            message.Require(nameof(message));
+            parameters.Require(nameof(parameters));
 
-            ErrorOccurred.RaiseSafely(String.Format(message, parameters));
+            ErrorOccurred.RaiseSafely(Format(message, parameters));
         }
 
         protected virtual void OnMessageOccurred(string message, params object[] parameters)
         {
-            message.Require("message");
-            parameters.Require("parameters");
+            message.Require(nameof(message));
+            parameters.Require(nameof(parameters));
 
-            MessageOccurred.RaiseSafely(String.Format(message, parameters));
+            MessageOccurred.RaiseSafely(Format(message, parameters));
         }
     }
 }

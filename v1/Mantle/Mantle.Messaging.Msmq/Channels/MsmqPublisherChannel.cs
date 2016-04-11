@@ -24,14 +24,17 @@ namespace Mantle.Messaging.Msmq.Channels
 
         public void Publish(T message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
 
             var msmqMessage = new Message
             {
                 BodyStream = new MemoryStream(Encoding.UTF8.GetBytes(Serializer.Serialize(message)))
             };
 
-            MessageQueue.Send(msmqMessage, MessageQueueTransactionType.Single);
+            MessageQueue.Send(msmqMessage,
+                (MessageQueue.Transactional
+                    ? MessageQueueTransactionType.Single
+                    : MessageQueueTransactionType.None));
         }
     }
 }

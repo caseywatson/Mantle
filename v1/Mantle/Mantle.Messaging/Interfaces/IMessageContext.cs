@@ -1,4 +1,6 @@
-﻿namespace Mantle.Messaging.Interfaces
+﻿using System;
+
+namespace Mantle.Messaging.Interfaces
 {
     public interface IMessageContext<T>
         where T : class

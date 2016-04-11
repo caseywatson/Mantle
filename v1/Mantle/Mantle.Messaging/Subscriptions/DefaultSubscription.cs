@@ -12,7 +12,7 @@ namespace Mantle.Messaging.Subscriptions
     {
         public DefaultSubscription(ISubscriptionConfiguration<T> configuration)
         {
-            configuration.Require("configuration");
+            configuration.Require(nameof(configuration));
             configuration.Validate();
 
             Configuration = configuration;
@@ -22,7 +22,7 @@ namespace Mantle.Messaging.Subscriptions
 
         public bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
-            messageContext.Require("messageContext");
+            messageContext.Require(nameof(messageContext));
 
             T body = Configuration.Serializer.Deserialize(messageContext.Message.Body);
             var context = new SubscriptionMessageContext<T>(messageContext, body, this);
@@ -42,9 +42,7 @@ namespace Mantle.Messaging.Subscriptions
 
             try
             {
-                bool doContinue = ExecutePreFilters(context);
-
-                if (doContinue)
+                if (ExecutePreFilters(context))
                 {
                     Configuration.Subscriber.HandleMessage(context);
                     ExecutePostFilters(context);
@@ -68,9 +66,7 @@ namespace Mantle.Messaging.Subscriptions
         {
             foreach (var filter in Configuration.Filters)
             {
-                var doContinue = filter.OnHandlingMessage(messageContext);
-
-                if (doContinue == false)
+                if (filter.OnHandlingMessage(messageContext) == false)
                     return false;
             }
 
@@ -81,9 +77,7 @@ namespace Mantle.Messaging.Subscriptions
         {
             foreach (var filter in Configuration.Filters)
             {
-                var doContinue = filter.OnHandledMessage(messageContext);
-
-                if (doContinue == false)
+                if (filter.OnHandledMessage(messageContext) == false)
                     return false;
             }
 

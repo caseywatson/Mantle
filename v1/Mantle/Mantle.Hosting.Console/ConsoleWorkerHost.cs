@@ -14,7 +14,7 @@ namespace Mantle.Hosting.Console
 
         protected override void OnErrorOccurred(string message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
 
             System.Console.ForegroundColor = ConsoleColor.Red;
             System.Console.Error.WriteLine(message);
@@ -23,7 +23,7 @@ namespace Mantle.Hosting.Console
 
         protected override void OnMessageOccurred(string message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
 
             System.Console.ForegroundColor = ConsoleColor.White;
             System.Console.WriteLine(message);

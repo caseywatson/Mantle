@@ -6,7 +6,7 @@ namespace Mantle.Extensions
     {
         public static bool TryToRewind(this Stream stream)
         {
-            stream.Require("stream");
+            stream.Require(nameof(stream));
 
             if (stream.CanSeek)
             {

@@ -8,10 +8,7 @@ namespace Mantle.Messaging.Azure.Channels
 
         public abstract string ServiceBusConnectionString { get; set; }
 
-        public NamespaceManager NamespaceManager
-        {
-            get { return GetNamespaceManager(); }
-        }
+        public NamespaceManager NamespaceManager => GetNamespaceManager();
 
         private NamespaceManager GetNamespaceManager()
         {

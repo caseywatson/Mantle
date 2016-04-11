@@ -6,6 +6,7 @@ namespace Mantle.Messaging.Channels
     {
         public void Publish(T message)
         {
+            // Poof!
         }
     }
 }

@@ -14,14 +14,14 @@ namespace Mantle.Hosting.Azure
 
         protected override void OnErrorOccurred(string message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
 
             Trace.TraceError(message);
         }
 
         protected override void OnMessageOccurred(string message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
 
             Trace.TraceInformation(message);
         }

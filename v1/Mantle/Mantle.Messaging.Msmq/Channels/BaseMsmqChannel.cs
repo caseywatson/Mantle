@@ -17,11 +17,7 @@ namespace Mantle.Messaging.Msmq.Channels
 
         public abstract bool AutoSetup { get; set; }
         public abstract string QueuePath { get; set; }
-
-        public MessageQueue MessageQueue
-        {
-            get { return GetMessageQueue(); }
-        }
+        public MessageQueue MessageQueue => GetMessageQueue();
 
         private MessageQueue GetMessageQueue()
         {
@@ -30,7 +26,7 @@ namespace Mantle.Messaging.Msmq.Channels
                 if (AutoSetup)
                 {
                     if (MessageQueue.Exists(QueuePath) == false)
-                        MessageQueue.Create(QueuePath);
+                        MessageQueue.Create(QueuePath, true);
                 }
 
                 messageQueue = new MessageQueue(QueuePath);

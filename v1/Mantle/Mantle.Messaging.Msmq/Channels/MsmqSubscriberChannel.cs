@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Messaging;
-using System.Text;
-using Mantle.Configuration.Attributes;
+﻿using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 using Mantle.Messaging.Msmq.Contexts;
+using System;
+using System.IO;
+using System.Messaging;
+using System.Text;
 
 namespace Mantle.Messaging.Msmq.Channels
 {
@@ -26,34 +26,40 @@ namespace Mantle.Messaging.Msmq.Channels
 
         public IMessageContext<T> Receive(TimeSpan? timeout = null)
         {
+            if (MessageQueue.Transactional)
+                return ReceiveTransactionally(timeout);
+
+                var message = ((timeout == null)
+                    ? (MessageQueue.Receive())
+                    : (MessageQueue.Receive(timeout.Value)));
+
+                if (message == null)
+                    return null;
+
+            return new MsmqMessageContext<T>(GetBody(message), message);
+        }
+
+        public System.Threading.Tasks.Task<IMessageContext<T>> ReceiveAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        private IMessageContext<T> ReceiveTransactionally(TimeSpan? timeout = null)
+        {
             var transaction = new MessageQueueTransaction();
 
             transaction.Begin();
 
             try
             {
-                var msmqMessage = ((timeout == null)
+                var message = ((timeout == null)
                     ? (MessageQueue.Receive(transaction))
                     : (MessageQueue.Receive(timeout.Value, transaction)));
 
-                if (msmqMessage == null)
+                if (message == null)
                     return null;
 
-                msmqMessage.BodyStream.TryToRewind();
-
-                T body;
-
-                try
-                {
-                    using (var streamReader = new StreamReader(msmqMessage.BodyStream, Encoding.UTF8))
-                        body = Serializer.Deserialize(streamReader.ReadToEnd());
-                }
-                catch
-                {
-                    body = null;
-                }
-
-                return new MsmqMessageContext<T>(body, msmqMessage, transaction);
+                return new MsmqMessageContext<T>(GetBody(message), message, transaction);
             }
             catch
             {
@@ -62,10 +68,19 @@ namespace Mantle.Messaging.Msmq.Channels
             }
         }
 
-
-        public System.Threading.Tasks.Task<IMessageContext<T>> ReceiveAsync()
+        private T GetBody(Message message)
         {
-            throw new NotImplementedException();
+            message.BodyStream.TryToRewind();
+
+            try
+            {
+                using (var streamReader = new StreamReader(message.BodyStream, Encoding.UTF8))
+                    return Serializer.Deserialize(streamReader.ReadToEnd());
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

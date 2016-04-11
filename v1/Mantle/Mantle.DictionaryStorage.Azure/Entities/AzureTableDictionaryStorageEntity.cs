@@ -19,7 +19,7 @@ namespace Mantle.DictionaryStorage.Azure.Entities
 
         public AzureTableDictionaryStorageEntity(TypeMetadata typeMetadata)
         {
-            typeMetadata.Require("typeMetadata");
+            typeMetadata.Require(nameof(typeMetadata));
 
             this.typeMetadata = typeMetadata;
         }

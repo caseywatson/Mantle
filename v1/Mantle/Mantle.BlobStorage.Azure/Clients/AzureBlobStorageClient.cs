@@ -15,15 +15,9 @@ namespace Mantle.BlobStorage.Azure.Clients
         private CloudBlobClient cloudBlobClient;
         private CloudStorageAccount cloudStorageAccount;
 
-        public CloudBlobClient CloudBlobClient
-        {
-            get { return GetCloudBlobClient(); }
-        }
+        public CloudBlobClient CloudBlobClient => GetCloudBlobClient();
 
-        public CloudStorageAccount CloudStorageAccount
-        {
-            get { return GetCloudStorageAccount(); }
-        }
+        public CloudStorageAccount CloudStorageAccount => GetCloudStorageAccount();
 
         [Configurable(IsRequired = true)]
         public string ContainerName { get; set; }
@@ -33,7 +27,7 @@ namespace Mantle.BlobStorage.Azure.Clients
 
         public bool BlobExists(string blobName)
         {
-            blobName.Require("blobName");
+            blobName.Require(nameof(blobName));
 
             CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
 
@@ -45,43 +39,39 @@ namespace Mantle.BlobStorage.Azure.Clients
 
         public void DeleteBlob(string blobName)
         {
-            blobName.Require("blobName");
+            blobName.Require(nameof(blobName));
 
             CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
-                throw new InvalidOperationException(String.Format("Container [{0}] does not exist.", ContainerName));
+                throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
             CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
 
             if (blob.Exists() == false)
-                throw new InvalidOperationException(String.Format("Blob [{0}/{1}] does not exist.", ContainerName,
-                                                                  blobName));
+                throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
 
             blob.Delete();
         }
 
         public Stream DownloadBlob(string blobName)
         {
-            blobName.Require("blobName");
+            blobName.Require(nameof(blobName));
 
             CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
-                throw new InvalidOperationException(String.Format("Container [{0}] does not exist.", ContainerName));
+                throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
             CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
 
             if (blob.Exists() == false)
-                throw new InvalidOperationException(String.Format("Blob [{0}/{1}] does not exist.", ContainerName,
-                                                                  blobName));
+                throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
 
             var stream = new MemoryStream();
 
             blob.DownloadToStream(stream);
             stream.TryToRewind();
-
-
 
             return stream;
         }
@@ -91,7 +81,7 @@ namespace Mantle.BlobStorage.Azure.Clients
             CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
-                throw new InvalidOperationException(String.Format("Container [{0}] does not exist.", ContainerName));
+                throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
             foreach (CloudBlockBlob blob in container.ListBlobs().OfType<CloudBlockBlob>())
                 yield return blob.Name;
@@ -99,11 +89,11 @@ namespace Mantle.BlobStorage.Azure.Clients
 
         public void UploadBlob(Stream source, string blobName)
         {
-            source.Require("source");
-            blobName.Require("blobName");
+            source.Require(nameof(source));
+            blobName.Require(nameof(blobName));
 
             if (source.Length == 0)
-                throw new ArgumentException("Source is empty.", "source");
+                throw new ArgumentException($"[{nameof(source)}] is empty.", nameof(source));
 
             source.TryToRewind();
 

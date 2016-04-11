@@ -55,13 +55,13 @@ namespace Mantle.Messaging.Configuration
         public void Validate()
         {
             if (DeadLetterStrategy == null)
-                throw new ConfigurationErrorsException("Dead letter strategy [DeadLetterStrategy] not defined.");
+                throw new ConfigurationErrorsException($"[{nameof(DeadLetterStrategy)}] not defined.");
 
             if (Serializer == null)
-                throw new ConfigurationErrorsException("Serializer [Serializer] not defined.");
+                throw new ConfigurationErrorsException($"[{nameof(Serializer)}] not defined.");
 
             if (Subscriber == null)
-                throw new ConfigurationErrorsException("Subscriber [Subscriber] not defined.");
+                throw new ConfigurationErrorsException($"[{nameof(Subscriber)}] not defined.");
         }
     }
 }

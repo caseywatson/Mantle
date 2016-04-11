@@ -25,7 +25,8 @@ namespace Mantle.Messaging.Azure.Channels
 
         public void Publish(T message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
+
             CloudQueue.AddMessage(new CloudQueueMessage(Serializer.Serialize(message)));
         }
     }

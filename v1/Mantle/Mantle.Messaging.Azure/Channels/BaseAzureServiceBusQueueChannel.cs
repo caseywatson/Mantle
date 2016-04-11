@@ -9,10 +9,7 @@ namespace Mantle.Messaging.Azure.Channels
         public abstract bool AutoSetup { get; set; }
         public abstract string QueueName { get; set; }
 
-        public QueueClient QueueClient
-        {
-            get { return GetQueueClient(); }
-        }
+        public QueueClient QueueClient => GetQueueClient();
 
         private QueueClient GetQueueClient()
         {

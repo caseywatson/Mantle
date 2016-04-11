@@ -14,8 +14,8 @@ namespace Mantle.Messaging.Extensions
                                       string correlationId = null)
             where T : class
         {
-            publisherChannel.Require("publisherChannel");
-            message.Require("message");
+            publisherChannel.Require(nameof(publisherChannel));
+            message.Require(nameof(message));
 
             var dependencyResolver = MantleContext.Current.DependencyResolver;
             var serializer = dependencyResolver.Get<ISerializer<T>>();

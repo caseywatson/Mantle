@@ -23,15 +23,9 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             typeMetadata = new TypeMetadata(typeof (T));
         }
 
-        public CloudStorageAccount CloudStorageAccount
-        {
-            get { return GetCloudStorageAccount(); }
-        }
+        public CloudStorageAccount CloudStorageAccount => GetCloudStorageAccount();
 
-        public CloudTableClient CloudTableClient
-        {
-            get { return GetCloudTableClient(); }
-        }
+        public CloudTableClient CloudTableClient => GetCloudTableClient();
 
         [Configurable(IsRequired = true)]
         public string DictionaryName { get; set; }
@@ -41,23 +35,21 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
         public void DeleteEntity(string entityId, string partitionId)
         {
-            partitionId.Require("entityId");
-            partitionId.Require("partitionId");
+            partitionId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             if (table.Exists() == false)
-                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", DictionaryName));
+                throw new InvalidOperationException($"Dictionary [{DictionaryName}] does not exist.");
 
-            TableOperation retrieveOp = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId,
-                                                                                                      entityId);
+            var retrieveOp = 
+                TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
 
             TableResult retrieveResult = table.Execute(retrieveOp);
 
             if (retrieveResult.Result == null)
-                throw new InvalidOperationException(
-                    String.Format("Entity [{0}/{1}] was not found in dictionary [{2}].", partitionId,
-                                  entityId, DictionaryName));
+                throw new InvalidOperationException($"Entity [{partitionId}/{entityId}] was not found in dictionary [{DictionaryName}].");
 
             TableOperation deleteOp =
                 TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
@@ -67,8 +59,8 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
         public bool EntityExists(string entityId, string partitionId)
         {
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
@@ -83,11 +75,11 @@ namespace Mantle.DictionaryStorage.Azure.Clients
         public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
                                            Func<T, string> partitionIdSelector)
         {
-            entities.Require("entities");
-            entityIdSelector.Require("entityIdSelector");
-            partitionIdSelector.Require("partitionIdSelector");
+            entities.Require(nameof(entities));
+            entityIdSelector.Require(nameof(entityIdSelector));
+            partitionIdSelector.Require(nameof(partitionIdSelector));
 
-            CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(DictionaryName);
 
             table.CreateIfNotExists();
 
@@ -117,9 +109,9 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
         public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
         {
-            entity.Require("entity");
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entity.Require(nameof(entity));
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             var storageEntity = new AzureTableDictionaryStorageEntity<T>(typeMetadata);
 
@@ -138,12 +130,12 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
         public IEnumerable<T> LoadAllEntities(string partitionId)
         {
-            partitionId.Require("partitionId");
+            partitionId.Require(nameof(partitionId));
 
             CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             if (table.Exists() == false)
-                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", DictionaryName));
+                throw new InvalidOperationException($"Dictionary [{DictionaryName}] does not exist.");
 
             TableQuery<AzureTableDictionaryStorageEntity<T>> query = new TableQuery
                 <AzureTableDictionaryStorageEntity<T>>()
@@ -155,13 +147,13 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
         public T LoadEntity(string entityId, string partitionId)
         {
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             CloudTable table = CloudTableClient.GetTableReference(DictionaryName);
 
             if (table.Exists() == false)
-                throw new InvalidOperationException(String.Format("Dictionary [{0}] does not exist.", DictionaryName));
+                throw new InvalidOperationException($"Dictionary [{DictionaryName}] does not exist.");
 
             TableOperation op = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
             TableResult result = table.Execute(op);

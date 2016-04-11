@@ -20,19 +20,18 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
 
         public void DeleteEntity(string entityId, string partitionId)
         {
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             try
             {
                 dictionaryLock.EnterWriteLock();
 
                 if (dictionary.ContainsKey(partitionId) == false)
-                    throw new InvalidOperationException(String.Format("Partition [{0}] does not exist.", partitionId));
+                    throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
 
                 if (dictionary[partitionId].ContainsKey(entityId) == false)
-                    throw new InvalidOperationException(String.Format("Entity [{0}/{1}] does not exist.", partitionId,
-                                                                      entityId));
+                    throw new InvalidOperationException($"Entity [{partitionId}/{entityId}] does not exist.");
 
                 dictionary[partitionId].Remove(entityId);
             }
@@ -44,20 +43,13 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
 
         public bool EntityExists(string entityId, string partitionId)
         {
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             try
             {
                 dictionaryLock.EnterReadLock();
-
-                if (dictionary.ContainsKey(partitionId) == false)
-                    return false;
-
-                if (dictionary[partitionId].ContainsKey(entityId) == false)
-                    return false;
-
-                return true;
+                return (dictionary[partitionId]?.ContainsKey(entityId) == true);  
             }
             finally
             {
@@ -68,9 +60,9 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
         public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
                                            Func<T, string> partitionIdSelector)
         {
-            entities.Require("entities");
-            entityIdSelector.Require("entityIdSelector");
-            partitionIdSelector.Require("partitionIdSelector");
+            entities.Require(nameof(entities));
+            entityIdSelector.Require(nameof(entityIdSelector));
+            partitionIdSelector.Require(nameof(partitionIdSelector));
 
             try
             {
@@ -95,9 +87,9 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
 
         public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
         {
-            entity.Require("entity");
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entity.Require(nameof(entity));
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             try
             {
@@ -116,12 +108,14 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
 
         public IEnumerable<T> LoadAllEntities(string partitionId)
         {
-            partitionId.Require("partitionId");
+            partitionId.Require(nameof(partitionId));
 
             try
             {
+                dictionaryLock.EnterReadLock();
+
                 if (dictionary.ContainsKey(partitionId) == false)
-                    throw new InvalidOperationException(String.Format("Partition [{0}] does not exist.", partitionId));
+                    throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
 
                 return (dictionary[partitionId].Values);
             }
@@ -133,13 +127,15 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
 
         public T LoadEntity(string entityId, string partitionId)
         {
-            entityId.Require("entityId");
-            partitionId.Require("partitionId");
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
 
             try
             {
+                dictionaryLock.EnterReadLock();
+
                 if (dictionary.ContainsKey(partitionId) == false)
-                    throw new InvalidOperationException(String.Format("Partition [{0}] does not exist.", partitionId));
+                    throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
 
                 if (dictionary[partitionId].ContainsKey(entityId))
                     return dictionary[partitionId][entityId];

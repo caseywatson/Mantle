@@ -9,43 +9,25 @@ namespace Mantle.Messaging.Contexts
     {
         public SubscriptionMessageContext(IMessageContext<MessageEnvelope> originalMessageContext, T message, ISubscription<T> subscription) 
         {
-            originalMessageContext.Require("originalMessageContext");
-            message.Require("message");
-            subscription.Require("subscription");
+            originalMessageContext.Require(nameof(originalMessageContext));
+            message.Require(nameof(message));
+            subscription.Require(nameof(subscription));
 
             OriginalMessageContext = originalMessageContext;
             Message = message;
             Subscription = subscription;
         }
 
-        public int? DeliveryCount
-        {
-            get { return OriginalMessageContext.DeliveryCount; }
-        }
+        public int? DeliveryCount => OriginalMessageContext.DeliveryCount;
 
         public T Message { get; private set; }
         public IMessageContext<MessageEnvelope> OriginalMessageContext { get; private set; }
-        public ISubscription<T> Subscription { get; private set; } 
+        public ISubscription<T> Subscription { get; private set; }
 
-        public bool TryToAbandon()
-        {
-            return (IsAbandoned = OriginalMessageContext.TryToAbandon());
-        }
-
-        public bool TryToComplete()
-        {
-            return (IsCompleted = OriginalMessageContext.TryToComplete());
-        }
-
-        public bool TryToDeadLetter()
-        {
-            return (IsDeadLettered = OriginalMessageContext.TryToDeadLetter());
-        }
-
-        public bool TryToRenewLock()
-        {
-            return OriginalMessageContext.TryToRenewLock();
-        }
+        public bool TryToAbandon() => (IsAbandoned = OriginalMessageContext.TryToAbandon());
+        public bool TryToComplete() => (IsCompleted = OriginalMessageContext.TryToComplete());
+        public bool TryToDeadLetter() => (IsDeadLettered = OriginalMessageContext.TryToDeadLetter());
+        public bool TryToRenewLock() => OriginalMessageContext.TryToRenewLock();
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }

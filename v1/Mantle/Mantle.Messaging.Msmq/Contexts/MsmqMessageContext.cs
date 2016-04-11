@@ -1,27 +1,24 @@
 ﻿using System.Messaging;
 using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
+using System;
 
 namespace Mantle.Messaging.Msmq.Contexts
 {
-    public class MsmqMessageContext<T> : IMessageContext<T>
+    public class MsmqMessageContext<T> : IMessageContext<T>, IDisposable
         where T : class
     {
-        public MsmqMessageContext(T message, Message msmqMessage, MessageQueueTransaction msmqTransaction)
+        public MsmqMessageContext(T message, Message msmqMessage, MessageQueueTransaction msmqTransaction = null)
         {
-            message.Require("message");
-            msmqMessage.Require("msmqMessage");
-            msmqTransaction.Require("msmqTransaction");
+            message.Require(nameof(message));
+            msmqMessage.Require(nameof(msmqMessage));
 
             Message = message;
             MsmqMessage = msmqMessage;
             MsmqTransaction = msmqTransaction;
         }
 
-        public int? DeliveryCount
-        {
-            get { return null; }
-        }
+        public int? DeliveryCount { get; } = null;
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }
@@ -31,18 +28,25 @@ namespace Mantle.Messaging.Msmq.Contexts
         public Message MsmqMessage { get; private set; }
         public MessageQueueTransaction MsmqTransaction { get; private set; }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public bool TryToAbandon()
         {
-            if (MsmqTransaction != null)
+            if ((IsAbandoned == false) && (MsmqTransaction != null))
             {
                 try
                 {
                     MsmqTransaction.Abort();
+
                     return (IsAbandoned = true);
                 }
-                finally
+                catch
                 {
-                    MsmqTransaction.Dispose();
+                    return false;
                 }
             }
 
@@ -51,16 +55,17 @@ namespace Mantle.Messaging.Msmq.Contexts
 
         public bool TryToComplete()
         {
-            if (MsmqTransaction != null)
+            if ((IsCompleted == false) && (MsmqTransaction != null))
             {
                 try
                 {
                     MsmqTransaction.Commit();
+
                     return (IsCompleted = true);
                 }
-                finally
+                catch
                 {
-                    MsmqTransaction.Dispose();
+                    return false;
                 }
             }
 
@@ -75,6 +80,17 @@ namespace Mantle.Messaging.Msmq.Contexts
         public bool TryToRenewLock()
         {
             return false;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && (MsmqTransaction != null))
+                MsmqTransaction.Dispose();
+        }
+
+        ~MsmqMessageContext()
+        {
+            Dispose(false);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Mantle.Messaging.Strategies
     {
         public void HandleDeadLetterMessage(IMessageContext<T> messageContext)
         {
+            // Poof!
         }
     }
 }

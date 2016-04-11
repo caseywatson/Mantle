@@ -8,7 +8,7 @@ namespace Mantle.Messaging.Strategies
     {
         public void HandleDeadLetterMessage(IMessageContext<T> messageContext)
         {
-            messageContext.Require("messageContext");
+            messageContext.Require(nameof(messageContext));
             messageContext.TryToDeadLetter();
         }
     }

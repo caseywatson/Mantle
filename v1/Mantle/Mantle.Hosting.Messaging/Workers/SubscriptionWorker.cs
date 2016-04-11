@@ -68,7 +68,7 @@ namespace Mantle.Hosting.Messaging.Workers
 
         public void AddSubscriberChannel(ISubscriberChannel<MessageEnvelope> subscriberChannel)
         {
-            subscriberChannel.Require("subscriberChannel");
+            subscriberChannel.Require(nameof(subscriberChannel));
             subscriberChannels.Add(subscriberChannel);
         }
 
@@ -81,7 +81,7 @@ namespace Mantle.Hosting.Messaging.Workers
         public void SubscribeTo<T>(Action<ISubscriptionConfigurer<T>> configurerAction)
             where T : class
         {
-            configurerAction.Require("configurerAction");
+            configurerAction.Require(nameof(configurerAction));
 
             var configuration = new DefaultSubscriptionConfiguration<T>
             {
@@ -113,7 +113,7 @@ namespace Mantle.Hosting.Messaging.Workers
         public void SubscribeTo<T>(ISubscriptionConfiguration<T> configuration)
             where T : class
         {
-            configuration.Require("configuration");
+            configuration.Require(nameof(configuration));
 
             SubscribeTo(new DefaultSubscription<T>(configuration));
         }
@@ -121,7 +121,7 @@ namespace Mantle.Hosting.Messaging.Workers
         public void SubscribeTo<T>(ISubscription<T> subscription)
             where T : class
         {
-            subscription.Require("subscription");
+            subscription.Require(nameof(subscription));
 
             SetupSubscriptionType<T>();
             messageHandlers[typeof (T)].Add(subscription.HandleMessage);
@@ -129,16 +129,23 @@ namespace Mantle.Hosting.Messaging.Workers
 
         private bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
-            foreach (string typeToken in messageContext.Message.BodyTypeTokens)
+            try
             {
-                if ((typeToken != null) && (typeTokens.ContainsKey(typeToken)))
+                foreach (string typeToken in messageContext.Message.BodyTypeTokens)
                 {
-                    foreach (var handlerFunction in messageHandlers[typeTokens[typeToken]])
+                    if ((typeToken != null) && (typeTokens.ContainsKey(typeToken)))
                     {
-                        if (handlerFunction(messageContext))
-                            return true;
+                        foreach (var handlerFunction in messageHandlers[typeTokens[typeToken]])
+                        {
+                            if (handlerFunction(messageContext))
+                                return true;
+                        }
                     }
                 }
+            }
+            finally
+            {
+                (messageContext as IDisposable)?.Dispose();
             }
 
             return false;
@@ -179,6 +186,7 @@ namespace Mantle.Hosting.Messaging.Workers
                     if (typeToken != null)
                         typeTokens.Add(typeToken, tType);
                 }
+
                 messageHandlers.Add(tType, new List<Func<IMessageContext<MessageEnvelope>, bool>>());
             }
         }

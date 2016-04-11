@@ -7,7 +7,7 @@ namespace Mantle.Hosting.Hosts
     {
         protected BaseWorkerHost(IWorker worker)
         {
-            worker.Require("worker");
+            worker.Require(nameof(worker));
 
             Worker = worker;
 
@@ -17,15 +17,9 @@ namespace Mantle.Hosting.Hosts
 
         protected IWorker Worker { get; private set; }
 
-        public void Start()
-        {
-            Worker.Start();
-        }
+        public void Start() => Worker.Start();
 
-        public void Stop()
-        {
-            Worker.Stop();
-        }
+        public void Stop() => Worker.Stop();
 
         protected abstract void OnErrorOccurred(string message);
         protected abstract void OnMessageOccurred(string message);

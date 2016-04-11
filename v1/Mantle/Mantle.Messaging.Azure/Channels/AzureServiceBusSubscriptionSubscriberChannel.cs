@@ -18,10 +18,7 @@ namespace Mantle.Messaging.Azure.Channels
         [Configurable]
         public bool AutoSetup { get; set; }
 
-        public SubscriptionClient SubscriptionClient
-        {
-            get { return GetSubscriptionClient(); }
-        }
+        public SubscriptionClient SubscriptionClient => GetSubscriptionClient();
 
         [Configurable(IsRequired = true)]
         public string SubscriptionName { get; set; }

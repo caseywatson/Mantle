@@ -9,8 +9,8 @@ namespace Mantle.Messaging.Azure.Context
     {
         public AzureBrokeredMessageContext(BrokeredMessage brokeredMessage, T message)
         {
-            brokeredMessage.Require("brokeredMessage");
-            message.Require("message");
+            brokeredMessage.Require(nameof(brokeredMessage));
+            message.Require(nameof(message));
 
             BrokeredMessage = brokeredMessage;
             Message = message;
@@ -18,10 +18,7 @@ namespace Mantle.Messaging.Azure.Context
 
         public BrokeredMessage BrokeredMessage { get; private set; }
 
-        public int? DeliveryCount
-        {
-            get { return BrokeredMessage.DeliveryCount; }
-        }
+        public int? DeliveryCount => BrokeredMessage.DeliveryCount;
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }

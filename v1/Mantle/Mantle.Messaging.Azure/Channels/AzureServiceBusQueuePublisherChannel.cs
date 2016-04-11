@@ -19,7 +19,8 @@ namespace Mantle.Messaging.Azure.Channels
 
         public void Publish(T message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
+
             QueueClient.Send(new BrokeredMessage(message));
         }
     }

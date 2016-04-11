@@ -16,17 +16,15 @@ namespace Mantle.Messaging.Azure.Channels
         [Configurable]
         public bool AutoSetup { get; set; }
 
-        public TopicClient TopicClient
-        {
-            get { return GetTopicClient(); }
-        }
+        public TopicClient TopicClient => GetTopicClient();
 
         [Configurable(IsRequired = true)]
         public string TopicName { get; set; }
 
         public void Publish(T message)
         {
-            message.Require("message");
+            message.Require(nameof(message));
+
             TopicClient.Send(new BrokeredMessage(message));
         }
 

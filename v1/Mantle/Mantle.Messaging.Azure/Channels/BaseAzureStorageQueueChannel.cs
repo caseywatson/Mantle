@@ -22,20 +22,11 @@ namespace Mantle.Messaging.Azure.Channels
         public abstract string QueueName { get; set; }
         public abstract string StorageConnectionString { get; set; }
 
-        public CloudQueue CloudQueue
-        {
-            get { return GetCloudQueue(); }
-        }
+        public CloudQueue CloudQueue => GetCloudQueue();
 
-        public CloudQueueClient CloudQueueClient
-        {
-            get { return GetCloudQueueClient(); }
-        }
+        public CloudQueueClient CloudQueueClient => GetCloudQueueClient();
 
-        public CloudStorageAccount CloudStorageAccount
-        {
-            get { return GetCloudStorageAccount(); }
-        }
+        public CloudStorageAccount CloudStorageAccount => GetCloudStorageAccount();
 
         private CloudQueue GetCloudQueue()
         {

@@ -10,9 +10,9 @@ namespace Mantle.Messaging.Azure.Context
     {
         public AzureCloudQueueMessageContext(CloudQueue cloudQueue, CloudQueueMessage cloudQueueMessage, T message)
         {
-            cloudQueue.Require("cloudQueue");
-            cloudQueueMessage.Require("cloudQueueMessage");
-            message.Require("message");
+            cloudQueue.Require(nameof(cloudQueue));
+            cloudQueueMessage.Require(nameof(cloudQueueMessage));
+            message.Require(nameof(message));
 
             CloudQueue = cloudQueue;
             CloudQueueMessage = cloudQueueMessage;
