@@ -1,34 +1,77 @@
-﻿using Amazon;
-using Amazon.SQS;
+﻿using Amazon.SQS;
+using Mantle.Aws.Interfaces;
 using Mantle.Interfaces;
+using System.Configuration;
 
 namespace Mantle.Messaging.Aws.Channels
 {
     public abstract class BaseAwsSqsChannel<T>
         where T : class
     {
-        private IAmazonSQS sqsClient;
+        private readonly IAwsRegionEndpoints awsRegionEndpoints;
 
-        protected BaseAwsSqsChannel(ISerializer<T> serializer)
+        private AmazonSQSClient amazonSqsClient;
+
+        protected BaseAwsSqsChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
         {
+            this.awsRegionEndpoints = awsRegionEndpoints;
+
             Serializer = serializer;
         }
 
-        public abstract string AwsAccessKey { get; set; }
-        public abstract string AwsSecretAccessKey { get; set; }
-        public abstract string QueueUrl { get; set; }
+        public abstract bool AutoSetup { get; set; }
 
-        public IAmazonSQS SqsClient
+        public abstract string AwsAccessKeyId { get; set; }
+        public abstract string AwsSecretAccessKey { get; set; }
+        public abstract string AwsRegionName { get; set; }
+        public abstract string QueueName { get; set; }
+        
+        public string QueueUrl { get; private set; }
+
+        public AmazonSQSClient AmazonSqsClient => GetAmazonSqsClient();
+
+        protected ISerializer<T> Serializer { get; }
+
+        private AmazonSQSClient GetAmazonSqsClient()
         {
-            get { return GetSqsClient(); }
+            if (amazonSqsClient == null)
+            {
+                var awsRegionEndpoint = awsRegionEndpoints.GetRegionEndpointByName(AwsRegionName);
+
+                if (awsRegionEndpoint == null)
+                    throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
+
+                amazonSqsClient = new AmazonSQSClient(AwsAccessKeyId, AwsSecretAccessKey);
+
+                SetupQueue(amazonSqsClient);       
+            }
+
+            return amazonSqsClient;
         }
 
-        protected ISerializer<T> Serializer { get; private set; }
-
-        private IAmazonSQS GetSqsClient()
+        private void SetupQueue(AmazonSQSClient amazonSqsClient)
         {
-            return (sqsClient = (sqsClient ??
-                                 AWSClientFactory.CreateAmazonSQSClient(AwsAccessKey, AwsSecretAccessKey)));
+            QueueUrl = GetQueueUrlByName(amazonSqsClient, QueueName);
+
+            if (QueueUrl == null)
+            {
+                if (AutoSetup)
+                    QueueUrl = amazonSqsClient.CreateQueue(QueueName).QueueUrl;
+                else
+                    throw new ConfigurationErrorsException($"AWS SQS queue [{QueueName}] does not exist.");
+            }
+        }
+
+        private string GetQueueUrlByName(AmazonSQSClient amazonSqsClient, string queueName)
+        {
+            try
+            {
+                return amazonSqsClient.GetQueueUrl(queueName).QueueUrl;
+            }
+            catch (AmazonSQSException sqsException) when (sqsException.ErrorCode == "QueueDoesNotExist")
+            {
+                return null;
+            }
         }
     }
 }

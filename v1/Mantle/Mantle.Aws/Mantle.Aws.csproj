@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{27E60720-D2D2-48C1-BE61-9F53F6684734}</ProjectGuid>
+    <ProjectGuid>{FC245625-4FCD-475A-83EE-9A3D0409964A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Messaging.Aws</RootNamespace>
-    <AssemblyName>Mantle.Messaging.Aws</AssemblyName>
+    <RootNamespace>Mantle.Aws</RootNamespace>
+    <AssemblyName>Mantle.Aws</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,15 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AWSSDK.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
-      <HintPath>..\packages\AWSSDK.Core.3.1.4.3\lib\net45\AWSSDK.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="AWSSDK.SQS, Version=3.1.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
-      <HintPath>..\packages\AWSSDK.SQS.3.1.0.6\lib\net45\AWSSDK.SQS.dll</HintPath>
+      <HintPath>..\packages\AWSSDK.Core.3.1.5.1\lib\net45\AWSSDK.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,26 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channels\AwsSqsPublisherChannel.cs" />
-    <Compile Include="Channels\AwsSqsSubscriberChannel.cs" />
-    <Compile Include="Channels\BaseAwsSqsChannel.cs" />
-    <Compile Include="Contexts\AwsSqsMessageContext.cs" />
+    <Compile Include="AwsRegionEndpoints.cs" />
+    <Compile Include="Interfaces\IAwsRegionEndpoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
-      <Project>{fc245625-4fcd-475a-83ee-9a3d0409964a}</Project>
-      <Name>Mantle.Aws</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
-      <Project>{14843f74-b007-4357-9aea-4703d772b6ae}</Project>
-      <Name>Mantle.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
-      <Project>{48f77c1a-cdb2-47d6-8bde-099d857de77f}</Project>
-      <Name>Mantle.Messaging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
       <Name>Mantle</Name>
@@ -76,9 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\AWSSDK.SQS.3.1.0.6\analyzers\dotnet\cs\AWSSDK.SQS.CodeAnalysis.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -68,7 +68,7 @@ namespace Mantle.BlobStorage.Azure.Clients
             if (blob.Exists() == false)
                 throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
 
-            var stream = new MemoryStream();
+            var stream = new MemoryStream();    
 
             blob.DownloadToStream(stream);
             stream.TryToRewind();

@@ -32,7 +32,7 @@ namespace Mantle.Cache.InMemory.Clients
 
         public void Put(T @object, string objectId, TimeSpan? cacheExpiration = null)
         {
-            objectId.Require("objectId");
+            objectId.Require(nameof(objectId));
 
             var cachePolicy = new CacheItemPolicy();
             var expiration = (cacheExpiration ?? CacheExpiration);
@@ -47,7 +47,7 @@ namespace Mantle.Cache.InMemory.Clients
 
         public T Get(string objectId)
         {
-            objectId.Require("objectId");
+            objectId.Require(nameof(objectId));
 
             if (cache.Contains(objectId))
                 return ((T) (cache.Get(objectId)));

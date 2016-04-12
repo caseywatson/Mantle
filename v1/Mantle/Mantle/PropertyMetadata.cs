@@ -15,7 +15,7 @@ namespace Mantle
             : this()
         {
             if (propertyInfo == null)
-                throw new ArgumentNullException("propertyInfo");
+                throw new ArgumentNullException(nameof(propertyInfo));
 
             Load(propertyInfo);
         }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Mantle.Messaging.Aws")]
+[assembly: AssemblyTitle("Mantle.Aws")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Mantle.Messaging.Aws")]
+[assembly: AssemblyProduct("Mantle.Aws")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("27e60720-d2d2-48c1-be61-9f53f6684734")]
+[assembly: Guid("fc245625-4fcd-475a-83ee-9a3d0409964a")]
 
 // Version information for an assembly consists of the following four values:
 //

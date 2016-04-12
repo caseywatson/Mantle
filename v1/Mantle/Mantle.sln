@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4F5E248D-0A3C-489E-A481-8E749D5F740E}"
 EndProject
@@ -52,19 +52,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Cache.InMemory", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Azure", "Mantle.Messaging.Azure\Mantle.Messaging.Azure.csproj", "{51C2A50E-F90D-49A7-9B15-1A3279C5B6E9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aws", "Aws", "{9C97F4B5-48DA-4590-BB8B-A8DBE82AB67D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Console", "Mantle.Hosting.Console\Mantle.Hosting.Console.csproj", "{5E7B03AA-3CBD-47CB-BD7B-96252447F95A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Msmq", "Mantle.Messaging.Msmq\Mantle.Messaging.Msmq.csproj", "{979AE25C-D77D-498D-A0BB-54B02AB23767}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Azure", "Mantle.Hosting.Azure\Mantle.Hosting.Azure.csproj", "{C42622EA-6646-4682-A7EF-E9F9E8416C02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Aws", "Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj", "{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Cache", "Mantle.Cache\Mantle.Cache.csproj", "{4977622F-590A-4C7A-AD8B-5D2629EB567D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Hosting.Messaging", "Mantle.Hosting.Messaging\Mantle.Hosting.Messaging.csproj", "{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aws", "Aws", "{FF83BD69-0FC9-4ED4-855D-E04B145993DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.BlobStorage.Aws", "Mantle.BlobStorage.Aws\Mantle.BlobStorage.Aws.csproj", "{25D319C3-CE11-4FF2-9F0D-5A17ADB2F1DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Messaging.Aws", "Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj", "{27E60720-D2D2-48C1-BE61-9F53F6684734}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Aws", "Mantle.Aws\Mantle.Aws.csproj", "{FC245625-4FCD-475A-83EE-9A3D0409964A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -156,10 +160,6 @@ Global
 		{C42622EA-6646-4682-A7EF-E9F9E8416C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C42622EA-6646-4682-A7EF-E9F9E8416C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C42622EA-6646-4682-A7EF-E9F9E8416C02}.Release|Any CPU.Build.0 = Release|Any CPU
-		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -168,6 +168,18 @@ Global
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25D319C3-CE11-4FF2-9F0D-5A17ADB2F1DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25D319C3-CE11-4FF2-9F0D-5A17ADB2F1DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25D319C3-CE11-4FF2-9F0D-5A17ADB2F1DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25D319C3-CE11-4FF2-9F0D-5A17ADB2F1DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27E60720-D2D2-48C1-BE61-9F53F6684734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27E60720-D2D2-48C1-BE61-9F53F6684734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27E60720-D2D2-48C1-BE61-9F53F6684734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27E60720-D2D2-48C1-BE61-9F53F6684734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC245625-4FCD-475A-83EE-9A3D0409964A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC245625-4FCD-475A-83EE-9A3D0409964A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC245625-4FCD-475A-83EE-9A3D0409964A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC245625-4FCD-475A-83EE-9A3D0409964A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,8 +206,10 @@ Global
 		{5E7B03AA-3CBD-47CB-BD7B-96252447F95A} = {2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}
 		{979AE25C-D77D-498D-A0BB-54B02AB23767} = {2353F2D2-0EB2-499B-BCE0-65B7574B6B0D}
 		{C42622EA-6646-4682-A7EF-E9F9E8416C02} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
-		{339EBDE6-DAB1-4C2C-AAAE-ADD9DCF8E2AD} = {9C97F4B5-48DA-4590-BB8B-A8DBE82AB67D}
 		{4977622F-590A-4C7A-AD8B-5D2629EB567D} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
+		{25D319C3-CE11-4FF2-9F0D-5A17ADB2F1DD} = {FF83BD69-0FC9-4ED4-855D-E04B145993DA}
+		{27E60720-D2D2-48C1-BE61-9F53F6684734} = {FF83BD69-0FC9-4ED4-855D-E04B145993DA}
+		{FC245625-4FCD-475A-83EE-9A3D0409964A} = {FF83BD69-0FC9-4ED4-855D-E04B145993DA}
 	EndGlobalSection
 EndGlobal

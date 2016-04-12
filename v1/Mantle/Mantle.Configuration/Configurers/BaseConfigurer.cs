@@ -5,6 +5,7 @@ using System.Linq;
 using Mantle.Configuration.Attributes;
 using Mantle.Configuration.Interfaces;
 using Mantle.Extensions;
+using static System.String;
 
 namespace Mantle.Configuration.Configurers
 {
@@ -44,15 +45,16 @@ namespace Mantle.Configuration.Configurers
                 if (cfgSettingDictionary.Any())
                 {
                     var settingName = cfgProperty.PrioritizedSettingNames.First(cfgSettingDictionary.ContainsKey);
+
                     ApplyConfigurationSetting(cfgObject, cfgProperty, cfgSettingDictionary[settingName]);
                 }
                 else if (cfgProperty.IsRequired)
                 {
                     throw new ConfigurationErrorsException(
-                        String.Format(
-                                      "Unable to configure the required property [{0}/{1}]. None of the following configuration setting(s) were found: [{2}].",
-                                      cfgObject.TypeMetadata.Type.Name, cfgProperty.PropertyMetadata.PropertyInfo.Name,
-                                      String.Join(", ", cfgProperty.PrioritizedSettingNames)));
+                        "Unable to configure the required property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        "None of the following configuration setting(s) were found: " +
+                        $"[{Join(", ", cfgProperty.PrioritizedSettingNames)}].");
                 }
             }
 
@@ -69,12 +71,10 @@ namespace Mantle.Configuration.Configurers
             {
                 if (value == null)
                 {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a boolean value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
+                    throw new ConfigurationErrorsException(
+                        $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        $"[{cfgSetting.Value}] can not be converted to a [bool] value.");
                 }
 
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
@@ -118,13 +118,17 @@ namespace Mantle.Configuration.Configurers
             {
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, cfgSetting.Value);
             }
+            else if ((propertyType.IsEnum))
+            {
+
+            }
             else
             {
                 throw new ConfigurationErrorsException(
-                    String.Format(
-                                  "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. The target property must be of type 'bool', 'bool?', 'DateTime', 'DateTime?', 'double', 'double?', 'Guid', 'Guid?', 'int', 'int?', 'long', 'long?' or 'string'.",
-                                  cfgSetting.Name, cfgSetting.Value, cfgObject.TypeMetadata.Type.Name,
-                                  cfgProperty.PropertyMetadata.PropertyInfo.Name));
+                    $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                    $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                    "The target must be of type [bool], [bool?], [DateTime], [DateTime?], [double], [double?], [Guid], [Guid?], " +
+                    "[int], [int?], [long], [long?], [string] or an enumeration type.");
             }
         }
 
@@ -138,12 +142,10 @@ namespace Mantle.Configuration.Configurers
             {
                 if (value == null)
                 {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a date/time value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
+                    throw new ConfigurationErrorsException(
+                        $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        $"[{cfgSetting.Value}] can not be converted to a [DateTime] value.");
                 }
 
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
@@ -164,12 +166,10 @@ namespace Mantle.Configuration.Configurers
             {
                 if (value == null)
                 {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a double value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
+                    throw new ConfigurationErrorsException(
+                        $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        $"[{cfgSetting.Value}] can not be converted to a [double] value.");
                 }
 
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
@@ -190,12 +190,10 @@ namespace Mantle.Configuration.Configurers
             {
                 if (value == null)
                 {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a GUID value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
+                    throw new ConfigurationErrorsException(
+                        $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        $"[{cfgSetting.Value}] can not be converted to a [Guid] value.");
                 }
 
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
@@ -216,12 +214,10 @@ namespace Mantle.Configuration.Configurers
             {
                 if (value == null)
                 {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a 32-bit integer value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
+                    throw new ConfigurationErrorsException(
+                        $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        $"[{cfgSetting.Value}] can not be converted to an [int] value.");
                 }
 
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
@@ -242,12 +238,10 @@ namespace Mantle.Configuration.Configurers
             {
                 if (value == null)
                 {
-                    throw new ConfigurationErrorsException(String.Format(
-                                                                         "Unable to apply configuration setting [{0}: {1}] to property [{2}/{3}]. [{1}] can not be converted to a 64-bit integer value.",
-                                                                         cfgSetting.Name, cfgSetting.Value,
-                                                                         cfgObject.TypeMetadata.Type.Name,
-                                                                         cfgProperty.PropertyMetadata.PropertyInfo
-                                                                             .Name));
+                    throw new ConfigurationErrorsException(
+                        $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                        $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                        $"[{cfgSetting.Value}] can not be converted to a [long] value.");
                 }
 
                 cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, value.Value);
@@ -258,25 +252,32 @@ namespace Mantle.Configuration.Configurers
             }
         }
 
+        private void ApplyEnumerationConfigurationSetting(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
+                                                          ConfigurationSetting cfgSetting)
+        {
+            Type propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
+
+            if (Enum.IsDefined(propertyType, cfgSetting.Value) == false)
+            {
+                throw new ConfigurationErrorsException(
+                    $"Unable to apply configuration setting [{cfgSetting.Name}: {cfgSetting.Value}] to property " +
+                    $"[{cfgObject.TypeMetadata.Type.Name}/{cfgProperty.PropertyMetadata.PropertyInfo.Name}]. " +
+                    $"[{cfgSetting.Value}] can not be converted to a [{propertyType.Name}] value.");
+            }
+
+            cfgProperty.PropertyMetadata.PropertyInfo.SetValue(cfgObject.Target, Enum.Parse(propertyType, cfgSetting.Value));
+        }
+
         private IEnumerable<string> GetPrioritizedConventionalSettingNames(ConfigurableObject<T> cfgObject,
                                                                            ConfigurableProperty cfgProperty)
         {
-            if (String.IsNullOrEmpty(cfgObject.Name) == false)
+            if (IsNullOrEmpty(cfgObject.Name) == false)
             {
-                yield return String.Format("{0}.{1}.{2}",
-                                           cfgObject.Name,
-                                           cfgObject.TypeMetadata.Type.Name,
-                                           cfgProperty.PropertyMetadata.PropertyInfo.Name);
-
-                yield return String.Format("{0}.{1}",
-                                           cfgObject.Name,
-                                           cfgProperty.PropertyMetadata.PropertyInfo.Name);
+                yield return $"{cfgObject.Name}.{cfgObject.TypeMetadata.Type.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
+                yield return $"{cfgObject.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
             }
 
-            yield return String.Format("{0}.{1}",
-                                       cfgObject.TypeMetadata.Type.Name,
-                                       cfgProperty.PropertyMetadata.PropertyInfo.Name);
-
+            yield return $"{cfgObject.TypeMetadata.Type.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
             yield return cfgProperty.PropertyMetadata.PropertyInfo.Name;
         }
 
