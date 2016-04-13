@@ -1,6 +1,7 @@
 ﻿using Amazon.SQS;
 using Amazon.SQS.Model;
 using Mantle.Extensions;
+using Mantle.Messaging.Aws.Channels;
 using Mantle.Messaging.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,15 @@ namespace Mantle.Messaging.Aws.Contexts
     public class AwsSqsMessageContext<T> : IMessageContext<T>
         where T : class
     {
-        private readonly AmazonSQSClient sqsClient;
+        private readonly BaseAwsSqsChannel<T> sqsChannel;
 
-        public AwsSqsMessageContext(AmazonSQSClient sqsClient, Message sqsMessage, T message)
+        public AwsSqsMessageContext(BaseAwsSqsChannel<T> sqsChannel, Message sqsMessage, T message)
         {
-            sqsClient.Require(nameof(sqsClient));
+            sqsChannel.Require(nameof(sqsChannel));
             sqsMessage.Require(nameof(sqsMessage));
             message.Require(nameof(message));
 
-            this.sqsClient = sqsClient;
+            this.sqsChannel = sqsChannel;
 
             SqsMessage = sqsMessage;
             Message = message;
@@ -39,17 +40,39 @@ namespace Mantle.Messaging.Aws.Contexts
 
         public bool TryToAbandon()
         {
-            throw new NotImplementedException();
+            if (IsAbandoned)
+                return true;
+
+            try
+            {
+                sqsChannel.AwsSqsClient.ChangeMessageVisibility(sqsChannel.QueueUrl, SqsMessage.ReceiptHandle, 0);
+                return (IsAbandoned = true);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool TryToComplete()
         {
-            throw new NotImplementedException();
+            if (IsCompleted)
+                return true;
+
+            try
+            {
+                sqsChannel.AwsSqsClient.DeleteMessage(sqsChannel.QueueUrl, SqsMessage.ReceiptHandle);
+                return (IsCompleted = true);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool TryToDeadLetter()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool TryToRenewLock()

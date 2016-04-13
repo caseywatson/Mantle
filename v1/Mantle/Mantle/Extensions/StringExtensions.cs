@@ -13,8 +13,8 @@ namespace Mantle.Extensions
         public static string Merge(this string source, object data, char fieldStartDelimiter = '{',
                                    char fieldEndDelimiter = '}')
         {
-            source.Require("source");
-            data.Require("data");
+            source.Require(nameof(source));
+            data.Require(nameof(data));
 
             Dictionary<string, object> dataDictionary = data.ToDictionary();
 
@@ -33,12 +33,12 @@ namespace Mantle.Extensions
         public static void Require(this string parameter, string parameterName, string errorMessage = null)
         {
             if (String.IsNullOrEmpty(parameterName))
-                throw new ArgumentException("[parameterName] is required.", "parameterName");
+                throw new ArgumentException($"[{nameof(parameterName)}] is required.", nameof(parameterName));
 
             if (String.IsNullOrEmpty(parameter))
             {
                 if (errorMessage == null)
-                    throw new ArgumentException(String.Format("[{0}] is required.", parameterName), parameterName);
+                    throw new ArgumentException($"[{parameterName}] is required.", parameterName);
 
                 throw new ArgumentException(errorMessage, parameterName);
             }
@@ -46,7 +46,7 @@ namespace Mantle.Extensions
 
         public static bool? TryParseBoolean(this string source)
         {
-            source.Require("source");
+            source.Require(nameof(source));
 
             bool temp;
 
@@ -58,7 +58,7 @@ namespace Mantle.Extensions
 
         public static DateTime? TryParseDateTime(this string source)
         {
-            source.Require("source");
+            source.Require(nameof(source));
 
             DateTime temp;
 
@@ -68,9 +68,21 @@ namespace Mantle.Extensions
             return null;
         }
 
+        public static TimeSpan? TryParseTimeSpan(this string source)
+        {
+            source.Require(nameof(source));
+
+            TimeSpan temp;
+
+            if (TimeSpan.TryParse(source, out temp))
+                return temp;
+
+            return null;
+        }
+
         public static double? TryParseDouble(this string source)
         {
-            source.Require("source");
+            source.Require(nameof(source));
 
             double temp;
 
@@ -82,7 +94,7 @@ namespace Mantle.Extensions
 
         public static Guid? TryParseGuid(this string source)
         {
-            source.Require("source");
+            source.Require(nameof(source));
 
             Guid temp;
 
@@ -94,7 +106,7 @@ namespace Mantle.Extensions
 
         public static int? TryParseInt(this string source)
         {
-            source.Require("source");
+            source.Require(nameof(source));
 
             int temp;
 
@@ -106,7 +118,7 @@ namespace Mantle.Extensions
 
         public static long? TryParseLong(this string source)
         {
-            source.Require("source");
+            source.Require(nameof(source));
 
             long temp;
 

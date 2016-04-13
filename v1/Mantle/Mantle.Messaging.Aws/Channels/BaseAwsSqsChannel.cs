@@ -1,11 +1,12 @@
 ﻿using Amazon.SQS;
 using Mantle.Aws.Interfaces;
 using Mantle.Interfaces;
+using System;
 using System.Configuration;
 
 namespace Mantle.Messaging.Aws.Channels
 {
-    public abstract class BaseAwsSqsChannel<T>
+    public abstract class BaseAwsSqsChannel<T> : IDisposable
         where T : class
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
@@ -28,11 +29,11 @@ namespace Mantle.Messaging.Aws.Channels
         
         public string QueueUrl { get; private set; }
 
-        public AmazonSQSClient AmazonSqsClient => GetAmazonSqsClient();
+        public AmazonSQSClient AwsSqsClient => GetAwsSqsClient();
 
         protected ISerializer<T> Serializer { get; }
 
-        private AmazonSQSClient GetAmazonSqsClient()
+        private AmazonSQSClient GetAwsSqsClient()
         {
             if (amazonSqsClient == null)
             {
@@ -72,6 +73,12 @@ namespace Mantle.Messaging.Aws.Channels
             {
                 return null;
             }
+        }
+
+        public void Dispose()
+        {
+            if (amazonSqsClient != null)
+                amazonSqsClient.Dispose();
         }
     }
 }

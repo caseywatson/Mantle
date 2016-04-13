@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Mantle.BlobStorage.Aws.Clients
 {
-    public class AwsS3BlobStorageClient : IBlobStorageClient
+    public class AwsS3BlobStorageClient : IBlobStorageClient, IDisposable
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
 
@@ -134,6 +134,12 @@ namespace Mantle.BlobStorage.Aws.Clients
             }
 
             return amazonS3Client;
+        }
+
+        public void Dispose()
+        {
+            if (amazonS3Client != null)
+                amazonS3Client.Dispose();
         }
     }
 }

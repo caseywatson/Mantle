@@ -4,9 +4,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mantle.Messaging.Aws.Channels
@@ -30,6 +28,9 @@ namespace Mantle.Messaging.Aws.Channels
         [Configurable(IsRequired = true)]
         public override string AwsSecretAccessKey { get; set; }
 
+        [Configurable]
+        public TimeSpan MessageVisibilityTimeout { get; set; }
+
         [Configurable(IsRequired = true)]
         public override string QueueName { get; set; }
 
@@ -40,10 +41,11 @@ namespace Mantle.Messaging.Aws.Channels
             var receiveMessageRequest = new ReceiveMessageRequest
             {
                 QueueUrl = QueueUrl,
-                WaitTimeSeconds = timeout.Value.Seconds
+                WaitTimeSeconds = timeout.Value.Seconds,
+                VisibilityTimeout = ((int)(MessageVisibilityTimeout.TotalSeconds))
             };
 
-            var receiveMessageResponse = AmazonSqsClient.ReceiveMessage(receiveMessageRequest);
+            var receiveMessageResponse = AwsSqsClient.ReceiveMessage(receiveMessageRequest);
             var message = receiveMessageResponse.Messages?.FirstOrDefault();
 
             if (message == null)

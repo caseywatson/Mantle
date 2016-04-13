@@ -32,7 +32,7 @@ namespace Mantle.Messaging.Aws.Channels
         {
             message.Require(nameof(message));
 
-            AmazonSqsClient.SendMessage(QueueUrl, Serializer.Serialize(message));
+            AwsSqsClient.SendMessage(QueueUrl, Serializer.Serialize(message));
         }
     }
 }
