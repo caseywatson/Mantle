@@ -2,6 +2,8 @@
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Interfaces;
+using Mantle.Messaging.Aws.Constants;
+using Mantle.Messaging.Aws.Contexts;
 using Mantle.Messaging.Interfaces;
 using System;
 using System.Linq;
@@ -14,7 +16,10 @@ namespace Mantle.Messaging.Aws.Channels
     {
         public AwsSqsSubscriberChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
             : base(awsRegionEndpoints, serializer)
-        { }
+        {
+            DefaultMessageReceiveTimeout = TimeSpan.FromSeconds(30);
+            MessageVisibilityTimeout = TimeSpan.FromSeconds(30);
+        }
 
         [Configurable]
         public override bool AutoSetup { get; set; }
@@ -29,6 +34,9 @@ namespace Mantle.Messaging.Aws.Channels
         public override string AwsSecretAccessKey { get; set; }
 
         [Configurable]
+        public TimeSpan DefaultMessageReceiveTimeout { get; set; }
+
+        [Configurable]
         public TimeSpan MessageVisibilityTimeout { get; set; }
 
         [Configurable(IsRequired = true)]
@@ -36,7 +44,7 @@ namespace Mantle.Messaging.Aws.Channels
 
         public IMessageContext<T> Receive(TimeSpan? timeout = null)
         {
-            timeout = (timeout ?? TimeSpan.FromSeconds(30));
+            timeout = (timeout ?? DefaultMessageReceiveTimeout);
 
             var receiveMessageRequest = new ReceiveMessageRequest
             {
@@ -45,18 +53,69 @@ namespace Mantle.Messaging.Aws.Channels
                 VisibilityTimeout = ((int)(MessageVisibilityTimeout.TotalSeconds))
             };
 
-            var receiveMessageResponse = AwsSqsClient.ReceiveMessage(receiveMessageRequest);
+            receiveMessageRequest.AttributeNames.Add(AwsSqsMessageAttributes.ApproximateReceiveCount);
+
+            var receiveMessageResponse = AmazonSQSClient.ReceiveMessage(receiveMessageRequest);
             var message = receiveMessageResponse.Messages?.FirstOrDefault();
 
             if (message == null)
                 return null;
 
-            return null; //For now.
+            return new AwsSqsMessageContext<T>(
+                message,
+                Serializer.Deserialize(message.Body),
+                TryToAbandonMessage,
+                TryToCompleteMessage,
+                m => false,
+                TryToRenewMessageLock);
         }
 
         public Task<IMessageContext<T>> ReceiveAsync()
         {
             throw new NotImplementedException();
+        }
+
+        private bool TryToAbandonMessage(Message sqsMessage)
+        {
+            try
+            {
+                AmazonSQSClient.ChangeMessageVisibility(QueueUrl, sqsMessage.ReceiptHandle, 0);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool TryToCompleteMessage(Message sqsMessage)
+        {
+            try
+            {
+                AmazonSQSClient.DeleteMessage(QueueUrl, sqsMessage.ReceiptHandle);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool TryToRenewMessageLock(Message sqsMessage)
+        {
+            try
+            {
+                AmazonSQSClient.ChangeMessageVisibility(
+                    QueueUrl, 
+                    sqsMessage.ReceiptHandle, 
+                    ((int)(MessageVisibilityTimeout.TotalSeconds)));
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

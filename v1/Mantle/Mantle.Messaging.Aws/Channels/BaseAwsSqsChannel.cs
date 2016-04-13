@@ -1,6 +1,7 @@
 ﻿using Amazon.SQS;
 using Mantle.Aws.Interfaces;
 using Mantle.Interfaces;
+using Mantle.Messaging.Aws.Constants;
 using System;
 using System.Configuration;
 
@@ -11,7 +12,7 @@ namespace Mantle.Messaging.Aws.Channels
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
 
-        private AmazonSQSClient amazonSqsClient;
+        private AmazonSQSClient awsSqsClient;
 
         protected BaseAwsSqsChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
         {
@@ -29,25 +30,25 @@ namespace Mantle.Messaging.Aws.Channels
         
         public string QueueUrl { get; private set; }
 
-        public AmazonSQSClient AwsSqsClient => GetAwsSqsClient();
+        public AmazonSQSClient AmazonSQSClient => GetAwsSqsClient();
 
         protected ISerializer<T> Serializer { get; }
 
         private AmazonSQSClient GetAwsSqsClient()
         {
-            if (amazonSqsClient == null)
+            if (awsSqsClient == null)
             {
                 var awsRegionEndpoint = awsRegionEndpoints.GetRegionEndpointByName(AwsRegionName);
 
                 if (awsRegionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
 
-                amazonSqsClient = new AmazonSQSClient(AwsAccessKeyId, AwsSecretAccessKey);
+                awsSqsClient = new AmazonSQSClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
 
-                SetupQueue(amazonSqsClient);       
+                SetupQueue(awsSqsClient);       
             }
 
-            return amazonSqsClient;
+            return awsSqsClient;
         }
 
         private void SetupQueue(AmazonSQSClient amazonSqsClient)
@@ -69,7 +70,7 @@ namespace Mantle.Messaging.Aws.Channels
             {
                 return amazonSqsClient.GetQueueUrl(queueName).QueueUrl;
             }
-            catch (AmazonSQSException sqsException) when (sqsException.ErrorCode == "QueueDoesNotExist")
+            catch (AmazonSQSException sqsException) when (sqsException.ErrorCode == AwsSqsErrorCodes.QueueDoesNotExist)
             {
                 return null;
             }
@@ -77,8 +78,8 @@ namespace Mantle.Messaging.Aws.Channels
 
         public void Dispose()
         {
-            if (amazonSqsClient != null)
-                amazonSqsClient.Dispose();
+            if (awsSqsClient != null)
+                awsSqsClient.Dispose();
         }
     }
 }

@@ -11,10 +11,10 @@ namespace Mantle.Configuration.Configurers
 
         public CascadingConfigurer(params IConfigurer<T>[] configurers)
         {
-            configurers.Require("configurers");
+            configurers.Require(nameof(configurers));
 
             if (configurers.Length == 0)
-                throw new ArgumentException("You must supply at least one (1) configurer.", "configurers");
+                throw new ArgumentException("You must supply at least one (1) configurer.", nameof(configurers));
 
             this.configurers = configurers;
         }

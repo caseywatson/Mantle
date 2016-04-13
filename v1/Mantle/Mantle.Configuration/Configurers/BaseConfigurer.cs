@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using static System.String;
 
 namespace Mantle.Configuration.Configurers
@@ -21,19 +22,18 @@ namespace Mantle.Configuration.Configurers
 
         protected BaseConfigurer(IPropertyConfigurer[] propertyConfigurers)
         {
-            this.propertyConfigurers = (propertyConfigurers ??
-                new IPropertyConfigurer[]
-                {
-                    new BooleanPropertyConfigurer(),
-                    new DateTimePropertyConfigurer(),
-                    new DoublePropertyConfigurer(),
-                    new EnumPropertyConfigurer(),
-                    new GuidPropertyConfigurer(),
-                    new IntPropertyConfigurer(),
-                    new LongPropertyConfigurer(),
-                    new StringPropertyConfigurer(),
-                    new TimeSpanPropertyConfigurer()
-                });
+            if (propertyConfigurers == null)
+            {
+                var localPropertyConfigurerTypes = Assembly.GetExecutingAssembly().GetTypes()
+                    .Where(t => typeof(IPropertyConfigurer).IsAssignableFrom(t)).ToList();
+
+                propertyConfigurers = localPropertyConfigurerTypes // This relies on all local property configurers
+                    .Select(t => Activator.CreateInstance(t))      // having default constructors.
+                    .Cast<IPropertyConfigurer>()                   // May need to rethink in the future.
+                    .ToArray();
+            }
+
+            this.propertyConfigurers = propertyConfigurers;
 
             TypeMetadata = new TypeMetadata(typeof (T));
         }
@@ -85,7 +85,9 @@ namespace Mantle.Configuration.Configurers
                                                ConfigurationSetting cfgSetting)
         {
             var propertyInfo = cfgProperty.PropertyMetadata.PropertyInfo;
-            var propertyConfigurer = propertyConfigurers.FirstOrDefault(pc => pc.CanConfigureProperty(propertyInfo));
+
+            var propertyConfigurer = propertyConfigurers
+                .FirstOrDefault(pc => pc.CanConfigureProperty(propertyInfo));
 
             if (propertyConfigurer == null)
             {

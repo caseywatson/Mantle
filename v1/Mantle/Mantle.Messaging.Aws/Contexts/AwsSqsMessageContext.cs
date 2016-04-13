@@ -1,31 +1,35 @@
-﻿using Amazon.SQS;
-using Amazon.SQS.Model;
+﻿using Amazon.SQS.Model;
 using Mantle.Extensions;
-using Mantle.Messaging.Aws.Channels;
+using Mantle.Messaging.Aws.Constants;
 using Mantle.Messaging.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mantle.Messaging.Aws.Contexts
 {
     public class AwsSqsMessageContext<T> : IMessageContext<T>
         where T : class
     {
-        private readonly BaseAwsSqsChannel<T> sqsChannel;
+        private readonly Func<Message, bool> tryAbandonMessage;
+        private readonly Func<Message, bool> tryCompleteMessage;
+        private readonly Func<Message, bool> tryDeadLetterMessage;
+        private readonly Func<Message, bool> tryRenewMessageLock;
 
-        public AwsSqsMessageContext(BaseAwsSqsChannel<T> sqsChannel, Message sqsMessage, T message)
+        public AwsSqsMessageContext(Message sqsMessage, T message,
+                                    Func<Message, bool> tryAbandonMessage,
+                                    Func<Message, bool> tryCompleteMessage,
+                                    Func<Message, bool> tryDeadLetterMessage,
+                                    Func<Message, bool> tryRenewMessageLock)
         {
-            sqsChannel.Require(nameof(sqsChannel));
-            sqsMessage.Require(nameof(sqsMessage));
-            message.Require(nameof(message));
-
-            this.sqsChannel = sqsChannel;
+            this.tryAbandonMessage = tryAbandonMessage;
+            this.tryCompleteMessage = tryCompleteMessage;
+            this.tryDeadLetterMessage = tryDeadLetterMessage;
+            this.tryRenewMessageLock = tryRenewMessageLock;
 
             SqsMessage = sqsMessage;
             Message = message;
+
+            if (sqsMessage.Attributes.ContainsKey(AwsSqsMessageAttributes.ApproximateReceiveCount))
+                DeliveryCount = sqsMessage.Attributes[AwsSqsMessageAttributes.ApproximateReceiveCount].TryParseInt();
         }
 
         public int? DeliveryCount { get; private set; }
@@ -43,15 +47,7 @@ namespace Mantle.Messaging.Aws.Contexts
             if (IsAbandoned)
                 return true;
 
-            try
-            {
-                sqsChannel.AwsSqsClient.ChangeMessageVisibility(sqsChannel.QueueUrl, SqsMessage.ReceiptHandle, 0);
-                return (IsAbandoned = true);
-            }
-            catch
-            {
-                return false;
-            }
+            return (IsAbandoned = tryAbandonMessage(SqsMessage));
         }
 
         public bool TryToComplete()
@@ -59,25 +55,20 @@ namespace Mantle.Messaging.Aws.Contexts
             if (IsCompleted)
                 return true;
 
-            try
-            {
-                sqsChannel.AwsSqsClient.DeleteMessage(sqsChannel.QueueUrl, SqsMessage.ReceiptHandle);
-                return (IsCompleted = true);
-            }
-            catch
-            {
-                return false;
-            }
+            return (IsCompleted = tryCompleteMessage(SqsMessage));
         }
 
         public bool TryToDeadLetter()
         {
-            return false;
+            if (IsDeadLettered)
+                return true;
+
+            return (IsDeadLettered = tryDeadLetterMessage(SqsMessage));
         }
 
         public bool TryToRenewLock()
         {
-            throw new NotImplementedException();
+            return tryRenewMessageLock(SqsMessage);
         }
     }
 }
