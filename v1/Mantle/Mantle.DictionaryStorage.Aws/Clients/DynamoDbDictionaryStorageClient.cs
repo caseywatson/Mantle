@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Threading;
+using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
@@ -18,6 +22,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         private readonly Dictionary<Type, Func<object, AttributeValue>> toDynamoDbAttributeValue;
         private readonly TypeMetadata typeMetadata;
 
+        private AmazonDynamoDBClient dynamoDbClient;
+
         public DynamoDbDictionaryStorageClient(IAwsRegionEndpoints awsRegionEndpoints)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
@@ -26,6 +32,10 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             toDynamoDbAttributeValue = GetToDynamoDbAttributeValueConversions();
 
             typeMetadata = new TypeMetadata<T>();
+
+            AutoSetup = true;
+            TableReadCapacityUnits = 10;
+            TableWriteCapacityUnits = 10;
         }
 
         [Configurable]
@@ -43,35 +53,115 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         [Configurable(IsRequired = true)]
         public string TableName { get; set; }
 
+        [Configurable]
+        public int TableReadCapacityUnits { get; set; }
+
+        [Configurable]
+        public int TableWriteCapacityUnits { get; set; }
+
+        public AmazonDynamoDBClient AmazonDynamoDbClient => GetAmazonDynamoDbClient();
+
         public void DeleteEntity(string entityId, string partitionId)
         {
-            throw new NotImplementedException();
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
+
+            AmazonDynamoDbClient.DeleteItem(TableName, new Dictionary<string, AttributeValue>
+            {
+                [AttributeNames.EntityId] = new AttributeValue {S = entityId},
+                [AttributeNames.PartitionId] = new AttributeValue {S = partitionId}
+            });
         }
 
         public bool EntityExists(string entityId, string partitionId)
         {
-            throw new NotImplementedException();
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
+
+            var getItemResult = AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
+            {
+                [AttributeNames.EntityId] = new AttributeValue {S = entityId},
+                [AttributeNames.PartitionId] = new AttributeValue {S = partitionId}
+            });
+
+            return getItemResult.IsItemSet;
         }
 
         public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
             Func<T, string> partitionIdSelector)
         {
-            throw new NotImplementedException();
+            entities.Require(nameof(entities));
+            entityIdSelector.Require(nameof(entityIdSelector));
+            partitionIdSelector.Require(nameof(partitionIdSelector));
+
+            var dsEntities = entities
+                .Select(e => new DynamoDbDictionaryStorageEntity(
+                    entityIdSelector(e),
+                    partitionIdSelector(e),
+                    e));
+
+            foreach (var dsEntityChunk in dsEntities.Chunk(25))
+            {
+                var writeRequests = dsEntityChunk
+                    .Select(e => new WriteRequest(new PutRequest(ToDynamoDbDocumentDictionary(e))))
+                    .ToList();
+
+                var batchRequest = new BatchWriteItemRequest(new Dictionary<string, List<WriteRequest>>
+                {
+                    [TableName] = writeRequests
+                });
+
+                AmazonDynamoDbClient.BatchWriteItem(batchRequest);
+            }
         }
 
         public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
         {
-            throw new NotImplementedException();
+            entity.Require(nameof(entity));
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
+
+            var dsEntity = new DynamoDbDictionaryStorageEntity(entityId, partitionId, entity);
+
+            AmazonDynamoDbClient.PutItem(TableName, ToDynamoDbDocumentDictionary(dsEntity));
         }
 
-        public IEnumerable<T> LoadAllEntities(string parititionId)
+        public IEnumerable<T> LoadAllEntities(string partitionId)
         {
-            throw new NotImplementedException();
+            const string partitionIdParameter = ":v_partitionId";
+
+            partitionId.Require(nameof(partitionId));
+
+            var queryRequest = new QueryRequest
+            {
+                TableName = TableName,
+                KeyConditionExpression = $"{AttributeNames.PartitionId} = {partitionIdParameter}",
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                {
+                    [partitionIdParameter] = new AttributeValue {S = partitionId}
+                }
+            };
+
+            var queryResponse = AmazonDynamoDbClient.Query(queryRequest);
+
+            return queryResponse.Items.Select(d => FromDynamoDbDocumentDictionary(d).Entity);
         }
 
         public T LoadEntity(string entityId, string partitionId)
         {
-            throw new NotImplementedException();
+            entityId.Require(nameof(entityId));
+            partitionId.Require(nameof(partitionId));
+
+            var getItemResult = AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
+            {
+                [AttributeNames.EntityId] = new AttributeValue {S = entityId},
+                [AttributeNames.PartitionId] = new AttributeValue {S = partitionId}
+            });
+
+            if (getItemResult.IsItemSet)
+                return FromDynamoDbDocumentDictionary(getItemResult.Item).Entity;
+
+            return null;
         }
 
         private Dictionary<string, AttributeValue> ToDynamoDbDocumentDictionary(DynamoDbDictionaryStorageEntity entity)
@@ -230,6 +320,92 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 [typeof(TimeSpan)] = o => new AttributeValue {S = ((TimeSpan) o).ToString()},
                 [typeof(TimeSpan?)] = o => new AttributeValue {S = ((TimeSpan?) o).Value.ToString()}
             };
+        }
+
+        private AmazonDynamoDBClient GetAmazonDynamoDbClient()
+        {
+            if (dynamoDbClient == null)
+            {
+                var awsRegionEndpoint = awsRegionEndpoints.GetRegionEndpointByName(AwsRegionName);
+
+                if (awsRegionEndpoint == null)
+                    throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a knnown AWS region.");
+
+                dynamoDbClient = new AmazonDynamoDBClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
+
+                if (AutoSetup)
+                    SetupTable(dynamoDbClient);
+            }
+
+            return dynamoDbClient;
+        }
+
+        private void SetupTable(AmazonDynamoDBClient dynamoDbClient)
+        {
+            if (DoesTableExist(dynamoDbClient) == false)
+            {
+                var createTableRequest = new CreateTableRequest
+                {
+                    TableName = TableName,
+                    AttributeDefinitions = new List<AttributeDefinition>
+                    {
+                        new AttributeDefinition
+                        {
+                            AttributeName = AttributeNames.EntityId,
+                            AttributeType = ScalarAttributeType.S
+                        },
+                        new AttributeDefinition
+                        {
+                            AttributeName = AttributeNames.PartitionId,
+                            AttributeType = ScalarAttributeType.S
+                        }
+                    },
+                    KeySchema = new List<KeySchemaElement>
+                    {
+                        new KeySchemaElement
+                        {
+                            AttributeName = AttributeNames.EntityId,
+                            KeyType = KeyType.RANGE
+                        },
+                        new KeySchemaElement
+                        {
+                            AttributeName = AttributeNames.PartitionId,
+                            KeyType = KeyType.HASH
+                        }
+                    },
+                    ProvisionedThroughput = new ProvisionedThroughput
+                    {
+                        ReadCapacityUnits = TableReadCapacityUnits,
+                        WriteCapacityUnits = TableWriteCapacityUnits
+                    }
+                };
+
+                dynamoDbClient.CreateTable(createTableRequest);
+                WaitUntilTableExists(dynamoDbClient);
+            }
+        }
+
+        private void WaitUntilTableExists(AmazonDynamoDBClient dynamoDbClient)
+        {
+            while (true)
+            {
+                if (DoesTableExist(dynamoDbClient))
+                    return;
+
+                Thread.Sleep(5000);
+            }
+        }
+
+        private bool DoesTableExist(AmazonDynamoDBClient dynamoDbClient)
+        {
+            try
+            {
+                return (dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE);
+            }
+            catch (ResourceNotFoundException)
+            {
+                return false;
+            }
         }
 
         private static class AttributeNames
