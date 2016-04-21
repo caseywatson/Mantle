@@ -56,6 +56,18 @@ namespace Mantle.Extensions
             return null;
         }
 
+        public static byte? TryParseByte(this string source)
+        {
+            source.Require(nameof(source));
+
+            byte temp;
+
+            if (byte.TryParse(source, out temp))
+                return temp;
+
+            return null;
+        }
+
         public static DateTime? TryParseDateTime(this string source)
         {
             source.Require(nameof(source));
@@ -63,6 +75,18 @@ namespace Mantle.Extensions
             DateTime temp;
 
             if (DateTime.TryParse(source, out temp))
+                return temp;
+
+            return null;
+        }
+
+        public static decimal? TryParseDecimal(this string source)
+        {
+            source.Require(nameof(source));
+
+            decimal temp;
+
+            if (decimal.TryParse(source, out temp))
                 return temp;
 
             return null;
@@ -87,6 +111,18 @@ namespace Mantle.Extensions
             double temp;
 
             if (double.TryParse(source, out temp))
+                return temp;
+
+            return null;
+        }
+
+        public static float? TryParseFloat(this string source)
+        {
+            source.Require(nameof(source));
+
+            float temp;
+
+            if (float.TryParse(source, out temp))
                 return temp;
 
             return null;

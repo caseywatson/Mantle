@@ -4,6 +4,13 @@ using System.Linq;
 
 namespace Mantle
 {
+    public class TypeMetadata<T> : TypeMetadata
+    {
+        public TypeMetadata()
+            : base(typeof(T))
+        { }
+    }
+
     public class TypeMetadata
     {
         public TypeMetadata()
