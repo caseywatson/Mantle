@@ -46,7 +46,7 @@ namespace Mantle.Cache.Azure.Clients
 
             var cachedObject = Database.StringGet(objectId);
 
-            if (String.IsNullOrEmpty(cachedObject))
+            if (string.IsNullOrEmpty(cachedObject))
                 return default(T);
 
             return serializer.Deserialize(cachedObject);

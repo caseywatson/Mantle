@@ -11,7 +11,8 @@ namespace Mantle.Messaging.Aws.Channels
     {
         public AwsSqsPublisherChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
             : base(awsRegionEndpoints, serializer)
-        { }
+        {
+        }
 
         [Configurable]
         public override bool AutoSetup { get; set; }
@@ -32,7 +33,7 @@ namespace Mantle.Messaging.Aws.Channels
         {
             message.Require(nameof(message));
 
-            AmazonSQSClient.SendMessage(QueueUrl, Serializer.Serialize(message));
+            AmazonSqsClient.SendMessage(QueueUrl, Serializer.Serialize(message));
         }
     }
 }

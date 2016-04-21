@@ -27,7 +27,7 @@ namespace Mantle.Tests
         public void Should_convert_object_to_Json()
         {
             var testObject = new TestObject {Name = "Value"};
-            string jsonObject = testObject.ToJson();
+            var jsonObject = testObject.ToJson();
 
             Assert.IsNotNull(jsonObject);
             Assert.AreEqual(TestObjectJson, jsonObject);

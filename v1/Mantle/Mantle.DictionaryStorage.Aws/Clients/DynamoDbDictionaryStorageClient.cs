@@ -1,40 +1,18 @@
-﻿using Amazon.DynamoDBv2.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Amazon.DynamoDBv2.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Mantle.DictionaryStorage.Aws.Clients
 {
     public class DynamoDbDictionaryStorageClient<T> : IDictionaryStorageClient<T>
         where T : class, new()
     {
-        private static class AttributeNames
-        {
-            public const string Entity = "Entity";
-            public const string EntityId = "EntityId";
-            public const string PartitionId = "PartitionId";
-        }
-
-        private class DynamoDbDictionaryStorageEntity
-        {
-            public DynamoDbDictionaryStorageEntity(string entityId, string partitionId, T entity = null)
-            {
-                Entity = (entity ?? new T());
-                EntityId = entityId;
-                PartitionId = partitionId;
-            }
-
-            public T Entity { get; set; }
-
-            public string EntityId { get; set; }
-            public string PartitionId { get; set; }
-        }
-
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
         private readonly Dictionary<Type, Func<AttributeValue, object>> fromDynamoDbAttributeValue;
         private readonly Dictionary<Type, Func<object, AttributeValue>> toDynamoDbAttributeValue;
@@ -75,7 +53,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             throw new NotImplementedException();
         }
 
-        public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector, Func<T, string> partitionIdSelector)
+        public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
+            Func<T, string> partitionIdSelector)
         {
             throw new NotImplementedException();
         }
@@ -100,8 +79,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             var docDictionary = new Dictionary<string, AttributeValue>();
             var entityDictionary = new Dictionary<string, AttributeValue>();
 
-            docDictionary[AttributeNames.EntityId] = new AttributeValue { S = entity.EntityId };
-            docDictionary[AttributeNames.PartitionId] = new AttributeValue { S = entity.PartitionId };
+            docDictionary[AttributeNames.EntityId] = new AttributeValue {S = entity.EntityId};
+            docDictionary[AttributeNames.PartitionId] = new AttributeValue {S = entity.PartitionId};
 
             foreach (var property in typeMetadata.Properties)
             {
@@ -111,7 +90,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
                 if (propertyValue == null)
                 {
-                    entityDictionary[propertyInfo.Name] = new AttributeValue { NULL = true };
+                    entityDictionary[propertyInfo.Name] = new AttributeValue {NULL = true};
                 }
                 else if (toDynamoDbAttributeValue.ContainsKey(propertyType))
                 {
@@ -121,16 +100,17 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 {
                     var serializedValue = JsonConvert.SerializeObject(propertyValue, Formatting.Indented);
 
-                    entityDictionary[propertyInfo.Name] = new AttributeValue { S = serializedValue };
+                    entityDictionary[propertyInfo.Name] = new AttributeValue {S = serializedValue};
                 }
             }
 
-            docDictionary[AttributeNames.Entity] = new AttributeValue { M = entityDictionary };
+            docDictionary[AttributeNames.Entity] = new AttributeValue {M = entityDictionary};
 
             return docDictionary;
         }
 
-        private DynamoDbDictionaryStorageEntity FromDynamoDbDocumentDictionary(Dictionary<string, AttributeValue> docDictionary)
+        private DynamoDbDictionaryStorageEntity FromDynamoDbDocumentDictionary(
+            Dictionary<string, AttributeValue> docDictionary)
         {
             var entityDictionary = GetEntityDictionary(docDictionary);
             var entity = new DynamoDbDictionaryStorageEntity(GetEntityId(docDictionary), GetPartitionId(docDictionary));
@@ -148,7 +128,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                     {
                         if (fromDynamoDbAttributeValue.ContainsKey(propertyType))
                         {
-                            propertyInfo.SetValue(entity.Entity, fromDynamoDbAttributeValue[propertyType](attributeValue));
+                            propertyInfo.SetValue(entity.Entity,
+                                fromDynamoDbAttributeValue[propertyType](attributeValue));
                         }
                         else
                         {
@@ -165,7 +146,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         private Dictionary<string, AttributeValue> GetEntityDictionary(Dictionary<string, AttributeValue> docDictionary)
         {
-            var entity = docDictionary?[AttributeNames.Entity].M;
+            var entity = docDictionary[AttributeNames.Entity]?.M;
 
             if (entity == null)
                 throw new InvalidOperationException($"[{AttributeNames.Entity}] not found.");
@@ -175,7 +156,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         private string GetEntityId(Dictionary<string, AttributeValue> docDictionary)
         {
-            var entityId = docDictionary?[AttributeNames.EntityId].S;
+            var entityId = docDictionary?[AttributeNames.EntityId]?.S;
 
             if (string.IsNullOrEmpty(entityId))
                 throw new InvalidOperationException($"[{AttributeNames.EntityId}] not found.");
@@ -185,7 +166,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         private string GetPartitionId(Dictionary<string, AttributeValue> docDictionary)
         {
-            var partitionId = docDictionary?[AttributeNames.PartitionId].S;
+            var partitionId = docDictionary[AttributeNames.PartitionId]?.S;
 
             if (string.IsNullOrEmpty(partitionId))
                 throw new InvalidOperationException($"[{AttributeNames.PartitionId}] not found.");
@@ -197,8 +178,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             return new Dictionary<Type, Func<AttributeValue, object>>
             {
-                [typeof(bool)] = av => (av.IsBOOLSet ? av.BOOL : false),
-                [typeof(bool?)] = av => (av.IsBOOLSet ? av.BOOL : false),
+                [typeof(bool)] = av => (av.IsBOOLSet && av.BOOL),
+                [typeof(bool?)] = av => (av.IsBOOLSet && av.BOOL),
                 [typeof(byte)] = av => av.N.TryParseByte().GetValueOrDefault(),
                 [typeof(byte?)] = av => av.N.TryParseByte(),
                 [typeof(byte[])] = av => av.B.ToArray(),
@@ -226,29 +207,51 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             return new Dictionary<Type, Func<object, AttributeValue>>
             {
-                [typeof(bool)] = o => new AttributeValue { BOOL = ((bool)(o)) },
-                [typeof(bool?)] = o => new AttributeValue { BOOL = ((bool?)(o)).Value },
-                [typeof(byte)] = o => new AttributeValue { N = ((byte)(o)).ToString() },
-                [typeof(byte?)] = o => new AttributeValue { N = ((byte?)(o)).Value.ToString() },
-                [typeof(byte[])] = o => new AttributeValue { B = new MemoryStream((byte[])(o)) },
-                [typeof(DateTime)] = o => new AttributeValue { S = ((DateTime)(o)).ToString("o") },
-                [typeof(DateTime?)] = o => new AttributeValue { S = ((DateTime?)(o)).Value.ToString("o") },
-                [typeof(decimal)] = o => new AttributeValue { N = ((decimal)(o)).ToString() },
-                [typeof(decimal?)] = o => new AttributeValue { N = ((decimal?)(o)).Value.ToString() },
-                [typeof(double)] = o => new AttributeValue { N = ((double)(o)).ToString() },
-                [typeof(double?)] = o => new AttributeValue { N = ((double?)(o)).Value.ToString() },
-                [typeof(float)] = o => new AttributeValue { N = ((float)(o)).ToString() },
-                [typeof(float?)] = o => new AttributeValue { N = ((float?)(o)).Value.ToString() },
-                [typeof(Guid)] = o => new AttributeValue { S = ((Guid)(o)).ToString() },
-                [typeof(Guid?)] = o => new AttributeValue { S = ((Guid?)(o)).Value.ToString() },
-                [typeof(int)] = o => new AttributeValue { N = ((int)(o)).ToString() },
-                [typeof(int?)] = o => new AttributeValue { N = ((int?)(o)).Value.ToString() },
-                [typeof(long)] = o => new AttributeValue { N = ((long)(o)).ToString() },
-                [typeof(long?)] = o => new AttributeValue { N = ((long?)(o)).Value.ToString() },
-                [typeof(string)] = o => new AttributeValue { S = ((string)(o)) },
-                [typeof(TimeSpan)] = o => new AttributeValue { S = ((TimeSpan)(o)).ToString() },
-                [typeof(TimeSpan?)] = o => new AttributeValue { S = ((TimeSpan?)(o)).Value.ToString() }
+                [typeof(bool)] = o => new AttributeValue {BOOL = (bool) o},
+                [typeof(bool?)] = o => new AttributeValue {BOOL = ((bool?) o).Value},
+                [typeof(byte)] = o => new AttributeValue {N = ((byte) o).ToString()},
+                [typeof(byte?)] = o => new AttributeValue {N = ((byte?) o).Value.ToString()},
+                [typeof(byte[])] = o => new AttributeValue {B = new MemoryStream((byte[]) o)},
+                [typeof(DateTime)] = o => new AttributeValue {S = ((DateTime) o).ToString("o")},
+                [typeof(DateTime?)] = o => new AttributeValue {S = ((DateTime?) o).Value.ToString("o")},
+                [typeof(decimal)] = o => new AttributeValue {N = ((decimal) o).ToString()},
+                [typeof(decimal?)] = o => new AttributeValue {N = ((decimal?) o).Value.ToString()},
+                [typeof(double)] = o => new AttributeValue {N = ((double) o).ToString()},
+                [typeof(double?)] = o => new AttributeValue {N = ((double?) o).Value.ToString()},
+                [typeof(float)] = o => new AttributeValue {N = ((float) o).ToString()},
+                [typeof(float?)] = o => new AttributeValue {N = ((float?) o).Value.ToString()},
+                [typeof(Guid)] = o => new AttributeValue {S = ((Guid) o).ToString()},
+                [typeof(Guid?)] = o => new AttributeValue {S = ((Guid?) o).Value.ToString()},
+                [typeof(int)] = o => new AttributeValue {N = ((int) o).ToString()},
+                [typeof(int?)] = o => new AttributeValue {N = ((int?) o).Value.ToString()},
+                [typeof(long)] = o => new AttributeValue {N = ((long) o).ToString()},
+                [typeof(long?)] = o => new AttributeValue {N = ((long?) o).Value.ToString()},
+                [typeof(string)] = o => new AttributeValue {S = (string) o},
+                [typeof(TimeSpan)] = o => new AttributeValue {S = ((TimeSpan) o).ToString()},
+                [typeof(TimeSpan?)] = o => new AttributeValue {S = ((TimeSpan?) o).Value.ToString()}
             };
+        }
+
+        private static class AttributeNames
+        {
+            public const string Entity = "Entity";
+            public const string EntityId = "EntityId";
+            public const string PartitionId = "PartitionId";
+        }
+
+        private class DynamoDbDictionaryStorageEntity
+        {
+            public DynamoDbDictionaryStorageEntity(string entityId, string partitionId, T entity = null)
+            {
+                Entity = entity ?? new T();
+                EntityId = entityId;
+                PartitionId = partitionId;
+            }
+
+            public T Entity { get; }
+
+            public string EntityId { get; }
+            public string PartitionId { get; }
         }
     }
 }

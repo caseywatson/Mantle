@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Mantle.Extensions
 {
@@ -7,23 +6,23 @@ namespace Mantle.Extensions
     {
         public static bool IsNullOrEmpty(this string source)
         {
-            return String.IsNullOrEmpty(source);
+            return string.IsNullOrEmpty(source);
         }
 
         public static string Merge(this string source, object data, char fieldStartDelimiter = '{',
-                                   char fieldEndDelimiter = '}')
+            char fieldEndDelimiter = '}')
         {
             source.Require(nameof(source));
             data.Require(nameof(data));
 
-            Dictionary<string, object> dataDictionary = data.ToDictionary();
+            var dataDictionary = data.ToDictionary();
 
-            foreach (string key in dataDictionary.Keys)
+            foreach (var key in dataDictionary.Keys)
             {
                 if (dataDictionary[key] != null)
                 {
                     source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter),
-                                            dataDictionary[key].ToString());
+                        dataDictionary[key].ToString());
                 }
             }
 
@@ -32,10 +31,10 @@ namespace Mantle.Extensions
 
         public static void Require(this string parameter, string parameterName, string errorMessage = null)
         {
-            if (String.IsNullOrEmpty(parameterName))
+            if (string.IsNullOrEmpty(parameterName))
                 throw new ArgumentException($"[{nameof(parameterName)}] is required.", nameof(parameterName));
 
-            if (String.IsNullOrEmpty(parameter))
+            if (string.IsNullOrEmpty(parameter))
             {
                 if (errorMessage == null)
                     throw new ArgumentException($"[{parameterName}] is required.", parameterName);

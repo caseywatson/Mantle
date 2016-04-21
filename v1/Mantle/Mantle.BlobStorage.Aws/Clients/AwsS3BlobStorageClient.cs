@@ -1,14 +1,14 @@
-﻿using Amazon.S3;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using Amazon.S3;
 using Amazon.S3.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.BlobStorage.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
 
 namespace Mantle.BlobStorage.Aws.Clients
 {
@@ -113,6 +113,11 @@ namespace Mantle.BlobStorage.Aws.Clients
             AmazonS3Client.PutObject(putObjectRequest);
         }
 
+        public void Dispose()
+        {
+            amazonS3Client?.Dispose();
+        }
+
         private bool DoesBucketExist()
         {
             return AmazonS3Client.ListBuckets().Buckets.Any(b => (b.BucketName == BucketName));
@@ -134,12 +139,6 @@ namespace Mantle.BlobStorage.Aws.Clients
             }
 
             return amazonS3Client;
-        }
-
-        public void Dispose()
-        {
-            if (amazonS3Client != null)
-                amazonS3Client.Dispose();
         }
     }
 }

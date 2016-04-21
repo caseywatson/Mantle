@@ -2,7 +2,7 @@
 
 namespace Mantle.Configuration.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public sealed class ConfigurableAttribute : Attribute
     {
         public bool IsRequired { get; set; }

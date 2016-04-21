@@ -10,7 +10,7 @@ namespace Mantle.Tests
         public void Should_get_type_token()
         {
             var tokenProvider = new NameTypeTokenProvider();
-            Assert.AreEqual(tokenProvider.GetTypeToken<string>(), (typeof (string).Name));
+            Assert.AreEqual(tokenProvider.GetTypeToken<string>(), (typeof(string).Name));
         }
     }
 }

@@ -7,7 +7,8 @@ namespace Mantle.Messaging.Contexts
     public class SubscriptionMessageContext<T> : IMessageContext<T>
         where T : class
     {
-        public SubscriptionMessageContext(IMessageContext<MessageEnvelope> originalMessageContext, T message, ISubscription<T> subscription) 
+        public SubscriptionMessageContext(IMessageContext<MessageEnvelope> originalMessageContext, T message,
+            ISubscription<T> subscription)
         {
             originalMessageContext.Require(nameof(originalMessageContext));
             message.Require(nameof(message));
@@ -18,11 +19,12 @@ namespace Mantle.Messaging.Contexts
             Subscription = subscription;
         }
 
+        public IMessageContext<MessageEnvelope> OriginalMessageContext { get; }
+        public ISubscription<T> Subscription { get; private set; }
+
         public int? DeliveryCount => OriginalMessageContext.DeliveryCount;
 
-        public T Message { get; private set; }
-        public IMessageContext<MessageEnvelope> OriginalMessageContext { get; private set; }
-        public ISubscription<T> Subscription { get; private set; }
+        public T Message { get; }
 
         public bool TryToAbandon() => (IsAbandoned = OriginalMessageContext.TryToAbandon());
         public bool TryToComplete() => (IsCompleted = OriginalMessageContext.TryToComplete());

@@ -11,7 +11,7 @@ namespace Mantle.Tests
         {
             var tokenProvider = new AssemblyQualifiedNameTypeTokenProvider();
 
-            Assert.AreEqual(tokenProvider.GetTypeToken<string>(), (typeof (string).AssemblyQualifiedName));
+            Assert.AreEqual(tokenProvider.GetTypeToken<string>(), (typeof(string).AssemblyQualifiedName));
         }
     }
 }

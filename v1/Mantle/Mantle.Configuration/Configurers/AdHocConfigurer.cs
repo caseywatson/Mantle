@@ -10,7 +10,7 @@ namespace Mantle.Configuration.Configurers
 
         public AdHocConfigurer(object configurationObject)
         {
-            configurationObject.Require("configurationObject");
+            configurationObject.Require(nameof(configurationObject));
             configurationDictionary = configurationObject.ToDictionary();
         }
 

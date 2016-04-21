@@ -14,7 +14,7 @@ namespace Mantle.Extensions
 
             using (var sourceStream = new MemoryStream())
             {
-                var serializer = new DataContractSerializer(typeof (T));
+                var serializer = new DataContractSerializer(typeof(T));
 
                 serializer.WriteObject(sourceStream, source);
                 sourceStream.TryToRewind();
@@ -40,7 +40,7 @@ namespace Mantle.Extensions
                 streamWriter.Flush();
                 sourceStream.TryToRewind();
 
-                var serializer = new DataContractSerializer(typeof (T));
+                var serializer = new DataContractSerializer(typeof(T));
 
                 return ((T) (serializer.ReadObject(sourceStream)));
             }
@@ -51,7 +51,7 @@ namespace Mantle.Extensions
         {
             flattened.Require("flattened");
 
-            var serializer = new DataContractSerializer(typeof (T));
+            var serializer = new DataContractSerializer(typeof(T));
             var sourceStream = new MemoryStream(flattened.Data);
 
             sourceStream.TryToRewind();
@@ -62,7 +62,7 @@ namespace Mantle.Extensions
         public static void Require<T>(this T parameter, string parameterName, string errorMessage = null)
             where T : class
         {
-            if (String.IsNullOrEmpty(parameterName))
+            if (string.IsNullOrEmpty(parameterName))
                 throw new ArgumentException("[parameterName] is required.", "parameterName");
 
             if (parameter == null)
@@ -83,7 +83,7 @@ namespace Mantle.Extensions
         {
             using (var sourceStream = new MemoryStream())
             {
-                var serializer = new DataContractSerializer(typeof (T));
+                var serializer = new DataContractSerializer(typeof(T));
 
                 serializer.WriteObject(sourceStream, source);
                 sourceStream.TryToRewind();

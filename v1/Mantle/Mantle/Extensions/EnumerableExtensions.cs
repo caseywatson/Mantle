@@ -10,9 +10,9 @@ namespace Mantle.Extensions
         {
             source.Require("source");
 
-            T[] sourceArray = source.ToArray();
+            var sourceArray = source.ToArray();
 
-            for (int i = 0; i < sourceArray.Length; i += chunkSize)
+            for (var i = 0; i < sourceArray.Length; i += chunkSize)
                 yield return sourceArray.Skip(i).Take(chunkSize);
         }
 

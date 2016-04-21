@@ -1,8 +1,8 @@
-﻿using Mantle.Configuration.Interfaces;
-using Mantle.Extensions;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Reflection;
+using Mantle.Configuration.Interfaces;
+using Mantle.Extensions;
 
 namespace Mantle.Configuration.Configurers
 {
@@ -15,14 +15,15 @@ namespace Mantle.Configuration.Configurers
             return ((propertyInfo.PropertyType == typeof(DateTime)) || (propertyInfo.PropertyType == typeof(DateTime?)));
         }
 
-        public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty, ConfigurationSetting cfgSetting)
+        public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
+            ConfigurationSetting cfgSetting)
         {
             cfgObject.Require(nameof(cfgObject));
             cfgProperty.Require(nameof(cfgProperty));
             cfgSetting.Require(nameof(cfgSetting));
 
-            Type propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
-            DateTime? value = cfgSetting.Value.TryParseDateTime();
+            var propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
+            var value = cfgSetting.Value.TryParseDateTime();
 
             if (propertyType == (typeof(DateTime)))
             {

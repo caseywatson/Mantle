@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Mantle.Extensions;
 using Mantle.Messaging.Contexts;
 using Mantle.Messaging.Interfaces;
@@ -18,13 +17,13 @@ namespace Mantle.Messaging.Subscriptions
             Configuration = configuration;
         }
 
-        public ISubscriptionConfiguration<T> Configuration { get; private set; }
+        public ISubscriptionConfiguration<T> Configuration { get; }
 
         public bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
             messageContext.Require(nameof(messageContext));
 
-            T body = Configuration.Serializer.Deserialize(messageContext.Message.Body);
+            var body = Configuration.Serializer.Deserialize(messageContext.Message.Body);
             var context = new SubscriptionMessageContext<T>(messageContext, body, this);
 
             if (Configuration.Constraints.Any(c => (c.Match(context) == false)))
@@ -62,7 +61,7 @@ namespace Mantle.Messaging.Subscriptions
             return true;
         }
 
-        private bool ExecutePreFilters(IMessageContext<T> messageContext) 
+        private bool ExecutePreFilters(IMessageContext<T> messageContext)
         {
             foreach (var filter in Configuration.Filters)
             {

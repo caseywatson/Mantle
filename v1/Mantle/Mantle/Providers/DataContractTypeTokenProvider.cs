@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.Serialization;
 using Mantle.Interfaces;
 
@@ -9,20 +8,20 @@ namespace Mantle.Providers
     {
         public string GetTypeToken<T>()
         {
-            DataContractAttribute dataContractAttribute =
-                (typeof (T)).GetCustomAttributes(typeof (DataContractAttribute), false)
+            var dataContractAttribute =
+                (typeof(T)).GetCustomAttributes(typeof(DataContractAttribute), false)
                     .OfType<DataContractAttribute>()
                     .FirstOrDefault();
 
             if (dataContractAttribute == null)
                 return null;
 
-            string dataContractName = (dataContractAttribute.Name ?? (typeof (T).Name));
+            var dataContractName = (dataContractAttribute.Name ?? (typeof(T).Name));
 
-            if (String.IsNullOrEmpty(dataContractAttribute.Namespace))
+            if (string.IsNullOrEmpty(dataContractAttribute.Namespace))
                 return dataContractName;
 
-            return String.Format("{0}|{1}", dataContractAttribute.Namespace, dataContractName);
+            return string.Format("{0}|{1}", dataContractAttribute.Namespace, dataContractName);
         }
     }
 }

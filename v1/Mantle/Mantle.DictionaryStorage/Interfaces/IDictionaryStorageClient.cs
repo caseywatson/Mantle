@@ -10,7 +10,7 @@ namespace Mantle.DictionaryStorage.Interfaces
         bool EntityExists(string entityId, string partitionId);
 
         void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-                                    Func<T, string> partitionIdSelector);
+            Func<T, string> partitionIdSelector);
 
         void InsertOrUpdateEntity(T entity, string entityId, string partitionId);
 

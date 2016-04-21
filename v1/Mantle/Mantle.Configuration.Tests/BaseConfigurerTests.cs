@@ -11,6 +11,22 @@ namespace Mantle.Configuration.Tests
     public class BaseConfigurerTests
     {
         [Test]
+        public void Should_configure_boolean_property_given_a_valid_configuration_setting()
+        {
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting("SimpleTestTarget.BooleanProperty", "true")
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            configurer.Configure(testTarget);
+
+            Assert.IsTrue(testTarget.BooleanProperty);
+        }
+
+        [Test]
         public void Should_configure_Date_Time_property_given_a_valid_configuration_setting()
         {
             var configurer =
@@ -24,6 +40,22 @@ namespace Mantle.Configuration.Tests
             configurer.Configure(testTarget);
 
             Assert.AreEqual(testTarget.DateTimeProperty, DateTime.Parse("1/11/1981"));
+        }
+
+        [Test]
+        public void Should_configure_double_property_given_a_valid_configuration_setting()
+        {
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting("SimpleTestTarget.DoubleProperty", "1.0")
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            configurer.Configure(testTarget);
+
+            Assert.AreEqual(testTarget.DoubleProperty, 1.0);
         }
 
         [Test]
@@ -41,38 +73,6 @@ namespace Mantle.Configuration.Tests
             configurer.Configure(testTarget);
 
             Assert.AreEqual(testTarget.GuidProperty, testGuid);
-        }
-
-        [Test]
-        public void Should_configure_boolean_property_given_a_valid_configuration_setting()
-        {
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting("SimpleTestTarget.BooleanProperty", "true")
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            configurer.Configure(testTarget);
-
-            Assert.IsTrue(testTarget.BooleanProperty);
-        }
-
-        [Test]
-        public void Should_configure_double_property_given_a_valid_configuration_setting()
-        {
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting("SimpleTestTarget.DoubleProperty", "1.0")
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            configurer.Configure(testTarget);
-
-            Assert.AreEqual(testTarget.DoubleProperty, 1.0);
         }
 
         [Test]
@@ -107,6 +107,23 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
+        public void Should_configure_nullable_boolean_property_given_a_valid_configuration_setting()
+        {
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting("SimpleTestTarget.NullableBooleanProperty", "true")
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            configurer.Configure(testTarget);
+
+            Assert.IsNotNull(testTarget.NullableBooleanProperty);
+            Assert.IsTrue(testTarget.NullableBooleanProperty.Value);
+        }
+
+        [Test]
         public void Should_configure_nullable_Date_Time_property_given_a_valid_configuration_setting()
         {
             var configurer =
@@ -121,6 +138,23 @@ namespace Mantle.Configuration.Tests
 
             Assert.IsNotNull(testTarget.NullableDateTimeProperty);
             Assert.AreEqual(testTarget.NullableDateTimeProperty, DateTime.Parse("1/11/1981"));
+        }
+
+        [Test]
+        public void Should_configure_nullable_double_property_given_a_valid_configuration_setting()
+        {
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting("SimpleTestTarget.NullableDoubleProperty", "1.0")
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            configurer.Configure(testTarget);
+
+            Assert.IsNotNull(testTarget.NullableDoubleProperty);
+            Assert.AreEqual(testTarget.NullableDoubleProperty, 1.0);
         }
 
         [Test]
@@ -140,40 +174,6 @@ namespace Mantle.Configuration.Tests
 
             Assert.IsNotNull(testTarget.NullableGuidProperty);
             Assert.AreEqual(testTarget.NullableGuidProperty, testGuid);
-        }
-
-        [Test]
-        public void Should_configure_nullable_boolean_property_given_a_valid_configuration_setting()
-        {
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting("SimpleTestTarget.NullableBooleanProperty", "true")
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            configurer.Configure(testTarget);
-
-            Assert.IsNotNull(testTarget.NullableBooleanProperty);
-            Assert.IsTrue(testTarget.NullableBooleanProperty.Value);
-        }
-
-        [Test]
-        public void Should_configure_nullable_double_property_given_a_valid_configuration_setting()
-        {
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting("SimpleTestTarget.NullableDoubleProperty", "1.0")
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            configurer.Configure(testTarget);
-
-            Assert.IsNotNull(testTarget.NullableDoubleProperty);
-            Assert.AreEqual(testTarget.NullableDoubleProperty, 1.0);
         }
 
         [Test]
@@ -278,8 +278,8 @@ namespace Mantle.Configuration.Tests
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
                 {
-                    new ConfigurationSetting(String.Format("{0}.SimpleTestTarget.StringProperty", targetName),
-                                             testString)
+                    new ConfigurationSetting(string.Format("{0}.SimpleTestTarget.StringProperty", targetName),
+                        testString)
                 });
 
             var testTarget = new SimpleTestTarget();
@@ -287,38 +287,6 @@ namespace Mantle.Configuration.Tests
             configurer.Configure(testTarget, targetName);
 
             Assert.AreEqual(testTarget.StringProperty, testString);
-        }
-
-        [Test]
-        public void Should_set_nullable_Date_Time_property_to_null_given_invalid_configuration_setting()
-        {
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting("SimpleTestTarget.NullableDateTimeProperty", "Invalid")
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            configurer.Configure(testTarget);
-
-            Assert.IsNull(testTarget.NullableDateTimeProperty);
-        }
-
-        [Test]
-        public void Should_set_nullable_Guid_property_to_null_given_invalid_configuration_setting()
-        {
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting("SimpleTestTarget.NullableGuidProperty", "Invalid")
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            configurer.Configure(testTarget);
-
-            Assert.IsNull(testTarget.NullableDateTimeProperty);
         }
 
         [Test]
@@ -338,12 +306,44 @@ namespace Mantle.Configuration.Tests
         }
 
         [Test]
+        public void Should_set_nullable_Date_Time_property_to_null_given_invalid_configuration_setting()
+        {
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting("SimpleTestTarget.NullableDateTimeProperty", "Invalid")
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            configurer.Configure(testTarget);
+
+            Assert.IsNull(testTarget.NullableDateTimeProperty);
+        }
+
+        [Test]
         public void Should_set_nullable_double_property_to_null_given_invalid_configuration_setting()
         {
             var configurer =
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
                 {
                     new ConfigurationSetting("SimpleTestTarget.NullableDoubleProperty", "Invalid")
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            configurer.Configure(testTarget);
+
+            Assert.IsNull(testTarget.NullableDateTimeProperty);
+        }
+
+        [Test]
+        public void Should_set_nullable_Guid_property_to_null_given_invalid_configuration_setting()
+        {
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting("SimpleTestTarget.NullableGuidProperty", "Invalid")
                 });
 
             var testTarget = new SimpleTestTarget();
@@ -387,28 +387,10 @@ namespace Mantle.Configuration.Tests
 
         [Test]
         public void
-            Should_throw_ConfigurationErrorsException_if_Date_Time_property_configuration_setting_can_not_be_parsed()
+            Should_throw_ConfigurationErrorsException_if_boolean_property_configuration_setting_can_not_be_parsed()
         {
-            const string propertyName = "DateTimeProperty";
-            const string settingName = "SimpleTestTarget.DateTimeProperty";
-            const string settingValue = "Invalid";
-
-            var configurer =
-                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
-                {
-                    new ConfigurationSetting(settingName, settingValue)
-                });
-
-            var testTarget = new SimpleTestTarget();
-
-            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
-        }
-
-        [Test]
-        public void Should_throw_ConfigurationErrorsException_if_Guid_property_configuration_setting_can_not_be_parsed()
-        {
-            const string propertyName = "GuidProperty";
-            const string settingName = "SimpleTestTarget.GuidProperty";
+            const string propertyName = "BooleanProperty";
+            const string settingName = "SimpleTestTarget.BooleanProperty";
             const string settingValue = "Invalid";
 
             var configurer =
@@ -424,10 +406,10 @@ namespace Mantle.Configuration.Tests
 
         [Test]
         public void
-            Should_throw_ConfigurationErrorsException_if_boolean_property_configuration_setting_can_not_be_parsed()
+            Should_throw_ConfigurationErrorsException_if_Date_Time_property_configuration_setting_can_not_be_parsed()
         {
-            const string propertyName = "BooleanProperty";
-            const string settingName = "SimpleTestTarget.BooleanProperty";
+            const string propertyName = "DateTimeProperty";
+            const string settingName = "SimpleTestTarget.DateTimeProperty";
             const string settingValue = "Invalid";
 
             var configurer =
@@ -447,6 +429,24 @@ namespace Mantle.Configuration.Tests
         {
             const string propertyName = "DoubleProperty";
             const string settingName = "SimpleTestTarget.DoubleProperty";
+            const string settingValue = "Invalid";
+
+            var configurer =
+                new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
+                {
+                    new ConfigurationSetting(settingName, settingValue)
+                });
+
+            var testTarget = new SimpleTestTarget();
+
+            Assert.Throws<ConfigurationErrorsException>(() => configurer.Configure(testTarget));
+        }
+
+        [Test]
+        public void Should_throw_ConfigurationErrorsException_if_Guid_property_configuration_setting_can_not_be_parsed()
+        {
+            const string propertyName = "GuidProperty";
+            const string settingName = "SimpleTestTarget.GuidProperty";
             const string settingValue = "Invalid";
 
             var configurer =

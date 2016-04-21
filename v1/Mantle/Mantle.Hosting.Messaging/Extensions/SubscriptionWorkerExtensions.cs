@@ -11,7 +11,7 @@ namespace Mantle.Hosting.Messaging.Extensions
             subscriptionWorker.Require("subscriptionWorker");
             messageType.Require("messageType");
 
-            var methodInfo = (typeof (SubscriptionWorker)).GetMethod("SubscribeTo", Type.EmptyTypes);
+            var methodInfo = (typeof(SubscriptionWorker)).GetMethod("SubscribeTo", Type.EmptyTypes);
             var genericMethodInfo = methodInfo.MakeGenericMethod(messageType);
 
             genericMethodInfo.Invoke(subscriptionWorker, null);

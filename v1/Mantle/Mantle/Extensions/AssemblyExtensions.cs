@@ -9,7 +9,7 @@ namespace Mantle.Extensions
     public static class AssemblyExtensions
     {
         public static IEnumerable<T> LoadAllFromConfiguredProfiles<T>(this Assembly sourceAssembly,
-                                                                      string appSettingName = "MantleProfiles")
+            string appSettingName = "MantleProfiles")
         {
             sourceAssembly.Require("sourceAssembly");
             appSettingName.Require("appSettingName");
@@ -17,15 +17,15 @@ namespace Mantle.Extensions
             var appSettings = ConfigurationManager.AppSettings;
 
             if (appSettings[appSettingName] == null)
-                throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] not configured.",
-                                                                     appSettingName));
+                throw new ConfigurationErrorsException(string.Format("Mantle profiles [{0}] not configured.",
+                    appSettingName));
 
             var profileNames =
                 appSettings[appSettingName].Split(',', ';').Select(n => n.Trim()).Where(n => (n.Length > 0)).ToArray();
 
             if (profileNames.Length == 0)
-                throw new ConfigurationErrorsException(String.Format("Mantle profiles [{0}] configuration invalid.",
-                                                                     appSettingName));
+                throw new ConfigurationErrorsException(string.Format("Mantle profiles [{0}] configuration invalid.",
+                    appSettingName));
 
             return sourceAssembly.LoadAllFromProfiles<T>(profileNames);
         }
@@ -55,7 +55,7 @@ namespace Mantle.Extensions
 
         private static bool IsLoadableAs<T>(Type type)
         {
-            return (((typeof (T)).IsAssignableFrom(type))
+            return (((typeof(T)).IsAssignableFrom(type))
                     && (type.IsAbstract == false)
                     && (type.IsInterface == false)
                     && (type.GetConstructor(Type.EmptyTypes) != null));
@@ -63,7 +63,7 @@ namespace Mantle.Extensions
 
         private static string ToProfileNamespace(string rootNamespace, string profileName)
         {
-            return String.Format("{0}.Mantle.Profiles.{1}", rootNamespace, profileName);
+            return string.Format("{0}.Mantle.Profiles.{1}", rootNamespace, profileName);
         }
     }
 }

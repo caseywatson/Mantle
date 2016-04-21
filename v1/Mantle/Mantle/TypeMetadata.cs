@@ -8,7 +8,8 @@ namespace Mantle
     {
         public TypeMetadata()
             : base(typeof(T))
-        { }
+        {
+        }
     }
 
     public class TypeMetadata

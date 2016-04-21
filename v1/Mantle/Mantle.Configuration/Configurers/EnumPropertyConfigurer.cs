@@ -1,8 +1,8 @@
-﻿using Mantle.Configuration.Interfaces;
-using Mantle.Extensions;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Reflection;
+using Mantle.Configuration.Interfaces;
+using Mantle.Extensions;
 
 namespace Mantle.Configuration.Configurers
 {
@@ -17,7 +17,8 @@ namespace Mantle.Configuration.Configurers
             return ((propertyInfo.PropertyType.IsEnum) || (nullableType?.IsEnum == true));
         }
 
-        public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty, ConfigurationSetting cfgSetting)
+        public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
+            ConfigurationSetting cfgSetting)
         {
             cfgObject.Require(nameof(cfgObject));
             cfgProperty.Require(nameof(cfgProperty));

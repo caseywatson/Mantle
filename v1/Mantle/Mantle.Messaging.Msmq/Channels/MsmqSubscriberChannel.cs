@@ -1,12 +1,13 @@
-﻿using Mantle.Configuration.Attributes;
+﻿using System;
+using System.IO;
+using System.Messaging;
+using System.Text;
+using System.Threading.Tasks;
+using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 using Mantle.Messaging.Msmq.Contexts;
-using System;
-using System.IO;
-using System.Messaging;
-using System.Text;
 
 namespace Mantle.Messaging.Msmq.Channels
 {
@@ -29,17 +30,17 @@ namespace Mantle.Messaging.Msmq.Channels
             if (MessageQueue.Transactional)
                 return ReceiveTransactionally(timeout);
 
-                var message = ((timeout == null)
-                    ? (MessageQueue.Receive())
-                    : (MessageQueue.Receive(timeout.Value)));
+            var message = ((timeout == null)
+                ? (MessageQueue.Receive())
+                : (MessageQueue.Receive(timeout.Value)));
 
-                if (message == null)
-                    return null;
+            if (message == null)
+                return null;
 
             return new MsmqMessageContext<T>(GetBody(message), message);
         }
 
-        public System.Threading.Tasks.Task<IMessageContext<T>> ReceiveAsync()
+        public Task<IMessageContext<T>> ReceiveAsync()
         {
             throw new NotImplementedException();
         }

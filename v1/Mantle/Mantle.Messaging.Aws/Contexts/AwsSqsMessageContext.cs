@@ -1,8 +1,8 @@
-﻿using Amazon.SQS.Model;
+﻿using System;
+using Amazon.SQS.Model;
 using Mantle.Extensions;
 using Mantle.Messaging.Aws.Constants;
 using Mantle.Messaging.Interfaces;
-using System;
 
 namespace Mantle.Messaging.Aws.Contexts
 {
@@ -15,10 +15,10 @@ namespace Mantle.Messaging.Aws.Contexts
         private readonly Func<Message, bool> tryRenewMessageLock;
 
         public AwsSqsMessageContext(Message sqsMessage, T message,
-                                    Func<Message, bool> tryAbandonMessage,
-                                    Func<Message, bool> tryCompleteMessage,
-                                    Func<Message, bool> tryDeadLetterMessage,
-                                    Func<Message, bool> tryRenewMessageLock)
+            Func<Message, bool> tryAbandonMessage,
+            Func<Message, bool> tryCompleteMessage,
+            Func<Message, bool> tryDeadLetterMessage,
+            Func<Message, bool> tryRenewMessageLock)
         {
             this.tryAbandonMessage = tryAbandonMessage;
             this.tryCompleteMessage = tryCompleteMessage;
@@ -32,15 +32,15 @@ namespace Mantle.Messaging.Aws.Contexts
                 DeliveryCount = sqsMessage.Attributes[AwsSqsMessageAttributes.ApproximateReceiveCount].TryParseInt();
         }
 
-        public int? DeliveryCount { get; private set; }
+        public Message SqsMessage { get; }
+
+        public int? DeliveryCount { get; }
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }
         public bool IsDeadLettered { get; private set; }
 
-        public Message SqsMessage { get; private set; }
-
-        public T Message { get; private set; }
+        public T Message { get; }
 
         public bool TryToAbandon()
         {

@@ -1,7 +1,7 @@
-﻿using System.Messaging;
+﻿using System;
+using System.Messaging;
 using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
-using System;
 
 namespace Mantle.Messaging.Msmq.Contexts
 {
@@ -18,21 +18,22 @@ namespace Mantle.Messaging.Msmq.Contexts
             MsmqTransaction = msmqTransaction;
         }
 
-        public int? DeliveryCount { get; } = null;
-
-        public bool IsAbandoned { get; private set; }
-        public bool IsCompleted { get; private set; }
-        public bool IsDeadLettered { get; private set; }
-
-        public T Message { get; private set; }
         public Message MsmqMessage { get; private set; }
-        public MessageQueueTransaction MsmqTransaction { get; private set; }
+        public MessageQueueTransaction MsmqTransaction { get; }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public int? DeliveryCount { get; } = null;
+
+        public bool IsAbandoned { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public bool IsDeadLettered { get; private set; }
+
+        public T Message { get; }
 
         public bool TryToAbandon()
         {

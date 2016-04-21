@@ -30,7 +30,7 @@ namespace Mantle.BlobStorage.FileSystem.Clients
             if (Directory.Exists(Path) == false)
                 throw new InvalidOperationException($"Directory [{Path}] does not exist.");
 
-            string filePath = System.IO.Path.Combine(Path, blobName);
+            var filePath = System.IO.Path.Combine(Path, blobName);
 
             if (File.Exists(filePath) == false)
                 throw new InvalidOperationException($"File [{filePath}] does not exist.");
@@ -45,12 +45,12 @@ namespace Mantle.BlobStorage.FileSystem.Clients
             if (Directory.Exists(Path) == false)
                 throw new InvalidOperationException($"Directory [{Path}] does not exist.");
 
-            string filePath = System.IO.Path.Combine(Path, blobName);
+            var filePath = System.IO.Path.Combine(Path, blobName);
 
             if (File.Exists(filePath) == false)
                 throw new InvalidOperationException($"File [{filePath}] does not exist.");
 
-            return (new MemoryStream(File.ReadAllBytes(filePath)) { Position = 0 });
+            return (new MemoryStream(File.ReadAllBytes(filePath)) {Position = 0});
         }
 
         public IEnumerable<string> ListBlobs()
@@ -71,7 +71,7 @@ namespace Mantle.BlobStorage.FileSystem.Clients
 
             blob.TryToRewind();
 
-            using (FileStream fileStream = File.Create(System.IO.Path.Combine(Path, blobName)))
+            using (var fileStream = File.Create(System.IO.Path.Combine(Path, blobName)))
                 blob.CopyTo(fileStream);
         }
     }

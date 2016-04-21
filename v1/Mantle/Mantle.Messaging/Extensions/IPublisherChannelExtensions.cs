@@ -11,7 +11,7 @@ namespace Mantle.Messaging.Extensions
     public static class IPublisherChannelExtensions
     {
         public static void Publish<T>(this IPublisherChannel<MessageEnvelope> publisherChannel, T message,
-                                      string correlationId = null)
+            string correlationId = null)
             where T : class
         {
             publisherChannel.Require(nameof(publisherChannel));

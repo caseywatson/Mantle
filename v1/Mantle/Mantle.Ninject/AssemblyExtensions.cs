@@ -8,8 +8,8 @@ namespace Mantle.Ninject
     public static class AssemblyExtensions
     {
         public static IEnumerable<INinjectModule> LoadConfiguredProfileMantleModules(this Assembly sourceAssembly,
-                                                                                     string appSettingName =
-                                                                                         "MantleProfiles")
+            string appSettingName =
+                "MantleProfiles")
         {
             sourceAssembly.Require("sourceAssembly");
             appSettingName.Require("appSettingName");
@@ -18,7 +18,7 @@ namespace Mantle.Ninject
         }
 
         public static IEnumerable<INinjectModule> LoadProfileNinjectModules(this Assembly sourceAssembly,
-                                                                            params string[] profileNames)
+            params string[] profileNames)
         {
             sourceAssembly.Require("sourceAssembly");
             profileNames.Require("profileNames");

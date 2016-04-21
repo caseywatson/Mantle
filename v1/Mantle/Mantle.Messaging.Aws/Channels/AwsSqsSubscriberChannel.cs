@@ -1,13 +1,13 @@
-﻿using Amazon.SQS.Model;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Amazon.SQS.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Interfaces;
 using Mantle.Messaging.Aws.Constants;
 using Mantle.Messaging.Aws.Contexts;
 using Mantle.Messaging.Interfaces;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mantle.Messaging.Aws.Channels
 {
@@ -50,12 +50,12 @@ namespace Mantle.Messaging.Aws.Channels
             {
                 QueueUrl = QueueUrl,
                 WaitTimeSeconds = timeout.Value.Seconds,
-                VisibilityTimeout = ((int)(MessageVisibilityTimeout.TotalSeconds))
+                VisibilityTimeout = ((int) (MessageVisibilityTimeout.TotalSeconds))
             };
 
             receiveMessageRequest.AttributeNames.Add(AwsSqsMessageAttributes.ApproximateReceiveCount);
 
-            var receiveMessageResponse = AmazonSQSClient.ReceiveMessage(receiveMessageRequest);
+            var receiveMessageResponse = AmazonSqsClient.ReceiveMessage(receiveMessageRequest);
             var message = receiveMessageResponse.Messages?.FirstOrDefault();
 
             if (message == null)
@@ -79,7 +79,7 @@ namespace Mantle.Messaging.Aws.Channels
         {
             try
             {
-                AmazonSQSClient.ChangeMessageVisibility(QueueUrl, sqsMessage.ReceiptHandle, 0);
+                AmazonSqsClient.ChangeMessageVisibility(QueueUrl, sqsMessage.ReceiptHandle, 0);
                 return true;
             }
             catch
@@ -92,7 +92,7 @@ namespace Mantle.Messaging.Aws.Channels
         {
             try
             {
-                AmazonSQSClient.DeleteMessage(QueueUrl, sqsMessage.ReceiptHandle);
+                AmazonSqsClient.DeleteMessage(QueueUrl, sqsMessage.ReceiptHandle);
                 return true;
             }
             catch
@@ -105,10 +105,10 @@ namespace Mantle.Messaging.Aws.Channels
         {
             try
             {
-                AmazonSQSClient.ChangeMessageVisibility(
-                    QueueUrl, 
-                    sqsMessage.ReceiptHandle, 
-                    ((int)(MessageVisibilityTimeout.TotalSeconds)));
+                AmazonSqsClient.ChangeMessageVisibility(
+                    QueueUrl,
+                    sqsMessage.ReceiptHandle,
+                    ((int) (MessageVisibilityTimeout.TotalSeconds)));
 
                 return true;
             }

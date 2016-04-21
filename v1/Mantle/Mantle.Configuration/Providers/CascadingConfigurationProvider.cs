@@ -18,9 +18,9 @@ namespace Mantle.Configuration.Providers
         {
             var configurationSettings = new Dictionary<string, ConfigurationSetting>();
 
-            foreach (IConfigurationProvider childProvider in childProviders)
+            foreach (var childProvider in childProviders)
             {
-                foreach (ConfigurationSetting configurationSetting in childProvider.GetConfigurationSettings())
+                foreach (var configurationSetting in childProvider.GetConfigurationSettings())
                 {
                     configurationSettings[configurationSetting.Name] = configurationSetting;
                 }

@@ -6,7 +6,7 @@ namespace Mantle.Providers
     {
         public string GetTypeToken<T>()
         {
-            return (typeof (T).Name);
+            return (typeof(T).Name);
         }
     }
 }

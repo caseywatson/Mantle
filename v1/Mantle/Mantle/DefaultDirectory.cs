@@ -16,7 +16,7 @@ namespace Mantle
         {
             get
             {
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                     throw new ArgumentException("Name is required.", "name");
 
                 return dependencyResolver.Get<T>(name);

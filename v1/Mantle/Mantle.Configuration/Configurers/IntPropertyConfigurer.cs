@@ -1,8 +1,8 @@
-﻿using Mantle.Configuration.Interfaces;
-using Mantle.Extensions;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Reflection;
+using Mantle.Configuration.Interfaces;
+using Mantle.Extensions;
 
 namespace Mantle.Configuration.Configurers
 {
@@ -15,14 +15,15 @@ namespace Mantle.Configuration.Configurers
             return ((propertyInfo.PropertyType == typeof(int)) || (propertyInfo.PropertyType == typeof(int?)));
         }
 
-        public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty, ConfigurationSetting cfgSetting)
+        public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
+            ConfigurationSetting cfgSetting)
         {
             cfgObject.Require(nameof(cfgObject));
             cfgProperty.Require(nameof(cfgProperty));
             cfgSetting.Require(nameof(cfgSetting));
 
-            Type propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
-            int? value = cfgSetting.Value.TryParseInt();
+            var propertyType = cfgProperty.PropertyMetadata.PropertyInfo.PropertyType;
+            var value = cfgSetting.Value.TryParseInt();
 
             if (propertyType == (typeof(int)))
             {

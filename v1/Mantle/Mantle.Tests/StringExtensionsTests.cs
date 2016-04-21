@@ -22,12 +22,30 @@ namespace Mantle.Tests
         }
 
         [Test]
+        public void Should_parse_string_to_boolean_value()
+        {
+            var boolResult = "true".TryParseBoolean();
+
+            Assert.IsNotNull(boolResult);
+            Assert.IsTrue(boolResult.Value);
+        }
+
+        [Test]
         public void Should_parse_string_to_Date_Time_value()
         {
             var dateTimeResult = "1/11/1981".TryParseDateTime();
 
             Assert.IsNotNull(dateTimeResult);
             Assert.AreEqual(dateTimeResult.Value, DateTime.Parse("1/11/1981"));
+        }
+
+        [Test]
+        public void Should_parse_string_to_double_value()
+        {
+            var doubleResult = "1.0".TryParseDouble();
+
+            Assert.IsNotNull(doubleResult);
+            Assert.AreEqual(doubleResult.Value, 1.0);
         }
 
         [Test]
@@ -38,24 +56,6 @@ namespace Mantle.Tests
 
             Assert.IsNotNull(guidResult);
             Assert.AreEqual(guidResult.Value, testGuid);
-        }
-
-        [Test]
-        public void Should_parse_string_to_boolean_value()
-        {
-            var boolResult = "true".TryParseBoolean();
-
-            Assert.IsNotNull(boolResult);
-            Assert.IsTrue(boolResult.Value);
-        }
-
-        [Test]
-        public void Should_parse_string_to_double_value()
-        {
-            var doubleResult = "1.0".TryParseDouble();
-
-            Assert.IsNotNull(doubleResult);
-            Assert.AreEqual(doubleResult.Value, 1.0);
         }
 
         [Test]
@@ -77,22 +77,6 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_return_null_if_unable_to_parse_string_to_Date_Time_value()
-        {
-            var dateTimeResult = "invalid".TryParseDateTime();
-
-            Assert.IsNull(dateTimeResult);
-        }
-
-        [Test]
-        public void Should_return_null_if_unable_to_parse_string_to_Guid_value()
-        {
-            var guidResult = "invalid".TryParseGuid();
-
-            Assert.IsNull(guidResult);
-        }
-
-        [Test]
         public void Should_return_null_if_unable_to_parse_string_to_boolean_value()
         {
             var boolResult = "invalid".TryParseBoolean();
@@ -101,11 +85,27 @@ namespace Mantle.Tests
         }
 
         [Test]
+        public void Should_return_null_if_unable_to_parse_string_to_Date_Time_value()
+        {
+            var dateTimeResult = "invalid".TryParseDateTime();
+
+            Assert.IsNull(dateTimeResult);
+        }
+
+        [Test]
         public void Should_return_null_if_unable_to_parse_string_to_double_value()
         {
             var doubleResult = "invalid".TryParseDouble();
 
             Assert.IsNull(doubleResult);
+        }
+
+        [Test]
+        public void Should_return_null_if_unable_to_parse_string_to_Guid_value()
+        {
+            var guidResult = "invalid".TryParseGuid();
+
+            Assert.IsNull(guidResult);
         }
 
         [Test]
@@ -125,27 +125,27 @@ namespace Mantle.Tests
         }
 
         [Test]
-        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_Date_Time_value()
-        {
-            Assert.Throws<ArgumentException>(() => default(string).TryParseDateTime());
-        }
-
-        [Test]
-        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_Guid_value()
-        {
-            Assert.Throws<ArgumentException>(() => default(string).TryParseGuid());
-        }
-
-        [Test]
         public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_boolean_value()
         {
             Assert.Throws<ArgumentException>(() => default(string).TryParseBoolean());
         }
 
         [Test]
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_Date_Time_value()
+        {
+            Assert.Throws<ArgumentException>(() => default(string).TryParseDateTime());
+        }
+
+        [Test]
         public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_double_value()
         {
             Assert.Throws<ArgumentException>(() => default(string).TryParseDouble());
+        }
+
+        [Test]
+        public void Should_throw_ArgumentException_if_attempting_to_parse_null_string_to_Guid_value()
+        {
+            Assert.Throws<ArgumentException>(() => default(string).TryParseGuid());
         }
 
         [Test]

@@ -1,9 +1,9 @@
-﻿using Amazon.SQS;
+﻿using System;
+using System.Configuration;
+using Amazon.SQS;
 using Mantle.Aws.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Aws.Constants;
-using System;
-using System.Configuration;
 
 namespace Mantle.Messaging.Aws.Channels
 {
@@ -27,12 +27,17 @@ namespace Mantle.Messaging.Aws.Channels
         public abstract string AwsSecretAccessKey { get; set; }
         public abstract string AwsRegionName { get; set; }
         public abstract string QueueName { get; set; }
-        
+
         public string QueueUrl { get; private set; }
 
-        public AmazonSQSClient AmazonSQSClient => GetAwsSqsClient();
+        public AmazonSQSClient AmazonSqsClient => GetAwsSqsClient();
 
         protected ISerializer<T> Serializer { get; }
+
+        public void Dispose()
+        {
+            awsSqsClient?.Dispose();
+        }
 
         private AmazonSQSClient GetAwsSqsClient()
         {
@@ -45,7 +50,7 @@ namespace Mantle.Messaging.Aws.Channels
 
                 awsSqsClient = new AmazonSQSClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
 
-                SetupQueue(awsSqsClient);       
+                SetupQueue(awsSqsClient);
             }
 
             return awsSqsClient;
@@ -74,12 +79,6 @@ namespace Mantle.Messaging.Aws.Channels
             {
                 return null;
             }
-        }
-
-        public void Dispose()
-        {
-            if (awsSqsClient != null)
-                awsSqsClient.Dispose();
         }
     }
 }

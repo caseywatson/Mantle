@@ -15,7 +15,7 @@ namespace Mantle.Hosting.Hosts
             Worker.MessageOccurred += OnMessageOccurred;
         }
 
-        protected IWorker Worker { get; private set; }
+        protected IWorker Worker { get; }
 
         public void Start() => Worker.Start();
 

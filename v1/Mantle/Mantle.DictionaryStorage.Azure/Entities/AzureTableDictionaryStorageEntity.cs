@@ -14,7 +14,7 @@ namespace Mantle.DictionaryStorage.Azure.Entities
 
         public AzureTableDictionaryStorageEntity()
         {
-            typeMetadata = new TypeMetadata(typeof (T));
+            typeMetadata = new TypeMetadata(typeof(T));
         }
 
         public AzureTableDictionaryStorageEntity(TypeMetadata typeMetadata)
@@ -34,57 +34,57 @@ namespace Mantle.DictionaryStorage.Azure.Entities
         {
             var t = new T();
 
-            foreach (PropertyMetadata outputProperty in typeMetadata.Properties)
+            foreach (var outputProperty in typeMetadata.Properties)
             {
                 if (properties.ContainsKey(outputProperty.PropertyInfo.Name))
                 {
-                    EntityProperty inputProperty = properties[outputProperty.PropertyInfo.Name];
-                    Type propertyType = outputProperty.PropertyInfo.PropertyType;
+                    var inputProperty = properties[outputProperty.PropertyInfo.Name];
+                    var propertyType = outputProperty.PropertyInfo.PropertyType;
 
-                    if ((propertyType == typeof (bool)) && (inputProperty.BooleanValue.HasValue))
+                    if ((propertyType == typeof(bool)) && (inputProperty.BooleanValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.BooleanValue.Value);
-                    else if ((propertyType == typeof (bool?)) && (inputProperty.BooleanValue.HasValue))
+                    else if ((propertyType == typeof(bool?)) && (inputProperty.BooleanValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.BooleanValue);
-                    else if ((propertyType == typeof (byte)) && (inputProperty.Int32Value.HasValue))
+                    else if ((propertyType == typeof(byte)) && (inputProperty.Int32Value.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, ((byte) (inputProperty.Int32Value.Value)));
-                    else if ((propertyType == typeof (byte?)) && (inputProperty.Int32Value.HasValue))
+                    else if ((propertyType == typeof(byte?)) && (inputProperty.Int32Value.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, ((byte) (inputProperty.Int32Value.Value)));
-                    else if ((propertyType == typeof (byte[])) && (inputProperty.BinaryValue != null))
+                    else if ((propertyType == typeof(byte[])) && (inputProperty.BinaryValue != null))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.BinaryValue);
-                    else if ((propertyType == typeof (decimal)) && (inputProperty.DoubleValue.HasValue))
+                    else if ((propertyType == typeof(decimal)) && (inputProperty.DoubleValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, ((decimal) (inputProperty.DoubleValue.Value)));
-                    else if ((propertyType == typeof (decimal?)) && (inputProperty.DoubleValue.HasValue))
+                    else if ((propertyType == typeof(decimal?)) && (inputProperty.DoubleValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, ((decimal) (inputProperty.DoubleValue.Value)));
-                    else if ((propertyType == typeof (DateTime)) && (inputProperty.DateTime.HasValue))
+                    else if ((propertyType == typeof(DateTime)) && (inputProperty.DateTime.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.DateTime.Value);
-                    else if ((propertyType == typeof (DateTime?)) && (inputProperty.DateTime.HasValue))
+                    else if ((propertyType == typeof(DateTime?)) && (inputProperty.DateTime.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.DateTime);
-                    else if ((propertyType == typeof (double)) && (inputProperty.DoubleValue.HasValue))
+                    else if ((propertyType == typeof(double)) && (inputProperty.DoubleValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.DoubleValue.Value);
-                    else if ((propertyType == typeof (double?)) && (inputProperty.DoubleValue.HasValue))
+                    else if ((propertyType == typeof(double?)) && (inputProperty.DoubleValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.DoubleValue);
-                    else if ((propertyType == typeof (float)) && (inputProperty.DoubleValue.HasValue))
+                    else if ((propertyType == typeof(float)) && (inputProperty.DoubleValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, ((float) (inputProperty.DoubleValue.Value)));
-                    else if ((propertyType == typeof (float?)) && (inputProperty.DoubleValue.HasValue))
+                    else if ((propertyType == typeof(float?)) && (inputProperty.DoubleValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, ((float) (inputProperty.DoubleValue.Value)));
-                    else if ((propertyType == typeof (Guid)) && (inputProperty.GuidValue.HasValue))
+                    else if ((propertyType == typeof(Guid)) && (inputProperty.GuidValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.GuidValue.Value);
-                    else if ((propertyType == typeof (Guid?)) && (inputProperty.GuidValue.HasValue))
+                    else if ((propertyType == typeof(Guid?)) && (inputProperty.GuidValue.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.GuidValue);
-                    else if ((propertyType == typeof (int)) && (inputProperty.Int32Value.HasValue))
+                    else if ((propertyType == typeof(int)) && (inputProperty.Int32Value.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.Int32Value.Value);
-                    else if ((propertyType == typeof (int?)) && (inputProperty.Int32Value.HasValue))
+                    else if ((propertyType == typeof(int?)) && (inputProperty.Int32Value.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.Int32Value);
-                    else if ((propertyType == typeof (long)) && (inputProperty.Int64Value.HasValue))
+                    else if ((propertyType == typeof(long)) && (inputProperty.Int64Value.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.Int64Value.Value);
-                    else if ((propertyType == typeof (long?)) && (inputProperty.Int64Value.HasValue))
+                    else if ((propertyType == typeof(long?)) && (inputProperty.Int64Value.HasValue))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.Int64Value);
-                    else if ((propertyType == typeof (string)) && (inputProperty.StringValue != null))
+                    else if ((propertyType == typeof(string)) && (inputProperty.StringValue != null))
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.StringValue);
                     else if (inputProperty.StringValue != null)
                         outputProperty.PropertyInfo.SetValue(t,
-                                                             JsonConvert.DeserializeObject(inputProperty.StringValue,
-                                                                                           propertyType));
+                            JsonConvert.DeserializeObject(inputProperty.StringValue,
+                                propertyType));
                 }
             }
 
@@ -95,53 +95,53 @@ namespace Mantle.DictionaryStorage.Azure.Entities
         {
             var dictionary = new Dictionary<string, EntityProperty>();
 
-            foreach (PropertyMetadata inputProperty in typeMetadata.Properties)
+            foreach (var inputProperty in typeMetadata.Properties)
             {
-                string propertyName = inputProperty.PropertyInfo.Name;
-                Type propertyType = inputProperty.PropertyInfo.PropertyType;
-                object propertyValue = inputProperty.PropertyInfo.GetValue(Data);
+                var propertyName = inputProperty.PropertyInfo.Name;
+                var propertyType = inputProperty.PropertyInfo.PropertyType;
+                var propertyValue = inputProperty.PropertyInfo.GetValue(Data);
 
                 if (propertyValue != null)
                 {
-                    if (propertyType == typeof (bool))
+                    if (propertyType == typeof(bool))
                         dictionary[propertyName] = new EntityProperty((bool) (propertyValue));
-                    else if (propertyType == typeof (bool?))
+                    else if (propertyType == typeof(bool?))
                         dictionary[propertyName] = new EntityProperty((bool?) (propertyValue));
-                    else if (propertyType == typeof (byte))
+                    else if (propertyType == typeof(byte))
                         dictionary[propertyName] = new EntityProperty((byte) (propertyValue));
-                    else if (propertyType == typeof (byte?))
+                    else if (propertyType == typeof(byte?))
                         dictionary[propertyName] = new EntityProperty((byte?) (propertyValue));
-                    else if (propertyType == typeof (byte[]))
+                    else if (propertyType == typeof(byte[]))
                         dictionary[propertyName] = new EntityProperty((byte[]) (propertyValue));
-                    else if (propertyType == typeof (decimal))
+                    else if (propertyType == typeof(decimal))
                         dictionary[propertyName] = new EntityProperty((double) (propertyValue));
-                    else if (propertyType == typeof (decimal?))
+                    else if (propertyType == typeof(decimal?))
                         dictionary[propertyName] = new EntityProperty((double?) (propertyValue));
-                    else if (propertyType == typeof (DateTime))
+                    else if (propertyType == typeof(DateTime))
                         dictionary[propertyName] = new EntityProperty((DateTime) (propertyValue));
-                    else if (propertyType == typeof (DateTime?))
+                    else if (propertyType == typeof(DateTime?))
                         dictionary[propertyName] = new EntityProperty((DateTime?) (propertyValue));
-                    else if (propertyType == typeof (double))
+                    else if (propertyType == typeof(double))
                         dictionary[propertyName] = new EntityProperty((double) (propertyValue));
-                    else if (propertyType == typeof (double?))
+                    else if (propertyType == typeof(double?))
                         dictionary[propertyName] = new EntityProperty((double?) (propertyValue));
-                    else if (propertyType == typeof (float))
+                    else if (propertyType == typeof(float))
                         dictionary[propertyName] = new EntityProperty((float) (propertyValue));
-                    else if (propertyType == typeof (float?))
+                    else if (propertyType == typeof(float?))
                         dictionary[propertyName] = new EntityProperty((float?) (propertyValue));
-                    else if (propertyType == typeof (Guid))
+                    else if (propertyType == typeof(Guid))
                         dictionary[propertyName] = new EntityProperty((Guid) (propertyValue));
-                    else if (propertyType == typeof (Guid?))
+                    else if (propertyType == typeof(Guid?))
                         dictionary[propertyName] = new EntityProperty((Guid?) (propertyValue));
-                    else if (propertyType == typeof (int))
+                    else if (propertyType == typeof(int))
                         dictionary[propertyName] = new EntityProperty((int) (propertyValue));
-                    else if (propertyType == typeof (int?))
+                    else if (propertyType == typeof(int?))
                         dictionary[propertyName] = new EntityProperty((int?) (propertyValue));
-                    else if (propertyType == typeof (long))
+                    else if (propertyType == typeof(long))
                         dictionary[propertyName] = new EntityProperty((long) (propertyValue));
-                    else if (propertyType == typeof (long?))
+                    else if (propertyType == typeof(long?))
                         dictionary[propertyName] = new EntityProperty((long?) (propertyValue));
-                    else if (propertyType == typeof (string))
+                    else if (propertyType == typeof(string))
                         dictionary[propertyName] = new EntityProperty((string) (propertyValue));
                     else
                         dictionary[propertyName] =

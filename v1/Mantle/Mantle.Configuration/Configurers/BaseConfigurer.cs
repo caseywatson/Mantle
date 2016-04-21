@@ -1,11 +1,11 @@
-﻿using Mantle.Configuration.Attributes;
-using Mantle.Configuration.Interfaces;
-using Mantle.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using Mantle.Configuration.Attributes;
+using Mantle.Configuration.Interfaces;
+using Mantle.Extensions;
 using static System.String;
 
 namespace Mantle.Configuration.Configurers
@@ -18,7 +18,8 @@ namespace Mantle.Configuration.Configurers
 
         protected BaseConfigurer()
             : this(null)
-        { }
+        {
+        }
 
         protected BaseConfigurer(IPropertyConfigurer[] propertyConfigurers)
         {
@@ -28,22 +29,22 @@ namespace Mantle.Configuration.Configurers
                     .Where(t => typeof(IPropertyConfigurer).IsAssignableFrom(t)).ToList();
 
                 propertyConfigurers = localPropertyConfigurerTypes // This relies on all local property configurers
-                    .Select(t => Activator.CreateInstance(t))      // having default constructors.
+                    .Select(Activator.CreateInstance)              // having default constructors.
                     .Cast<IPropertyConfigurer>()                   // May need to rethink in the future.
                     .ToArray();
             }
 
             this.propertyConfigurers = propertyConfigurers;
 
-            TypeMetadata = new TypeMetadata(typeof (T));
+            TypeMetadata = new TypeMetadata(typeof(T));
         }
 
         public abstract IEnumerable<ConfigurationSetting> GetConfigurationSettings();
 
         public virtual T Configure(T @object, string objectName = null)
         {
-            ConfigurableObject<T> cfgObject = ToConfigurableObject(@object, objectName);
-            IEnumerable<ConfigurationSetting> cfgSettings = GetConfigurationSettings();
+            var cfgObject = ToConfigurableObject(@object, objectName);
+            var cfgSettings = GetConfigurationSettings();
 
             ApplyConfigurationSettings(cfgObject, cfgSettings);
 
@@ -51,12 +52,12 @@ namespace Mantle.Configuration.Configurers
         }
 
         protected virtual ConfigurableObject<T> ApplyConfigurationSettings(ConfigurableObject<T> cfgObject,
-                                                                           IEnumerable<ConfigurationSetting>
-                                                                               cfgSettings)
+            IEnumerable<ConfigurationSetting>
+                cfgSettings)
         {
-            List<ConfigurationSetting> cfgSettingsList = cfgSettings.ToList();
+            var cfgSettingsList = cfgSettings.ToList();
 
-            foreach (ConfigurableProperty cfgProperty in cfgObject.Properties)
+            foreach (var cfgProperty in cfgObject.Properties)
             {
                 var cfgSettingDictionary = cfgSettingsList
                     .Where(cs => cfgProperty.PrioritizedSettingNames.Contains(cs.Name))
@@ -82,7 +83,7 @@ namespace Mantle.Configuration.Configurers
         }
 
         private void ApplyConfigurationSetting(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
-                                               ConfigurationSetting cfgSetting)
+            ConfigurationSetting cfgSetting)
         {
             var propertyInfo = cfgProperty.PropertyMetadata.PropertyInfo;
 
@@ -101,11 +102,13 @@ namespace Mantle.Configuration.Configurers
         }
 
         private IEnumerable<string> GetPrioritizedConventionalSettingNames(ConfigurableObject<T> cfgObject,
-                                                                           ConfigurableProperty cfgProperty)
+            ConfigurableProperty cfgProperty)
         {
             if (IsNullOrEmpty(cfgObject.Name) == false)
             {
-                yield return $"{cfgObject.Name}.{cfgObject.TypeMetadata.Type.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
+                yield return
+                    $"{cfgObject.Name}.{cfgObject.TypeMetadata.Type.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}"
+                    ;
                 yield return $"{cfgObject.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
             }
 
@@ -119,11 +122,11 @@ namespace Mantle.Configuration.Configurers
 
             cfgObject.Name = objectName;
             cfgObject.Target = @object;
-            cfgObject.TypeMetadata = new TypeMetadata(typeof (T));
+            cfgObject.TypeMetadata = new TypeMetadata(typeof(T));
 
-            foreach (PropertyMetadata propertyMetadata in cfgObject.TypeMetadata.Properties)
+            foreach (var propertyMetadata in cfgObject.TypeMetadata.Properties)
             {
-                ConfigurableAttribute cfgAttribute =
+                var cfgAttribute =
                     propertyMetadata.Attributes.OfType<ConfigurableAttribute>().SingleOrDefault();
 
                 if (cfgAttribute != null)

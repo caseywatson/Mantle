@@ -46,7 +46,10 @@ namespace Mantle.Tests
             var mockDependencyResolver = new Mock<IDependencyResolver>();
             var directory = new DefaultDirectory<object>(mockDependencyResolver.Object);
 
-            Assert.Throws<ArgumentException>(() => { var obj = directory[String.Empty]; });
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var obj = directory[string.Empty];
+            });
         }
 
         [Test]
@@ -55,7 +58,10 @@ namespace Mantle.Tests
             var mockDependencyResolver = new Mock<IDependencyResolver>();
             var directory = new DefaultDirectory<object>(mockDependencyResolver.Object);
 
-            Assert.Throws<ArgumentException>(() => { var obj = directory[null]; });
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var obj = directory[null];
+            });
         }
     }
 }

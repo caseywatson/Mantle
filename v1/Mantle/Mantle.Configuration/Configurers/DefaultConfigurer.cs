@@ -10,7 +10,7 @@ namespace Mantle.Configuration.Configurers
 
         public DefaultConfigurer(IConfigurationProvider configurationProvider)
         {
-            configurationProvider.Require("configurationProvider");
+            configurationProvider.Require(nameof(configurationProvider));
             this.configurationProvider = configurationProvider;
         }
 

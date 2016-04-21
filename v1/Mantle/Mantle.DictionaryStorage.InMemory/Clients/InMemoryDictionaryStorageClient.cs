@@ -49,7 +49,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             try
             {
                 dictionaryLock.EnterReadLock();
-                return (dictionary[partitionId]?.ContainsKey(entityId) == true);  
+                return (dictionary[partitionId]?.ContainsKey(entityId) == true);
             }
             finally
             {
@@ -58,7 +58,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
         }
 
         public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-                                           Func<T, string> partitionIdSelector)
+            Func<T, string> partitionIdSelector)
         {
             entities.Require(nameof(entities));
             entityIdSelector.Require(nameof(entityIdSelector));
@@ -68,10 +68,10 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterWriteLock();
 
-                foreach (T entity in entities)
+                foreach (var entity in entities)
                 {
-                    string entityId = entityIdSelector(entity);
-                    string partitionId = partitionIdSelector(entity);
+                    var entityId = entityIdSelector(entity);
+                    var partitionId = partitionIdSelector(entity);
 
                     if (dictionary.ContainsKey(partitionId) == false)
                         dictionary[partitionId] = new Dictionary<string, T>();

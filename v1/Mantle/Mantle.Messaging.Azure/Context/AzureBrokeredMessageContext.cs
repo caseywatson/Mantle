@@ -16,7 +16,7 @@ namespace Mantle.Messaging.Azure.Context
             Message = message;
         }
 
-        public BrokeredMessage BrokeredMessage { get; private set; }
+        public BrokeredMessage BrokeredMessage { get; }
 
         public int? DeliveryCount => BrokeredMessage.DeliveryCount;
 
@@ -24,7 +24,7 @@ namespace Mantle.Messaging.Azure.Context
         public bool IsCompleted { get; private set; }
         public bool IsDeadLettered { get; private set; }
 
-        public T Message { get; private set; }
+        public T Message { get; }
 
         public bool TryToAbandon()
         {

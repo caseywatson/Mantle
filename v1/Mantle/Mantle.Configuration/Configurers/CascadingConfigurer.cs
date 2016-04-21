@@ -25,7 +25,7 @@ namespace Mantle.Configuration.Configurers
 
             foreach (var configurer in configurers)
             {
-                foreach (ConfigurationSetting setting in configurer.GetConfigurationSettings())
+                foreach (var setting in configurer.GetConfigurationSettings())
                 {
                     settingDictionary[setting.Name] = setting;
                 }

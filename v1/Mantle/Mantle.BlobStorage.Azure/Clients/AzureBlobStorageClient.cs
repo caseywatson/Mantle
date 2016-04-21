@@ -29,7 +29,7 @@ namespace Mantle.BlobStorage.Azure.Clients
         {
             blobName.Require(nameof(blobName));
 
-            CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
+            var container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
                 return false;
@@ -41,12 +41,12 @@ namespace Mantle.BlobStorage.Azure.Clients
         {
             blobName.Require(nameof(blobName));
 
-            CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
+            var container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
                 throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
-            CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
+            var blob = container.GetBlockBlobReference(blobName);
 
             if (blob.Exists() == false)
                 throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
@@ -58,17 +58,17 @@ namespace Mantle.BlobStorage.Azure.Clients
         {
             blobName.Require(nameof(blobName));
 
-            CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
+            var container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
                 throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
-            CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
+            var blob = container.GetBlockBlobReference(blobName);
 
             if (blob.Exists() == false)
                 throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
 
-            var stream = new MemoryStream();    
+            var stream = new MemoryStream();
 
             blob.DownloadToStream(stream);
             stream.TryToRewind();
@@ -78,12 +78,12 @@ namespace Mantle.BlobStorage.Azure.Clients
 
         public IEnumerable<string> ListBlobs()
         {
-            CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
+            var container = CloudBlobClient.GetContainerReference(ContainerName);
 
             if (container.Exists() == false)
                 throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
-            foreach (CloudBlockBlob blob in container.ListBlobs().OfType<CloudBlockBlob>())
+            foreach (var blob in container.ListBlobs().OfType<CloudBlockBlob>())
                 yield return blob.Name;
         }
 
@@ -97,11 +97,11 @@ namespace Mantle.BlobStorage.Azure.Clients
 
             source.TryToRewind();
 
-            CloudBlobContainer container = CloudBlobClient.GetContainerReference(ContainerName);
+            var container = CloudBlobClient.GetContainerReference(ContainerName);
 
             container.CreateIfNotExists();
 
-            CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
+            var blob = container.GetBlockBlobReference(blobName);
 
             blob.UploadFromStream(source);
         }

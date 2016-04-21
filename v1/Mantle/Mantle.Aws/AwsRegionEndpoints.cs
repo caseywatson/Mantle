@@ -1,7 +1,7 @@
-﻿using Amazon;
+﻿using System.Linq;
+using Amazon;
 using Mantle.Aws.Interfaces;
 using Mantle.Extensions;
-using System.Linq;
 
 namespace Mantle.Aws
 {
@@ -14,7 +14,7 @@ namespace Mantle.Aws
             regionName = regionName.ToLower();
 
             return RegionEndpoint.EnumerableAllRegions.SingleOrDefault(
-                re => (re.DisplayName.ToLower() == regionName) || 
+                re => (re.DisplayName.ToLower() == regionName) ||
                       (re.SystemName.ToLower() == regionName));
         }
     }

@@ -42,7 +42,7 @@ namespace Mantle.Hosting.Messaging.Workers
             if (subscriberChannels.None())
                 subscriberChannels.AddRange(dependencyResolver.GetAll<ISubscriberChannel<MessageEnvelope>>());
 
-            for (int i = 0; i < subscriberChannels.Count; i++)
+            for (var i = 0; i < subscriberChannels.Count; i++)
             {
                 var subscriberChannel = subscriberChannels[i];
 
@@ -93,7 +93,7 @@ namespace Mantle.Hosting.Messaging.Workers
 
             var configurer = new DefaultSubscriptionConfigurer<T>(configuration);
 
-            configurerAction(configurer); 
+            configurerAction(configurer);
 
             if (configuration.Filters.None())
                 configuration.Filters = dependencyResolver.GetAll<ISubscriptionFilter<T>>().ToList();
@@ -124,14 +124,14 @@ namespace Mantle.Hosting.Messaging.Workers
             subscription.Require(nameof(subscription));
 
             SetupSubscriptionType<T>();
-            messageHandlers[typeof (T)].Add(subscription.HandleMessage);
+            messageHandlers[typeof(T)].Add(subscription.HandleMessage);
         }
 
         private bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {
             try
             {
-                foreach (string typeToken in messageContext.Message.BodyTypeTokens)
+                foreach (var typeToken in messageContext.Message.BodyTypeTokens)
                 {
                     if ((typeToken != null) && (typeTokens.ContainsKey(typeToken)))
                     {
@@ -175,11 +175,11 @@ namespace Mantle.Hosting.Messaging.Workers
 
         private void SetupSubscriptionType<T>()
         {
-            Type tType = (typeof (T));
+            var tType = (typeof(T));
 
             if (messageHandlers.ContainsKey(tType) == false)
             {
-                foreach (ITypeTokenProvider typeTokenProvider in typeTokenProviders)
+                foreach (var typeTokenProvider in typeTokenProviders)
                 {
                     var typeToken = typeTokenProvider.GetTypeToken<T>();
 
@@ -192,7 +192,7 @@ namespace Mantle.Hosting.Messaging.Workers
         }
 
         private void SubscribeToChannel(ISubscriberChannel<MessageEnvelope> channel,
-                                        CancellationToken cancellationToken)
+            CancellationToken cancellationToken)
         {
             while (true)
             {

@@ -59,7 +59,7 @@ namespace Mantle.Cache.InMemory.Clients
         {
             if (cache == null)
             {
-                if (String.IsNullOrEmpty(CacheName))
+                if (string.IsNullOrEmpty(CacheName))
                     cache = MemoryCache.Default;
                 else
                     cache = new MemoryCache(CacheName);

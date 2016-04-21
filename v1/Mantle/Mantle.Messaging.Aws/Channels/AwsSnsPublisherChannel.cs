@@ -1,11 +1,11 @@
-﻿using Amazon.SimpleNotificationService;
+﻿using System;
+using System.Configuration;
+using Amazon.SimpleNotificationService;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
-using System;
-using System.Configuration;
 
 namespace Mantle.Messaging.Aws.Channels
 {
@@ -37,6 +37,11 @@ namespace Mantle.Messaging.Aws.Channels
 
         public AmazonSimpleNotificationServiceClient AmazonSimpleNotificationServiceClient => GetAwsSnsClient();
 
+        public void Dispose()
+        {
+            awsSnsClient?.Dispose();
+        }
+
         public void Publish(T message)
         {
             message.Require(nameof(message));
@@ -53,16 +58,11 @@ namespace Mantle.Messaging.Aws.Channels
                 if (awsRegionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
 
-                awsSnsClient = new AmazonSimpleNotificationServiceClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
+                awsSnsClient = new AmazonSimpleNotificationServiceClient(AwsAccessKeyId, AwsSecretAccessKey,
+                    awsRegionEndpoint);
             }
 
             return awsSnsClient;
-        }
-
-        public void Dispose()
-        {
-            if (awsSnsClient != null)
-                awsSnsClient.Dispose();
         }
     }
 }

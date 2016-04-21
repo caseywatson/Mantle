@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mantle.Messaging.Interfaces
+﻿namespace Mantle.Messaging.Interfaces
 {
     public interface IMessageContext<T>
         where T : class
@@ -8,13 +6,13 @@ namespace Mantle.Messaging.Interfaces
         int? DeliveryCount { get; }
         T Message { get; }
 
+        bool IsAbandoned { get; }
+        bool IsCompleted { get; }
+        bool IsDeadLettered { get; }
+
         bool TryToAbandon();
         bool TryToComplete();
         bool TryToDeadLetter();
         bool TryToRenewLock();
-
-        bool IsAbandoned { get; }
-        bool IsCompleted { get; }
-        bool IsDeadLettered { get; }
     }
 }
