@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Azure.Entities;
+using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
 using Microsoft.WindowsAzure.Storage;
@@ -73,26 +74,22 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             return (table.Execute(op).Result != null);
         }
 
-        public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-            Func<T, string> partitionIdSelector)
+        public void InsertOrUpdateEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
         {
-            entities.Require(nameof(entities));
-            entityIdSelector.Require(nameof(entityIdSelector));
-            partitionIdSelector.Require(nameof(partitionIdSelector));
+            dsEntities.Require(nameof(dsEntities));
 
             var table = CloudTableClient.GetTableReference(DictionaryName);
 
             table.CreateIfNotExists();
 
-            var storageEntityGroups =
-                entities.Select(
-                    e =>
-                        new AzureTableDictionaryStorageEntity<T>(typeMetadata)
-                        {
-                            Data = e,
-                            PartitionKey = partitionIdSelector(e),
-                            RowKey = entityIdSelector(e)
-                        }).GroupBy(e => e.PartitionKey);
+            var storageEntityGroups = dsEntities
+                .Select(e => new AzureTableDictionaryStorageEntity<T>(typeMetadata)
+                {
+                    Data = e.Entity,
+                    PartitionKey = e.PartitionId,
+                    RowKey = e.EntityId
+                })
+                .GroupBy(e => e.PartitionKey);
 
             foreach (var storageEntityGroup in storageEntityGroups)
             {
@@ -108,17 +105,15 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             }
         }
 
-        public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
+        public void InsertOrUpdateEntity(DictionaryStorageEntity<T> dsEntity)
         {
-            entity.Require(nameof(entity));
-            entityId.Require(nameof(entityId));
-            partitionId.Require(nameof(partitionId));
+            dsEntity.Require(nameof(dsEntity));
 
             var storageEntity = new AzureTableDictionaryStorageEntity<T>(typeMetadata);
 
-            storageEntity.Data = entity;
-            storageEntity.RowKey = entityId;
-            storageEntity.PartitionKey = partitionId;
+            storageEntity.Data = dsEntity.Entity;
+            storageEntity.RowKey = dsEntity.EntityId;
+            storageEntity.PartitionKey = dsEntity.PartitionId;
 
             var table = CloudTableClient.GetTableReference(DictionaryName);
 

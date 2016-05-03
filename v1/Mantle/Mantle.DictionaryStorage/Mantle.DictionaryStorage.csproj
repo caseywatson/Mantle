@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\DictionaryStorageEntity.cs" />
+    <Compile Include="Extensions\DictionaryStorageClientExtensions.cs" />
     <Compile Include="Interfaces\IDictionaryStorageClient.cs" />
+    <Compile Include="Interfaces\IReadOnlyDictionaryStorageClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -47,7 +50,12 @@
       <Project>{14843F74-B007-4357-9AEA-4703D772B6AE}</Project>
       <Name>Mantle.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>
+      <Name>Mantle</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

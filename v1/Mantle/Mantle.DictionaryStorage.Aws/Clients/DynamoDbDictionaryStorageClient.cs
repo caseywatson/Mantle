@@ -8,6 +8,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
+using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
 using Newtonsoft.Json;
@@ -87,22 +88,13 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             return getItemResult.IsItemSet;
         }
 
-        public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-            Func<T, string> partitionIdSelector)
+        public void InsertOrUpdateEntities(IEnumerable<DictionaryStorageEntity<T>> entities)
         {
             entities.Require(nameof(entities));
-            entityIdSelector.Require(nameof(entityIdSelector));
-            partitionIdSelector.Require(nameof(partitionIdSelector));
 
-            var dsEntities = entities
-                .Select(e => new DynamoDbDictionaryStorageEntity(
-                    entityIdSelector(e),
-                    partitionIdSelector(e),
-                    e));
-
-            foreach (var dsEntityChunk in dsEntities.Chunk(25))
+            foreach (var entityChunk in entities.Chunk(25))
             {
-                var writeRequests = dsEntityChunk
+                var writeRequests = entityChunk
                     .Select(e => new WriteRequest(new PutRequest(ToDynamoDbDocumentDictionary(e))))
                     .ToList();
 
@@ -115,15 +107,11 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             }
         }
 
-        public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
+        public void InsertOrUpdateEntity(DictionaryStorageEntity<T> entity)
         {
             entity.Require(nameof(entity));
-            entityId.Require(nameof(entityId));
-            partitionId.Require(nameof(partitionId));
 
-            var dsEntity = new DynamoDbDictionaryStorageEntity(entityId, partitionId, entity);
-
-            AmazonDynamoDbClient.PutItem(TableName, ToDynamoDbDocumentDictionary(dsEntity));
+            AmazonDynamoDbClient.PutItem(TableName, ToDynamoDbDocumentDictionary(entity));
         }
 
         public IEnumerable<T> LoadAllEntities(string partitionId)
@@ -164,7 +152,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             return null;
         }
 
-        private Dictionary<string, AttributeValue> ToDynamoDbDocumentDictionary(DynamoDbDictionaryStorageEntity entity)
+        private Dictionary<string, AttributeValue> ToDynamoDbDocumentDictionary(DictionaryStorageEntity<T> entity)
         {
             var docDictionary = new Dictionary<string, AttributeValue>();
             var entityDictionary = new Dictionary<string, AttributeValue>();
@@ -199,11 +187,12 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             return docDictionary;
         }
 
-        private DynamoDbDictionaryStorageEntity FromDynamoDbDocumentDictionary(
-            Dictionary<string, AttributeValue> docDictionary)
+        private DictionaryStorageEntity<T> FromDynamoDbDocumentDictionary(Dictionary<string, AttributeValue> docDictionary)
         {
             var entityDictionary = GetEntityDictionary(docDictionary);
-            var entity = new DynamoDbDictionaryStorageEntity(GetEntityId(docDictionary), GetPartitionId(docDictionary));
+
+            var entity = new DictionaryStorageEntity<T>(
+                GetEntityId(docDictionary), GetPartitionId(docDictionary), new T());
 
             foreach (var property in typeMetadata.Properties)
             {
@@ -413,21 +402,6 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             public const string Entity = "Entity";
             public const string EntityId = "EntityId";
             public const string PartitionId = "PartitionId";
-        }
-
-        private class DynamoDbDictionaryStorageEntity
-        {
-            public DynamoDbDictionaryStorageEntity(string entityId, string partitionId, T entity = null)
-            {
-                Entity = entity ?? new T();
-                EntityId = entityId;
-                PartitionId = partitionId;
-            }
-
-            public T Entity { get; }
-
-            public string EntityId { get; }
-            public string PartitionId { get; }
         }
     }
 }

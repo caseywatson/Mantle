@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
 
@@ -49,60 +50,11 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             try
             {
                 dictionaryLock.EnterReadLock();
-                return (dictionary[partitionId]?.ContainsKey(entityId) == true);
+                return dictionary[partitionId]?.ContainsKey(entityId) == true;
             }
             finally
             {
                 dictionaryLock.ExitReadLock();
-            }
-        }
-
-        public void InsertOrUpdateEntities(IEnumerable<T> entities, Func<T, string> entityIdSelector,
-            Func<T, string> partitionIdSelector)
-        {
-            entities.Require(nameof(entities));
-            entityIdSelector.Require(nameof(entityIdSelector));
-            partitionIdSelector.Require(nameof(partitionIdSelector));
-
-            try
-            {
-                dictionaryLock.EnterWriteLock();
-
-                foreach (var entity in entities)
-                {
-                    var entityId = entityIdSelector(entity);
-                    var partitionId = partitionIdSelector(entity);
-
-                    if (dictionary.ContainsKey(partitionId) == false)
-                        dictionary[partitionId] = new Dictionary<string, T>();
-
-                    dictionary[partitionId][entityId] = entity;
-                }
-            }
-            finally
-            {
-                dictionaryLock.ExitWriteLock();
-            }
-        }
-
-        public void InsertOrUpdateEntity(T entity, string entityId, string partitionId)
-        {
-            entity.Require(nameof(entity));
-            entityId.Require(nameof(entityId));
-            partitionId.Require(nameof(partitionId));
-
-            try
-            {
-                dictionaryLock.EnterWriteLock();
-
-                if (dictionary.ContainsKey(partitionId) == false)
-                    dictionary[partitionId] = new Dictionary<string, T>();
-
-                dictionary[partitionId][entityId] = entity;
-            }
-            finally
-            {
-                dictionaryLock.ExitWriteLock();
             }
         }
 
@@ -117,7 +69,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
                 if (dictionary.ContainsKey(partitionId) == false)
                     throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
 
-                return (dictionary[partitionId].Values);
+                return dictionary[partitionId].Values;
             }
             finally
             {
@@ -145,6 +97,47 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             finally
             {
                 dictionaryLock.ExitReadLock();
+            }
+        }
+
+        public void InsertOrUpdateEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
+        {
+            dsEntities.Require(nameof(dsEntities));
+
+            try
+            {
+                dictionaryLock.EnterWriteLock();
+
+                foreach (var dsEntity in dsEntities)
+                {
+                    if (dictionary.ContainsKey(dsEntity.PartitionId) == false)
+                        dictionary[dsEntity.PartitionId] = new Dictionary<string, T>();
+
+                    dictionary[dsEntity.PartitionId][dsEntity.EntityId] = dsEntity.Entity;
+                }
+            }
+            finally
+            {
+                dictionaryLock.ExitWriteLock();
+            }
+        }
+
+        public void InsertOrUpdateEntity(DictionaryStorageEntity<T> dsEntity)
+        {
+            dsEntity.Require(nameof(dsEntity));
+
+            try
+            {
+                dictionaryLock.EnterWriteLock();
+
+                if (dictionary.ContainsKey(dsEntity.PartitionId) == false)
+                    dictionary[dsEntity.PartitionId] = new Dictionary<string, T>();
+
+                dictionary[dsEntity.PartitionId][dsEntity.EntityId] = dsEntity.Entity;
+            }
+            finally
+            {
+                dictionaryLock.ExitWriteLock();
             }
         }
     }
