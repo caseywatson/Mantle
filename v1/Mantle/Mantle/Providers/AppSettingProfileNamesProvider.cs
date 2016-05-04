@@ -23,8 +23,7 @@ namespace Mantle.Providers
             if (appSettings[settingName] == null)
                 throw new ConfigurationErrorsException($"Profiles [{settingName}] not configured.");
 
-            var profileNames =
-                appSettings[settingName].Split(',', ';').Select(n => n.Trim()).Where(n => n.Length > 0).ToArray();
+            var profileNames = appSettings[settingName].ParseProfileNames().ToArray();
 
             if (profileNames.None())
                 throw new ConfigurationErrorsException($"Profiles [{settingName}] not configured.");

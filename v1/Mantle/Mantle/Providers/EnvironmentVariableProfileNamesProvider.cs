@@ -27,8 +27,7 @@ namespace Mantle.Providers
             if (variable.Value == null)
                 throw new ConfigurationErrorsException($"Profiles [{variableName}] not configured.");
 
-            var profileNames =
-                variable.Value.ToString().Split(',', ';').Select(n => n.Trim()).Where(n => n.Length > 0).ToArray();
+            var profileNames = variable.Value.ToString().ParseProfileNames().ToArray();
 
             if (profileNames.None())
                 throw new ConfigurationErrorsException($"Profiles [{variableName}] not configured.");

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mantle.Extensions
 {
@@ -9,8 +11,15 @@ namespace Mantle.Extensions
             return string.IsNullOrEmpty(source);
         }
 
+        public static IEnumerable<string> ParseProfileNames(this string source)
+        {
+            source.Require(nameof(source));
+
+            return source.Split(',', ';').Select(n => n.Trim()).Where(n => n.Length > 0);
+        }
+
         public static string Merge(this string source, object data, char fieldStartDelimiter = '{',
-            char fieldEndDelimiter = '}')
+                                   char fieldEndDelimiter = '}')
         {
             source.Require(nameof(source));
             data.Require(nameof(data));
@@ -21,8 +30,8 @@ namespace Mantle.Extensions
             {
                 if (dataDictionary[key] != null)
                 {
-                    source = source.Replace((fieldStartDelimiter + key + fieldEndDelimiter),
-                        dataDictionary[key].ToString());
+                    source = source.Replace(fieldStartDelimiter + key + fieldEndDelimiter,
+                                            dataDictionary[key].ToString());
                 }
             }
 

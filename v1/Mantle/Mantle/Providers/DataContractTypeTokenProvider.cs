@@ -21,7 +21,7 @@ namespace Mantle.Providers
             if (string.IsNullOrEmpty(dataContractAttribute.Namespace))
                 return dataContractName;
 
-            return string.Format("{0}|{1}", dataContractAttribute.Namespace, dataContractName);
+            return $"{dataContractAttribute.Namespace}|{dataContractName}";
         }
     }
 }
