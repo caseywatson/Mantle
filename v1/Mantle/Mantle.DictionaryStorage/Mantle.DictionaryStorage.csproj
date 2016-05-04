@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\LayeredDictionaryStorageClient.cs" />
     <Compile Include="Entities\DictionaryStorageEntity.cs" />
     <Compile Include="Extensions\DictionaryStorageClientExtensions.cs" />
     <Compile Include="Interfaces\IDictionaryStorageClient.cs" />

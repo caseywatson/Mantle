@@ -67,13 +67,16 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterReadLock();
 
-                if (dictionary.ContainsKey(partitionId) == false)
-                    throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
+                if (dictionary.ContainsKey(partitionId))
+                {
+                    var partitionDictionary = dictionary[partitionId];
 
-                var partitionDictionary = dictionary[partitionId];
-
-                return partitionDictionary.Keys
-                    .Select(k => new DictionaryStorageEntity<T>(k, partitionId, partitionDictionary[k]));
+                    foreach (var key in partitionDictionary.Keys)
+                    {
+                        yield return new DictionaryStorageEntity<T>(key, partitionId,
+                                                                    partitionDictionary[key]);
+                    }
+                }
             }
             finally
             {
@@ -90,10 +93,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterReadLock();
 
-                if (dictionary.ContainsKey(partitionId) == false)
-                    throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
-
-                if (dictionary[partitionId].ContainsKey(entityId))
+                if (dictionary.ContainsKey(partitionId) && dictionary[partitionId].ContainsKey(entityId))
                     return new DictionaryStorageEntity<T>(entityId, partitionId, dictionary[partitionId][entityId]);
 
                 return null;
