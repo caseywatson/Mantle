@@ -74,6 +74,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.DictionaryStorage.Aw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.DictionaryStorage.Redis", "Mantle.DictionaryStorage.Redis\Mantle.DictionaryStorage.Redis.csproj", "{0D941D8C-2E7D-4E1A-BC1C-848F55ED4D3A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{9762ADCC-C1EC-44F0-AF30-C255B5F7954F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
