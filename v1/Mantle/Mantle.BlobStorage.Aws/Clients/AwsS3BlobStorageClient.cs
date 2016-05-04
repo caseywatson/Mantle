@@ -47,7 +47,7 @@ namespace Mantle.BlobStorage.Aws.Clients
             if (DoesBucketExist() == false)
                 return false;
 
-            return AmazonS3Client.ListObjects(BucketName, blobName).S3Objects.Any(o => (o.Key == blobName));
+            return AmazonS3Client.ListObjects(BucketName, blobName).S3Objects.Any(o => o.Key == blobName);
         }
 
         public void DeleteBlob(string blobName)
@@ -120,7 +120,7 @@ namespace Mantle.BlobStorage.Aws.Clients
 
         private bool DoesBucketExist()
         {
-            return AmazonS3Client.ListBuckets().Buckets.Any(b => (b.BucketName == BucketName));
+            return AmazonS3Client.ListBuckets().Buckets.Any(b => b.BucketName == BucketName);
         }
 
         private AmazonS3Client GetAmazonS3Client()
@@ -134,7 +134,7 @@ namespace Mantle.BlobStorage.Aws.Clients
 
                 amazonS3Client = new AmazonS3Client(AwsAccessKeyId, AwsSecretAccessKey, regionEndpoint);
 
-                if (AutoSetup && (DoesBucketExist() == false))
+                if (AutoSetup && amazonS3Client.ListBuckets().Buckets.Any(b => b.BucketName == BucketName))
                     amazonS3Client.PutBucket(BucketName);
             }
 

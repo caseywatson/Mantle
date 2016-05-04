@@ -11,6 +11,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
+using Mantle.Interfaces;
 using Newtonsoft.Json;
 
 namespace Mantle.DictionaryStorage.Aws.Clients
@@ -74,7 +75,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             });
         }
 
-        public bool EntityExists(string entityId, string partitionId)
+        public bool DoesEntityExist(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
@@ -88,33 +89,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             return getItemResult.IsItemSet;
         }
 
-        public void InsertOrUpdateEntities(IEnumerable<DictionaryStorageEntity<T>> entities)
-        {
-            entities.Require(nameof(entities));
-
-            foreach (var entityChunk in entities.Chunk(25))
-            {
-                var writeRequests = entityChunk
-                    .Select(e => new WriteRequest(new PutRequest(ToDynamoDbDocumentDictionary(e))))
-                    .ToList();
-
-                var batchRequest = new BatchWriteItemRequest(new Dictionary<string, List<WriteRequest>>
-                {
-                    [TableName] = writeRequests
-                });
-
-                AmazonDynamoDbClient.BatchWriteItem(batchRequest);
-            }
-        }
-
-        public void InsertOrUpdateEntity(DictionaryStorageEntity<T> entity)
-        {
-            entity.Require(nameof(entity));
-
-            AmazonDynamoDbClient.PutItem(TableName, ToDynamoDbDocumentDictionary(entity));
-        }
-
-        public IEnumerable<T> LoadAllEntities(string partitionId)
+        public IEnumerable<DictionaryStorageEntity<T>> LoadAllDictionaryStorageEntities(string partitionId)
         {
             const string partitionIdParameter = ":v_partitionId";
 
@@ -126,33 +101,56 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 KeyConditionExpression = $"{AttributeNames.PartitionId} = {partitionIdParameter}",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
-                    [partitionIdParameter] = new AttributeValue {S = partitionId}
+                    [partitionIdParameter] = new AttributeValue { S = partitionId }
                 }
             };
 
             var queryResponse = AmazonDynamoDbClient.Query(queryRequest);
 
-            return queryResponse.Items.Select(d => FromDynamoDbDocumentDictionary(d).Entity);
+            return queryResponse.Items.Select(ToDictionaryStorageEntity);
         }
 
-        public T LoadEntity(string entityId, string partitionId)
+        public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> entities)
         {
-            entityId.Require(nameof(entityId));
-            partitionId.Require(nameof(partitionId));
+            entities.Require(nameof(entities));
 
+            foreach (var entityChunk in entities.Chunk(25))
+            {
+                var writeRequests = entityChunk
+                    .Select(e => new WriteRequest(new PutRequest(ToDocumentDictionary(e))))
+                    .ToList();
+
+                var batchRequest = new BatchWriteItemRequest(new Dictionary<string, List<WriteRequest>>
+                {
+                    [TableName] = writeRequests
+                });
+
+                AmazonDynamoDbClient.BatchWriteItem(batchRequest);
+            }
+        }
+
+        public void InsertOrUpdateDictionaryStorageEntity(DictionaryStorageEntity<T> entity)
+        {
+            entity.Require(nameof(entity));
+
+            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(entity));
+        }
+
+        public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
+        {
             var getItemResult = AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
             {
-                [AttributeNames.EntityId] = new AttributeValue {S = entityId},
-                [AttributeNames.PartitionId] = new AttributeValue {S = partitionId}
+                [AttributeNames.EntityId] = new AttributeValue { S = entityId },
+                [AttributeNames.PartitionId] = new AttributeValue { S = partitionId }
             });
 
             if (getItemResult.IsItemSet)
-                return FromDynamoDbDocumentDictionary(getItemResult.Item).Entity;
+                return ToDictionaryStorageEntity(getItemResult.Item);
 
             return null;
         }
 
-        private Dictionary<string, AttributeValue> ToDynamoDbDocumentDictionary(DictionaryStorageEntity<T> entity)
+        private Dictionary<string, AttributeValue> ToDocumentDictionary(DictionaryStorageEntity<T> entity)
         {
             var docDictionary = new Dictionary<string, AttributeValue>();
             var entityDictionary = new Dictionary<string, AttributeValue>();
@@ -187,7 +185,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             return docDictionary;
         }
 
-        private DictionaryStorageEntity<T> FromDynamoDbDocumentDictionary(Dictionary<string, AttributeValue> docDictionary)
+        private DictionaryStorageEntity<T> ToDictionaryStorageEntity(Dictionary<string, AttributeValue> docDictionary)
         {
             var entityDictionary = GetEntityDictionary(docDictionary);
 

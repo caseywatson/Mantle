@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
@@ -42,7 +43,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             }
         }
 
-        public bool EntityExists(string entityId, string partitionId)
+        public bool DoesEntityExist(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
@@ -58,7 +59,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             }
         }
 
-        public IEnumerable<T> LoadAllEntities(string partitionId)
+        public IEnumerable<DictionaryStorageEntity<T>> LoadAllDictionaryStorageEntities(string partitionId)
         {
             partitionId.Require(nameof(partitionId));
 
@@ -69,7 +70,10 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
                 if (dictionary.ContainsKey(partitionId) == false)
                     throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
 
-                return dictionary[partitionId].Values;
+                var partitionDictionary = dictionary[partitionId];
+
+                return partitionDictionary.Keys
+                    .Select(k => new DictionaryStorageEntity<T>(k, partitionId, partitionDictionary[k]));
             }
             finally
             {
@@ -77,7 +81,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             }
         }
 
-        public T LoadEntity(string entityId, string partitionId)
+        public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
@@ -90,7 +94,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
                     throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
 
                 if (dictionary[partitionId].ContainsKey(entityId))
-                    return dictionary[partitionId][entityId];
+                    return new DictionaryStorageEntity<T>(entityId, partitionId, dictionary[partitionId][entityId]);
 
                 return null;
             }
@@ -100,7 +104,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             }
         }
 
-        public void InsertOrUpdateEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
+        public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
         {
             dsEntities.Require(nameof(dsEntities));
 
@@ -122,7 +126,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             }
         }
 
-        public void InsertOrUpdateEntity(DictionaryStorageEntity<T> dsEntity)
+        public void InsertOrUpdateDictionaryStorageEntity(DictionaryStorageEntity<T> dsEntity)
         {
             dsEntity.Require(nameof(dsEntity));
 
