@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
@@ -29,13 +27,8 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterWriteLock();
 
-                if (dictionary.ContainsKey(partitionId) == false)
-                    throw new InvalidOperationException($"Partition [{partitionId}] does not exist.");
-
-                if (dictionary[partitionId].ContainsKey(entityId) == false)
-                    throw new InvalidOperationException($"Entity [{partitionId}/{entityId}] does not exist.");
-
-                dictionary[partitionId].Remove(entityId);
+                if (dictionary.ContainsKey(partitionId) && dictionary[partitionId].ContainsKey(entityId))
+                    dictionary[partitionId].Remove(entityId);
             }
             finally
             {
@@ -51,7 +44,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             try
             {
                 dictionaryLock.EnterReadLock();
-                return dictionary[partitionId]?.ContainsKey(entityId) == true;
+                return (dictionary.ContainsKey(partitionId) && dictionary[partitionId].ContainsKey(entityId));
             }
             finally
             {

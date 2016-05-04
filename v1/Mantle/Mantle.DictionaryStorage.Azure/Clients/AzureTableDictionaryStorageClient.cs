@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Azure.Entities;
@@ -22,14 +21,19 @@ namespace Mantle.DictionaryStorage.Azure.Clients
         public AzureTableDictionaryStorageClient()
         {
             typeMetadata = new TypeMetadata(typeof(T));
+
+            AutoSetup = true;
         }
 
         public CloudStorageAccount CloudStorageAccount => GetCloudStorageAccount();
 
         public CloudTableClient CloudTableClient => GetCloudTableClient();
 
+        [Configurable]
+        public bool AutoSetup { get; set; }
+
         [Configurable(IsRequired = true)]
-        public string DictionaryName { get; set; }
+        public string TableName { get; set; }
 
         [Configurable(IsRequired = true)]
         public string StorageConnectionString { get; set; }
@@ -39,24 +43,23 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             partitionId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            var table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(TableName);
 
-            if (table.Exists() == false)
-                throw new InvalidOperationException($"Dictionary [{DictionaryName}] does not exist.");
+            if (table.Exists())
+            {
+                var retrieveOp =
+                    TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
 
-            var retrieveOp =
-                TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
+                var retrieveResult = table.Execute(retrieveOp);
 
-            var retrieveResult = table.Execute(retrieveOp);
+                if (retrieveResult.Result != null)
+                {
+                    var deleteOp =
+                        TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
 
-            if (retrieveResult.Result == null)
-                throw new InvalidOperationException(
-                    $"Entity [{partitionId}/{entityId}] was not found in dictionary [{DictionaryName}].");
-
-            var deleteOp =
-                TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
-
-            table.Execute(deleteOp);
+                    table.Execute(deleteOp);
+                }
+            }
         }
 
         public bool DoesEntityExist(string entityId, string partitionId)
@@ -64,23 +67,24 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            var table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(TableName);
 
             if (table.Exists() == false)
                 return false;
 
             var op = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
 
-            return (table.Execute(op).Result != null);
+            return table.Execute(op).Result != null;
         }
 
         public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
         {
             dsEntities.Require(nameof(dsEntities));
 
-            var table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(TableName);
 
-            table.CreateIfNotExists();
+            if (AutoSetup)
+                table.CreateIfNotExists();
 
             var storageEntityGroups = dsEntities
                 .Select(e => new AzureTableDictionaryStorageEntity<T>(typeMetadata)
@@ -115,9 +119,10 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             storageEntity.RowKey = dsEntity.EntityId;
             storageEntity.PartitionKey = dsEntity.PartitionId;
 
-            var table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(TableName);
 
-            table.CreateIfNotExists();
+            if (AutoSetup)
+                table.CreateIfNotExists();
 
             var op = TableOperation.InsertOrReplace(storageEntity);
 
@@ -128,7 +133,7 @@ namespace Mantle.DictionaryStorage.Azure.Clients
         {
             partitionId.Require(nameof(partitionId));
 
-            var table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(TableName);
 
             if (table.Exists())
             {
@@ -145,13 +150,13 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            var table = CloudTableClient.GetTableReference(DictionaryName);
+            var table = CloudTableClient.GetTableReference(TableName);
 
             if (table.Exists() == false)
                 return null;
 
             var op = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
-            var storageEntity = (table.Execute(op).Result as AzureTableDictionaryStorageEntity<T>);
+            var storageEntity = table.Execute(op).Result as AzureTableDictionaryStorageEntity<T>;
 
             if (storageEntity?.Data == null)
                 return null;
@@ -161,14 +166,14 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
         private CloudStorageAccount GetCloudStorageAccount()
         {
-            return (cloudStorageAccount = (cloudStorageAccount ??
-                                           CloudStorageAccount.Parse(StorageConnectionString)));
+            return cloudStorageAccount = cloudStorageAccount ??
+                                         CloudStorageAccount.Parse(StorageConnectionString);
         }
 
         private CloudTableClient GetCloudTableClient()
         {
-            return (cloudTableClient = (cloudTableClient ??
-                                        CloudStorageAccount.CreateCloudTableClient()));
+            return cloudTableClient = cloudTableClient ??
+                                      CloudStorageAccount.CreateCloudTableClient();
         }
     }
 }

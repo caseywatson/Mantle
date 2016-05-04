@@ -11,7 +11,6 @@ using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
-using Mantle.Interfaces;
 using Newtonsoft.Json;
 
 namespace Mantle.DictionaryStorage.Aws.Clients
@@ -101,7 +100,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 KeyConditionExpression = $"{AttributeNames.PartitionId} = {partitionIdParameter}",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
-                    [partitionIdParameter] = new AttributeValue { S = partitionId }
+                    [partitionIdParameter] = new AttributeValue {S = partitionId}
                 }
             };
 
@@ -140,8 +139,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             var getItemResult = AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
             {
-                [AttributeNames.EntityId] = new AttributeValue { S = entityId },
-                [AttributeNames.PartitionId] = new AttributeValue { S = partitionId }
+                [AttributeNames.EntityId] = new AttributeValue {S = entityId},
+                [AttributeNames.PartitionId] = new AttributeValue {S = partitionId}
             });
 
             if (getItemResult.IsItemSet)
@@ -206,7 +205,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                         if (fromDynamoDbAttributeValue.ContainsKey(propertyType))
                         {
                             propertyInfo.SetValue(entity.Entity,
-                                fromDynamoDbAttributeValue[propertyType](attributeValue));
+                                                  fromDynamoDbAttributeValue[propertyType](attributeValue));
                         }
                         else
                         {
@@ -255,8 +254,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             return new Dictionary<Type, Func<AttributeValue, object>>
             {
-                [typeof(bool)] = av => (av.IsBOOLSet && av.BOOL),
-                [typeof(bool?)] = av => (av.IsBOOLSet && av.BOOL),
+                [typeof(bool)] = av => av.IsBOOLSet && av.BOOL,
+                [typeof(bool?)] = av => av.IsBOOLSet && av.BOOL,
                 [typeof(byte)] = av => av.N.TryParseByte().GetValueOrDefault(),
                 [typeof(byte?)] = av => av.N.TryParseByte(),
                 [typeof(byte[])] = av => av.B.ToArray(),
@@ -387,7 +386,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             try
             {
-                return (dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE);
+                return dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE;
             }
             catch (ResourceNotFoundException)
             {
