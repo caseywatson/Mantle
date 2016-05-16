@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Azure.Entities;
@@ -58,6 +59,29 @@ namespace Mantle.DictionaryStorage.Azure.Clients
                         TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
 
                     table.Execute(deleteOp);
+                }
+            }
+        }
+
+        public void DeletePartition(string partitionId)
+        {
+            partitionId.Require(nameof(partitionId));
+
+            var table = CloudTableClient.GetTableReference(TableName);
+
+            if (table.Exists())
+            {
+                var query = new TableQuery<AzureTableDictionaryStorageEntity<T>>()
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionId));
+
+                foreach (var entitiesChunk in table.ExecuteQuery(query).Chunk(100))
+                {
+                    var batchDeleteOp = new TableBatchOperation();
+
+                    foreach (var entity in entitiesChunk)
+                        batchDeleteOp.Delete(entity);
+
+                    table.ExecuteBatch(batchDeleteOp);
                 }
             }
         }

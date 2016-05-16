@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
@@ -27,10 +28,28 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterWriteLock();
 
-                if (dictionary.ContainsKey(partitionId) && dictionary[partitionId].ContainsKey(entityId))
+                if (dictionary.ContainsKey(partitionId) && 
+                    dictionary[partitionId].ContainsKey(entityId))
                     dictionary[partitionId].Remove(entityId);
             }
             finally
+            {
+                dictionaryLock.ExitWriteLock();
+            }
+        }
+
+        public void DeletePartition(string partitionId)
+        {
+            partitionId.Require(nameof(partitionId));
+
+            try
+            {
+                dictionaryLock.EnterWriteLock();
+
+                if (dictionary.ContainsKey(partitionId))
+                    dictionary.Remove(partitionId);
+            }
+            catch (Exception)
             {
                 dictionaryLock.ExitWriteLock();
             }
@@ -44,7 +63,9 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             try
             {
                 dictionaryLock.EnterReadLock();
-                return (dictionary.ContainsKey(partitionId) && dictionary[partitionId].ContainsKey(entityId));
+
+                return (dictionary.ContainsKey(partitionId) &&
+                        dictionary[partitionId].ContainsKey(entityId));
             }
             finally
             {
@@ -86,7 +107,8 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterReadLock();
 
-                if (dictionary.ContainsKey(partitionId) && dictionary[partitionId].ContainsKey(entityId))
+                if (dictionary.ContainsKey(partitionId) && 
+                    dictionary[partitionId].ContainsKey(entityId))
                     return new DictionaryStorageEntity<T>(entityId, partitionId, dictionary[partitionId][entityId]);
 
                 return null;

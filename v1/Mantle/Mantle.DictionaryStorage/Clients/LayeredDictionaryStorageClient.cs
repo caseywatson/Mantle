@@ -26,6 +26,14 @@ namespace Mantle.DictionaryStorage.Clients
                 layer.DeleteEntity(entityId, partitionId);
         }
 
+        public void DeletePartition(string partitionId)
+        {
+            partitionId.Require(nameof(partitionId));
+
+            foreach (var layer in Layers)
+                layer.DeletePartition(partitionId);
+        }
+
         public bool DoesEntityExist(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));

@@ -8,6 +8,7 @@ namespace Mantle.DictionaryStorage.Interfaces
         where T : class, new()
     {
         void DeleteEntity(string entityId, string partitionId);
+        void DeletePartition(string partitionId);
         void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> entities);
         void InsertOrUpdateDictionaryStorageEntity(DictionaryStorageEntity<T> entity);
     }
