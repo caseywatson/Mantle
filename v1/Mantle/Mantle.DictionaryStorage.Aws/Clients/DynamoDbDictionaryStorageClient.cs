@@ -132,6 +132,17 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(entity));
         }
 
+        public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
+        {
+            var getItemResult = 
+                AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
+
+            if (getItemResult.IsItemSet)
+                return ToDictionaryStorageEntity(getItemResult.Item);
+
+            return null;
+        }
+
         private IEnumerable<Dictionary<string, AttributeValue>> LoadAllDocumentDictionaries(string partitionId)
         {
             const string partitionIdParameter = ":v_partitionId";
@@ -149,17 +160,6 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             };
 
             return AmazonDynamoDbClient.Query(queryRequest).Items;
-        }
-
-        public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
-        {
-            var getItemResult = 
-                AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
-
-            if (getItemResult.IsItemSet)
-                return ToDictionaryStorageEntity(getItemResult.Item);
-
-            return null;
         }
 
         private Dictionary<string, AttributeValue> ToDocumentKeyDictionary(string entityId, string partitionId)
