@@ -26,7 +26,10 @@ namespace Mantle.Configuration.Configurers
             if (propertyConfigurers == null)
             {
                 var localPropertyConfigurerTypes = Assembly.GetExecutingAssembly().GetTypes()
-                    .Where(t => typeof(IPropertyConfigurer).IsAssignableFrom(t)).ToList();
+                    .Where(t => (typeof(IPropertyConfigurer).IsAssignableFrom(t)) &&
+                                (t.IsAbstract == false) &&
+                                (t.IsInterface == false) &&
+                                (t.GetConstructor(Type.EmptyTypes) != null)).ToList();
 
                 propertyConfigurers = localPropertyConfigurerTypes // This relies on all local property configurers
                     .Select(Activator.CreateInstance)              // having default constructors.
