@@ -281,77 +281,155 @@ namespace Mantle.Identity
 
         public Task SetPasswordHashAsync(T user, string passwordHash)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            user.PasswordHash = passwordHash;
+
+            return Task.FromResult(0);
         }
 
         public Task<string> GetPasswordHashAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.PasswordHash);
         }
 
         public Task<bool> HasPasswordAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.PasswordHash != null);
         }
 
         public Task SetPhoneNumberAsync(T user, string phoneNumber)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            user.PhoneNumber = phoneNumber;
+
+            return Task.FromResult(0);
         }
 
         public Task<string> GetPhoneNumberAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.PhoneNumber);
         }
 
         public Task<bool> GetPhoneNumberConfirmedAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.PhoneNumberConfirmed);
         }
 
         public Task SetPhoneNumberConfirmedAsync(T user, bool confirmed)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            user.PhoneNumberConfirmed = confirmed;
+
+            return Task.FromResult(0);
         }
 
         public Task AddToRoleAsync(T user, string roleName)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+            roleName.Require(nameof(roleName));
+
+            if (user.Roles.Contains(roleName))
+                user.Roles.Add(roleName);
+
+            return Task.FromResult(0);
         }
 
         public Task RemoveFromRoleAsync(T user, string roleName)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+            roleName.Require(nameof(roleName));
+
+            user.Roles.Remove(roleName);
+
+            return Task.FromResult(0);
         }
 
         public Task<IList<string>> GetRolesAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.Roles.ToList() as IList<string>);
         }
 
         public Task<bool> IsInRoleAsync(T user, string roleName)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+            roleName.Require(nameof(roleName));
+
+            return Task.FromResult(user.Roles.Contains(roleName));
         }
 
         public Task SetSecurityStampAsync(T user, string stamp)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            user.SecurityStamp = stamp;
+
+            return Task.FromResult(0);
         }
 
         public Task<string> GetSecurityStampAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.SecurityStamp);
         }
 
         public Task SetTwoFactorEnabledAsync(T user, bool enabled)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            user.TwoFactorEnabled = enabled;
+
+            return Task.FromResult(0);
         }
 
         public Task<bool> GetTwoFactorEnabledAsync(T user)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            user.Require(nameof(user));
+
+            return Task.FromResult(user.TwoFactorEnabled);
         }
 
         private void ThrowExceptionIfDisposed()

@@ -84,6 +84,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.PhotoGallery.Web", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.PhotoGallery.Web.Tests", "Mantle.PhotoGallery.Web.Tests\Mantle.PhotoGallery.Web.Tests.csproj", "{80EFCB19-1A6F-42C1-A70C-60A2BE0F0BE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mantle.Identity.Azure", "Mantle.Identity.Azure\Mantle.Identity.Azure.csproj", "{A52F1604-B9F7-4804-A227-9181791D3A86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -218,6 +220,10 @@ Global
 		{80EFCB19-1A6F-42C1-A70C-60A2BE0F0BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80EFCB19-1A6F-42C1-A70C-60A2BE0F0BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80EFCB19-1A6F-42C1-A70C-60A2BE0F0BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A52F1604-B9F7-4804-A227-9181791D3A86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A52F1604-B9F7-4804-A227-9181791D3A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A52F1604-B9F7-4804-A227-9181791D3A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A52F1604-B9F7-4804-A227-9181791D3A86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -255,5 +261,6 @@ Global
 		{FFB4DD8F-F4F5-4350-9559-8B41F51B2F3D} = {4F5E248D-0A3C-489E-A481-8E749D5F740E}
 		{987E46C4-7007-4D1E-A7E1-78DC6B2E8089} = {9762ADCC-C1EC-44F0-AF30-C255B5F7954F}
 		{80EFCB19-1A6F-42C1-A70C-60A2BE0F0BE8} = {9762ADCC-C1EC-44F0-AF30-C255B5F7954F}
+		{A52F1604-B9F7-4804-A227-9181791D3A86} = {9DC5CC66-8F0B-4CCF-B4C3-462F7103B832}
 	EndGlobalSection
 EndGlobal
