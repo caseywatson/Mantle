@@ -408,7 +408,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             try
             {
-                return dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE;
+                return (dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE);
             }
             catch (ResourceNotFoundException)
             {
