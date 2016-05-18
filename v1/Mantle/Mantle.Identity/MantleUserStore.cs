@@ -226,7 +226,11 @@ namespace Mantle.Identity
 
         public Task<T> FindAsync(UserLoginInfo login)
         {
-            throw new NotImplementedException();
+            ThrowExceptionIfDisposed();
+
+            login.Require(nameof(login));
+
+            return userService.FindUserByLoginAsync(login);
         }
 
         public Task<T> FindByIdAsync(string userId)

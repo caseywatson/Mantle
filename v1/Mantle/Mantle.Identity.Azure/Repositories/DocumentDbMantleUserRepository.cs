@@ -6,6 +6,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.Identity.Azure.Entities;
 using Mantle.Identity.Interfaces;
+using Microsoft.AspNet.Identity;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -185,6 +186,35 @@ namespace Mantle.Identity.Azure.Repositories
                 DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
                     .Where(d => (d.UserName == name))
                     .AsEnumerable()
+                    .FirstOrDefault();
+
+            if (documentDbUser == null)
+                return null;
+
+            return mapperConfiguration.CreateMapper().Map<MantleUser>(documentDbUser);
+        }
+
+        public MantleUser FindUserByLogin(UserLoginInfo loginInfo)
+        {
+            loginInfo.Require(nameof(loginInfo));
+
+            return FindUserByLoginAsync(loginInfo).Result;
+        }
+
+        public async Task<MantleUser> FindUserByLoginAsync(UserLoginInfo loginInfo)
+        {
+            loginInfo.Require(nameof(loginInfo));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser =
+                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+                    .SelectMany(u => (u.Logins.Where(l => (l.LoginProvider == loginInfo.LoginProvider) &&
+                                                          (l.ProviderKey == loginInfo.ProviderKey)))
+                                    .Select(l => u))
                     .FirstOrDefault();
 
             if (documentDbUser == null)
