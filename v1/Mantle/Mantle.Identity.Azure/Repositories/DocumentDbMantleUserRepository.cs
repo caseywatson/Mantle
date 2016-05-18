@@ -1,73 +1,270 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using Mantle.Configuration.Attributes;
+using Mantle.Extensions;
+using Mantle.Identity.Azure.Entities;
 using Mantle.Identity.Interfaces;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 
 namespace Mantle.Identity.Azure.Repositories
 {
-    public class DocumentDbMantleUserRepository<T> : IMantleUserRepository<T>
-        where T : MantleUser
+    public class DocumentDbMantleUserRepository : IDisposable, IMantleUserRepository<MantleUser>
     {
-        public void CreateUser(T user)
+        private static readonly MapperConfiguration mapperConfiguration;
+
+        private DocumentClient documentClient;
+
+        static DocumentDbMantleUserRepository()
         {
-            throw new NotImplementedException();
+            mapperConfiguration = new MapperConfiguration(mc =>
+            {
+                mc.CreateMap<MantleUser, DocumentDbMantleUser>().ReverseMap();
+                mc.CreateMap<MantleUserClaim, DocumentDbMantleUserClaim>().ReverseMap();
+                mc.CreateMap<MantleUserLogin, DocumentDbMantleUserLogin>().ReverseMap();
+            });
         }
 
-        public Task CreateUserAsync(T user)
+        public DocumentDbMantleUserRepository()
         {
-            throw new NotImplementedException();
+            AutoSetup = true;
+            DocumentDbDatabaseId = "MantleUsers";
+            DocumentDbCollectionId = "MantleUsers";
+        }
+
+        [Configurable]
+        public bool AutoSetup { get; set; }
+
+        [Configurable(IsRequired = true)]
+        public string DocumentDbEndpointUrl { get; set; }
+
+        [Configurable(IsRequired = true)]
+        public string DocumentDbAuthKey { get; set; }
+
+        [Configurable]
+        public string DocumentDbDatabaseId { get; set; }
+
+        [Configurable]
+        public string DocumentDbCollectionId { get; set; }
+
+        public DocumentClient DocumentClient => GetDocumentClient();
+
+        public void Dispose()
+        {
+            documentClient?.Dispose();
+        }
+
+        public void CreateUser(MantleUser user)
+        {
+            user.Require(nameof(user));
+
+            CreateUserAsync(user).Wait();
+        }
+
+        public async Task CreateUserAsync(MantleUser user)
+        {
+            user.Require(nameof(user));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser = mapperConfiguration.CreateMapper().Map<DocumentDbMantleUser>(user);
+
+            await DocumentClient.UpsertDocumentAsync(documentCollectionUri, documentDbUser);
         }
 
         public void DeleteUser(string userId)
         {
-            throw new NotImplementedException();
+            userId.Require(nameof(userId));
+
+            DeleteUserAsync(userId).Wait();
         }
 
-        public Task DeleteUserAsync(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
-            throw new NotImplementedException();
+            userId.Require(nameof(userId));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser =
+                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+                    .Where(d => (d.Id == userId))
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+            if (documentDbUser == null)
+                throw new InvalidOperationException($"User [{userId}] not found.");
+
+            var documentUri =
+                UriFactory.CreateDocumentUri(DocumentDbDatabaseId, DocumentDbCollectionId, userId);
+
+            await DocumentClient.DeleteDocumentAsync(documentUri);
         }
 
-        public T FindUserByEmail(string email)
+        public MantleUser FindUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            email.Require(nameof(email));
+
+            return FindUserByEmailAsync(email).Result;
         }
 
-        public Task<T> FindUserByEmailAsync(string email)
+        public async Task<MantleUser> FindUserByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            email.Require(nameof(email));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser =
+                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+                    .Where(d => (d.Email == email))
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+            if (documentDbUser == null)
+                return null;
+
+            return mapperConfiguration.CreateMapper().Map<MantleUser>(documentDbUser);
         }
 
-        public T FindUserById(string id)
+        public MantleUser FindUserById(string id)
         {
-            throw new NotImplementedException();
+            id.Require(nameof(id));
+
+            return FindUserByIdAsync(id).Result;
         }
 
-        public Task<T> FindUserByIdAsync(string id)
+        public async Task<MantleUser> FindUserByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            id.Require(nameof(id));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser =
+                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+                    .Where(d => (d.Id == id))
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+            if (documentDbUser == null)
+                return null;
+
+            return mapperConfiguration.CreateMapper().Map<MantleUser>(documentDbUser);
         }
 
-        public T FindUserByName(string name)
+        public MantleUser FindUserByName(string name)
         {
-            throw new NotImplementedException();
+            name.Require(nameof(name));
+
+            return FindUserByNameAsync(name).Result;
         }
 
-        public Task<T> FindUserByNameAsync(string name)
+        public async Task<MantleUser> FindUserByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            name.Require(nameof(name));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser =
+                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+                    .Where(d => (d.UserName == name))
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+            if (documentDbUser == null)
+                return null;
+
+            return mapperConfiguration.CreateMapper().Map<MantleUser>(documentDbUser);
         }
 
-        public void UpdateUser(T user)
+        public void UpdateUser(MantleUser user)
         {
-            throw new NotImplementedException();
+            user.Require(nameof(user));
+
+            UpdateUserAsync(user).Wait();
         }
 
-        public Task UpdateUserAsync(T user)
+        public async Task UpdateUserAsync(MantleUser user)
         {
-            throw new NotImplementedException();
+            user.Require(nameof(user));
+
+            await EnsureDocumentCollectionExists();
+
+            var documentCollectionUri =
+                UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
+
+            var documentDbUser = mapperConfiguration.CreateMapper().Map<DocumentDbMantleUser>(user);
+
+            await DocumentClient.UpsertDocumentAsync(documentCollectionUri, documentDbUser);
+        }
+
+        private DocumentClient GetDocumentClient()
+        {
+            return (documentClient = (documentClient ??
+                                      new DocumentClient(new Uri(DocumentDbEndpointUrl), DocumentDbAuthKey)));
+        }
+
+        private async Task EnsureDatabaseExists()
+        {
+            if (DocumentClient.CreateDatabaseQuery()
+                .Where(db => (db.Id == DocumentDbDatabaseId))
+                .AsEnumerable()
+                .None())
+            {
+                if (AutoSetup)
+                {
+                    var database = new Database {Id = DocumentDbDatabaseId};
+
+                    await DocumentClient.CreateDatabaseAsync(database);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"DocumentDb database [{DocumentDbDatabaseId}] " +
+                                                        "does not exist.");
+                }
+            }
+        }
+
+        private async Task EnsureDocumentCollectionExists()
+        {
+            await EnsureDatabaseExists();
+
+            var databaseUri = UriFactory.CreateDatabaseUri(DocumentDbDatabaseId);
+
+            if (DocumentClient.CreateDocumentCollectionQuery(databaseUri)
+                .Where(dc => (dc.Id == DocumentDbCollectionId))
+                .AsEnumerable()
+                .None())
+            {
+                if (AutoSetup)
+                {
+                    var documentCollection = new DocumentCollection {Id = DocumentDbCollectionId};
+
+                    await DocumentClient.CreateDocumentCollectionAsync(databaseUri, documentCollection);
+                }
+                else
+                {
+                    throw new InvalidOperationException("DocumentDb collection " +
+                                                        $"[{DocumentDbDatabaseId}/{DocumentDbCollectionId}] " +
+                                                        "does not exist.");
+                }
+            }
         }
     }
 }

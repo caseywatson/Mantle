@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Mantle.Identity.Azure.Entities
 {
-    public class DocumentDbMantleUserEntity
+    public class DocumentDbMantleUser
     {
         [JsonProperty(PropertyName = "id")]
         public virtual string Id { get; set; } = Guid.NewGuid().ToString();
@@ -18,8 +18,8 @@ namespace Mantle.Identity.Azure.Entities
 
         public virtual int AccessFailedCount { get; set; }
 
-        public virtual List<MantleUserClaim> Claims { get; set; } = new List<MantleUserClaim>();
-        public virtual List<MantleUserLogin> Logins { get; set; } = new List<MantleUserLogin>();
+        public virtual List<DocumentDbMantleUserClaim> Claims { get; set; } = new List<DocumentDbMantleUserClaim>();
+        public virtual List<DocumentDbMantleUserLogin> Logins { get; set; } = new List<DocumentDbMantleUserLogin>();
         public virtual List<string> Roles { get; set; } = new List<string>();
 
         public virtual string Email { get; set; }
