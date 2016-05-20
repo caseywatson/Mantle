@@ -1,8 +1,7 @@
 ﻿namespace Mantle.Identity.Interfaces
 {
-    public interface IMantleUserRepository<TUser> :
-        IMantleUserCommandService<TUser>,
-        IMantleUserQueryService<TUser>
+    public interface IMantleUserRepository<TUser> : 
+        IMantleUserService<TUser>
         where TUser : MantleUser
     {
     }

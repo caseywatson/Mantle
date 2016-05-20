@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
+using Mantle.Extensions;
 using Mantle.Identity.Interfaces;
 using Microsoft.AspNet.Identity;
-using System.Configuration;
-using System.Threading;
 
 namespace Mantle.Identity.Aws.Repositories
 {
@@ -50,49 +51,132 @@ namespace Mantle.Identity.Aws.Repositories
         [Configurable]
         public int TableWriteCapacityUnits { get; set; }
 
+        public AmazonDynamoDBClient AmazonDynamoDbClient => GetAmazonDynamoDbClient();
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            dynamoDbClient?.Dispose();
         }
 
         public void CreateUser(MantleUser user)
         {
-            throw new NotImplementedException();
+            user.Require(nameof(user));
+
+            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(user));
         }
 
-        public Task CreateUserAsync(MantleUser user)
+        public async Task CreateUserAsync(MantleUser user)
         {
-            throw new NotImplementedException();
+            user.Require(nameof(user));
+
+            await AmazonDynamoDbClient.PutItemAsync(TableName, ToDocumentDictionary(user));
         }
 
         public void DeleteUser(string userId)
         {
-            throw new NotImplementedException();
+            userId.Require(nameof(userId));
+
+            AmazonDynamoDbClient.DeleteItem(TableName, new Dictionary<string, AttributeValue>
+            {
+                [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
+            });
         }
 
-        public Task DeleteUserAsync(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
-            throw new NotImplementedException();
+            userId.Require(nameof(userId));
+
+            await AmazonDynamoDbClient.DeleteItemAsync(TableName, new Dictionary<string, AttributeValue>
+            {
+                [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
+            });
         }
 
         public MantleUser FindUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            const string emailParameter = ":email";
+
+            email.Require(nameof(email));
+
+            var queryRequest = new QueryRequest
+            {
+                TableName = TableName,
+                IndexName = $"{nameof(MantleUser.Email)}SecondaryIndex",
+                ScanIndexForward = true,
+                KeyConditionExpression = $"{nameof(MantleUser.Email)} = {emailParameter}",
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                {
+                    [emailParameter] = new AttributeValue {S = email}
+                },
+                Select = Select.ALL_PROJECTED_ATTRIBUTES
+            };
+
+            var userDocDictionary = AmazonDynamoDbClient.Query(queryRequest).Items?.FirstOrDefault();
+
+            if (userDocDictionary == null)
+                return null;
+
+            return ToMantleUser(userDocDictionary);
         }
 
-        public Task<MantleUser> FindUserByEmailAsync(string email)
+        public async Task<MantleUser> FindUserByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            const string emailParameter = ":email";
+
+            email.Require(nameof(email));
+
+            var queryRequest = new QueryRequest
+            {
+                TableName = TableName,
+                IndexName = $"{nameof(MantleUser.Email)}SecondaryIndex",
+                ScanIndexForward = true,
+                KeyConditionExpression = $"{nameof(MantleUser.Email)} = {emailParameter}",
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                {
+                    [emailParameter] = new AttributeValue {S = email}
+                },
+                Select = Select.ALL_PROJECTED_ATTRIBUTES
+            };
+
+            var queryResponse = await AmazonDynamoDbClient.QueryAsync(queryRequest);
+            var userDocDictionary = queryResponse.Items?.FirstOrDefault();
+
+            if (userDocDictionary == null)
+                return null;
+
+            return ToMantleUser(userDocDictionary);
         }
 
         public MantleUser FindUserById(string id)
         {
-            throw new NotImplementedException();
+            id.Require(nameof(id));
+
+            var getItemResult =
+                AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
+                {
+                    [nameof(MantleUser.Id)] = new AttributeValue {S = id}
+                });
+
+            if (getItemResult.IsItemSet)
+                return ToMantleUser(getItemResult.Item);
+
+            return null;
         }
 
-        public Task<MantleUser> FindUserByIdAsync(string id)
+        public async Task<MantleUser> FindUserByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            id.Require(nameof(id));
+
+            var getItemResult =
+                await AmazonDynamoDbClient.GetItemAsync(TableName, new Dictionary<string, AttributeValue>
+                {
+                    [nameof(MantleUser.Id)] = new AttributeValue {S = id}
+                });
+
+            if (getItemResult.IsItemSet)
+                return ToMantleUser(getItemResult.Item);
+
+            return null;
         }
 
         public MantleUser FindUserByLogin(UserLoginInfo loginInfo)
@@ -107,58 +191,99 @@ namespace Mantle.Identity.Aws.Repositories
 
         public MantleUser FindUserByName(string name)
         {
-            throw new NotImplementedException();
+            const string userNameParameter = ":userName";
+
+            name.Require(nameof(name));
+
+            var queryRequest = new QueryRequest
+            {
+                TableName = TableName,
+                IndexName = $"{nameof(MantleUser.UserName)}SecondaryIndex",
+                ScanIndexForward = true,
+                KeyConditionExpression = $"{nameof(MantleUser.UserName)} = {userNameParameter}",
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                {
+                    [userNameParameter] = new AttributeValue {S = name}
+                },
+                Select = Select.ALL_PROJECTED_ATTRIBUTES
+            };
+
+            var userDocDictionary = AmazonDynamoDbClient.Query(queryRequest).Items?.FirstOrDefault();
+
+            if (userDocDictionary == null)
+                return null;
+
+            return ToMantleUser(userDocDictionary);
         }
 
-        public Task<MantleUser> FindUserByNameAsync(string name)
+        public async Task<MantleUser> FindUserByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            const string userNameParameter = ":userName";
+
+            name.Require(nameof(name));
+
+            var queryRequest = new QueryRequest
+            {
+                TableName = TableName,
+                IndexName = $"{nameof(MantleUser.UserName)}SecondaryIndex",
+                ScanIndexForward = true,
+                KeyConditionExpression = $"{nameof(MantleUser.UserName)} = {userNameParameter}",
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                {
+                    [userNameParameter] = new AttributeValue {S = name}
+                },
+                Select = Select.ALL_PROJECTED_ATTRIBUTES
+            };
+
+            var queryResponse = await AmazonDynamoDbClient.QueryAsync(queryRequest);
+            var userDocDictionary = queryResponse.Items?.FirstOrDefault();
+
+            if (userDocDictionary == null)
+                return null;
+
+            return ToMantleUser(userDocDictionary);
         }
 
         public void UpdateUser(MantleUser user)
         {
-            throw new NotImplementedException();
+            user.Require(nameof(user));
+
+            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(user));
         }
 
-        public Task UpdateUserAsync(MantleUser user)
+        public async Task UpdateUserAsync(MantleUser user)
         {
-            throw new NotImplementedException();
+            user.Require(nameof(user));
+
+            await AmazonDynamoDbClient.PutItemAsync(TableName, ToDocumentDictionary(user));
         }
 
         private Dictionary<string, AttributeValue> ToDocumentDictionary(MantleUser user)
         {
-            var docDictionary = new Dictionary<string, AttributeValue>();
-
-            docDictionary[nameof(user.Id)] = new AttributeValue {S = user.Id};
-
-            docDictionary[nameof(user.EmailConfirmed)] = new AttributeValue {BOOL = user.EmailConfirmed};
-            docDictionary[nameof(user.LockoutEnabled)] = new AttributeValue {BOOL = user.LockoutEnabled};
-            docDictionary[nameof(user.PhoneNumberConfirmed)] = new AttributeValue {BOOL = user.PhoneNumberConfirmed};
-            docDictionary[nameof(user.TwoFactorEnabled)] = new AttributeValue {BOOL = user.TwoFactorEnabled};
-
-            docDictionary[nameof(user.LockoutEndDate)] = new AttributeValue {S = user.LockoutEndDate.ToString("o")};
-
-            docDictionary[nameof(user.AccessFailedCount)] = new AttributeValue {N = user.AccessFailedCount.ToString()};
-
-            docDictionary[nameof(user.Claims)] = new AttributeValue
+            return new Dictionary<string, AttributeValue>
             {
-                L = user.Claims.Select(c => new AttributeValue {M = ToDocumentDictionary(c)}).ToList()
+                [nameof(user.Id)] = new AttributeValue {S = user.Id},
+                [nameof(user.EmailConfirmed)] = new AttributeValue {BOOL = user.EmailConfirmed},
+                [nameof(user.LockoutEnabled)] = new AttributeValue {BOOL = user.LockoutEnabled},
+                [nameof(user.PhoneNumberConfirmed)] = new AttributeValue {BOOL = user.PhoneNumberConfirmed},
+                [nameof(user.TwoFactorEnabled)] = new AttributeValue {BOOL = user.TwoFactorEnabled},
+                [nameof(user.LockoutEndDate)] = new AttributeValue {S = user.LockoutEndDate.ToString("o")},
+                [nameof(user.AccessFailedCount)] = new AttributeValue {N = user.AccessFailedCount.ToString()},
+                [nameof(user.Claims)] = new AttributeValue
+                {
+                    L = user.Claims.Select(c => new AttributeValue {M = ToDocumentDictionary(c)}).ToList()
+                },
+                [nameof(user.Logins)] = new AttributeValue
+                {
+                    L = user.Logins.Select(l => new AttributeValue {M = ToDocumentDictionary(l)}).ToList()
+                },
+                [nameof(user.Roles)] = new AttributeValue {SS = user.Roles},
+                [nameof(user.Email)] = new AttributeValue {S = user.Email},
+                [nameof(user.PasswordHash)] = new AttributeValue {S = user.PasswordHash},
+                [nameof(user.PhoneNumber)] = new AttributeValue {S = user.PhoneNumber},
+                [nameof(user.SecurityStamp)] = new AttributeValue {S = user.SecurityStamp},
+                [nameof(user.UserName)] = new AttributeValue {S = user.UserName}
             };
-
-            docDictionary[nameof(user.Logins)] = new AttributeValue
-            {
-                L = user.Logins.Select(l => new AttributeValue {M = ToDocumentDictionary(l)}).ToList()
-            };
-
-            docDictionary[nameof(user.Roles)] = new AttributeValue {SS = user.Roles};
-
-            docDictionary[nameof(user.Email)] = new AttributeValue {S = user.Email};
-            docDictionary[nameof(user.PasswordHash)] = new AttributeValue {S = user.PasswordHash};
-            docDictionary[nameof(user.PhoneNumber)] = new AttributeValue {S = user.PhoneNumber};
-            docDictionary[nameof(user.SecurityStamp)] = new AttributeValue {S = user.SecurityStamp};
-            docDictionary[nameof(user.UserName)] = new AttributeValue {S = user.UserName};
-
-            return docDictionary;
         }
 
         private MantleUser ToMantleUser(Dictionary<string, AttributeValue> docDictionary)
@@ -191,14 +316,13 @@ namespace Mantle.Identity.Aws.Repositories
 
         private Dictionary<string, AttributeValue> ToDocumentDictionary(MantleUserClaim claim)
         {
-            var docDictionary = new Dictionary<string, AttributeValue>();
-
-            docDictionary[nameof(claim.Id)] = new AttributeValue {S = claim.Id};
-            docDictionary[nameof(claim.UserId)] = new AttributeValue {S = claim.UserId};
-            docDictionary[nameof(claim.ClaimType)] = new AttributeValue {S = claim.ClaimType};
-            docDictionary[nameof(claim.ClaimValue)] = new AttributeValue {S = claim.ClaimValue};
-
-            return docDictionary;
+            return new Dictionary<string, AttributeValue>
+            {
+                [nameof(claim.Id)] = new AttributeValue {S = claim.Id},
+                [nameof(claim.UserId)] = new AttributeValue {S = claim.UserId},
+                [nameof(claim.ClaimType)] = new AttributeValue {S = claim.ClaimType},
+                [nameof(claim.ClaimValue)] = new AttributeValue {S = claim.ClaimValue}
+            };
         }
 
         private MantleUserClaim ToMantleUserClaim(Dictionary<string, AttributeValue> docDictionary)
@@ -215,14 +339,13 @@ namespace Mantle.Identity.Aws.Repositories
 
         private Dictionary<string, AttributeValue> ToDocumentDictionary(MantleUserLogin login)
         {
-            var docDictionary = new Dictionary<string, AttributeValue>();
-
-            docDictionary[nameof(login.Id)] = new AttributeValue {S = login.Id};
-            docDictionary[nameof(login.UserId)] = new AttributeValue {S = login.UserId};
-            docDictionary[nameof(login.LoginProvider)] = new AttributeValue {S = login.LoginProvider};
-            docDictionary[nameof(login.ProviderKey)] = new AttributeValue {S = login.ProviderKey};
-
-            return docDictionary;
+            return new Dictionary<string, AttributeValue>
+            {
+                [nameof(login.Id)] = new AttributeValue {S = login.Id},
+                [nameof(login.UserId)] = new AttributeValue {S = login.UserId},
+                [nameof(login.LoginProvider)] = new AttributeValue {S = login.LoginProvider},
+                [nameof(login.ProviderKey)] = new AttributeValue {S = login.ProviderKey}
+            };
         }
 
         private MantleUserLogin ToMantleUserLogin(Dictionary<string, AttributeValue> docDictionary)
