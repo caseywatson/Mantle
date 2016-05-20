@@ -2,14 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
+using Mantle.Aws.Interfaces;
+using Mantle.Configuration.Attributes;
 using Mantle.Identity.Interfaces;
 using Microsoft.AspNet.Identity;
+using System.Configuration;
+using System.Threading;
 
 namespace Mantle.Identity.Aws.Repositories
 {
     public class DynamoDbMantleUserRepository : IMantleUserRepository<MantleUser>, IDisposable
     {
+        private readonly IAwsRegionEndpoints awsRegionEndpoints;
+
+        private AmazonDynamoDBClient dynamoDbClient;
+
+        public DynamoDbMantleUserRepository(IAwsRegionEndpoints awsRegionEndpoints)
+        {
+            this.awsRegionEndpoints = awsRegionEndpoints;
+
+            AutoSetup = true;
+            TableName = "MantleUsers";
+            TableReadCapacityUnits = 10;
+            TableWriteCapacityUnits = 10;
+        }
+
+        [Configurable]
+        public bool AutoSetup { get; set; }
+
+        [Configurable(IsRequired = true)]
+        public string AwsAccessKeyId { get; set; }
+
+        [Configurable(IsRequired = true)]
+        public string AwsSecretAccessKey { get; set; }
+
+        [Configurable(IsRequired = true)]
+        public string AwsRegionName { get; set; }
+
+        [Configurable]
+        public string TableName { get; set; }
+
+        [Configurable]
+        public int TableReadCapacityUnits { get; set; }
+
+        [Configurable]
+        public int TableWriteCapacityUnits { get; set; }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -137,8 +177,14 @@ namespace Mantle.Identity.Aws.Repositories
             user.AccessFailedCount = int.Parse(docDictionary[nameof(user.AccessFailedCount)].N);
 
             user.Claims = docDictionary[nameof(user.Claims)].L.Select(av => ToMantleUserClaim(av.M)).ToList();
+            user.Logins = docDictionary[nameof(user.Logins)].L.Select(av => ToMantleUserLogin(av.M)).ToList();
+            user.Roles = docDictionary[nameof(user.Roles)].SS;
 
-            // TODO: Going to grab Emily a Starbucks. Pick back up here...
+            user.Email = docDictionary[nameof(user.Email)].S;
+            user.PasswordHash = docDictionary[nameof(user.PasswordHash)].S;
+            user.PhoneNumber = docDictionary[nameof(user.PhoneNumber)].S;
+            user.SecurityStamp = docDictionary[nameof(user.SecurityStamp)].S;
+            user.UserName = docDictionary[nameof(user.UserName)].S;
 
             return user;
         }
@@ -177,6 +223,153 @@ namespace Mantle.Identity.Aws.Repositories
             docDictionary[nameof(login.ProviderKey)] = new AttributeValue {S = login.ProviderKey};
 
             return docDictionary;
+        }
+
+        private MantleUserLogin ToMantleUserLogin(Dictionary<string, AttributeValue> docDictionary)
+        {
+            var login = new MantleUserLogin();
+
+            login.Id = docDictionary[nameof(login.Id)].S;
+            login.UserId = docDictionary[nameof(login.UserId)].S;
+            login.LoginProvider = docDictionary[nameof(login.LoginProvider)].S;
+            login.ProviderKey = docDictionary[nameof(login.ProviderKey)].S;
+
+            return login;
+        }
+
+        private AmazonDynamoDBClient GetAmazonDynamoDbClient()
+        {
+            if (dynamoDbClient == null)
+            {
+                var awsRegionEndpoint = awsRegionEndpoints.GetRegionEndpointByName(AwsRegionName);
+
+                if (awsRegionEndpoint == null)
+                    throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a knnown AWS region.");
+
+                dynamoDbClient = new AmazonDynamoDBClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
+
+                if (AutoSetup)
+                    SetupTable(dynamoDbClient);
+            }
+
+            return dynamoDbClient;
+        }
+
+        private void SetupTable(AmazonDynamoDBClient dynamoDbClient)
+        {
+            if (DoesTableExist(dynamoDbClient) == false)
+            {
+                var createTableRequest = new CreateTableRequest
+                {
+                    TableName = TableName,
+                    ProvisionedThroughput = new ProvisionedThroughput
+                    {
+                        ReadCapacityUnits = TableReadCapacityUnits,
+                        WriteCapacityUnits = TableWriteCapacityUnits
+                    },
+                    AttributeDefinitions = new List<AttributeDefinition>
+                    {
+                        new AttributeDefinition
+                        {
+                            AttributeName = nameof(MantleUser.Id),
+                            AttributeType = ScalarAttributeType.S
+                        },
+                        new AttributeDefinition
+                        {
+                            AttributeName = nameof(MantleUser.Email),
+                            AttributeType = ScalarAttributeType.S
+                        },
+                        new AttributeDefinition
+                        {
+                            AttributeName = nameof(MantleUser.UserName),
+                            AttributeType = ScalarAttributeType.S
+                        }
+                    },
+                    KeySchema = new List<KeySchemaElement>
+                    {
+                        new KeySchemaElement
+                        {
+                            AttributeName = nameof(MantleUser.Id),
+                            KeyType = KeyType.HASH
+                        }
+                    },
+                    GlobalSecondaryIndexes = new List<GlobalSecondaryIndex>
+                    {
+                        CreateEmailSecondaryIndex(),
+                        CreateUserNameSecondaryIndex()
+                    }
+                };
+
+                dynamoDbClient.CreateTable(createTableRequest);
+                WaitUntilTableExists(dynamoDbClient);
+            }
+        }
+
+        private GlobalSecondaryIndex CreateEmailSecondaryIndex()
+        {
+            return new GlobalSecondaryIndex
+            {
+                IndexName = $"{nameof(MantleUser.Email)}SecondaryIndex",
+                ProvisionedThroughput = new ProvisionedThroughput
+                {
+                    ReadCapacityUnits = TableReadCapacityUnits,
+                    WriteCapacityUnits = TableWriteCapacityUnits
+                },
+                Projection = new Projection {ProjectionType = ProjectionType.ALL},
+                KeySchema = new List<KeySchemaElement>
+                {
+                    new KeySchemaElement
+                    {
+                        AttributeName = nameof(MantleUser.Email),
+                        KeyType = KeyType.HASH
+                    }
+                }
+            };
+        }
+
+        private GlobalSecondaryIndex CreateUserNameSecondaryIndex()
+        {
+            return new GlobalSecondaryIndex
+            {
+                IndexName = $"{nameof(MantleUser.UserName)}SecondaryIndex",
+                ProvisionedThroughput = new ProvisionedThroughput
+                {
+                    ReadCapacityUnits = TableReadCapacityUnits,
+                    WriteCapacityUnits = TableWriteCapacityUnits
+                },
+                Projection = new Projection {ProjectionType = ProjectionType.ALL},
+                KeySchema = new List<KeySchemaElement>
+                {
+                    new KeySchemaElement
+                    {
+                        AttributeName = nameof(MantleUser.UserName),
+                        KeyType = KeyType.HASH
+                    }
+                }
+            };
+        }
+
+        private void WaitUntilTableExists(AmazonDynamoDBClient dynamoDbClient)
+        {
+            while (true)
+            {
+                if (DoesTableExist(dynamoDbClient))
+                    return;
+
+                Thread.Sleep(5000);
+            }
+        }
+
+        private bool DoesTableExist(AmazonDynamoDBClient dynamoDbClient)
+        {
+            try
+            {
+                return (dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE);
+            }
+            catch (ResourceNotFoundException)
+            {
+                return false;
+            }
         }
     }
 }
