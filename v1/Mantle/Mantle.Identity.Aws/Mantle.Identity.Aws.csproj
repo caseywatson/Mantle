@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FFB4DD8F-F4F5-4350-9559-8B41F51B2F3D}</ProjectGuid>
+    <ProjectGuid>{5F47CA86-831B-4F82-AA02-B679C4D81D38}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.Identity</RootNamespace>
-    <AssemblyName>Mantle.Identity</AssemblyName>
+    <RootNamespace>Mantle.Identity.Aws</RootNamespace>
+    <AssemblyName>Mantle.Identity.Aws</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.1.4.3\lib\net45\AWSSDK.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AWSSDK.DynamoDBv2, Version=3.1.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.DynamoDBv2.3.1.4.0\lib\net45\AWSSDK.DynamoDBv2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -44,28 +52,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CreateUser.cs" />
-    <Compile Include="Commands\DeleteUser.cs" />
-    <Compile Include="Commands\UpdateUser.cs" />
-    <Compile Include="Interfaces\IMantleUserCommandService.cs" />
-    <Compile Include="Interfaces\IMantleUserQueryService.cs" />
-    <Compile Include="Interfaces\IMantleUserRepository.cs" />
-    <Compile Include="Interfaces\IMantleUserService.cs" />
-    <Compile Include="MantleUser.cs" />
-    <Compile Include="MantleUserClaim.cs" />
-    <Compile Include="MantleUserLogin.cs" />
-    <Compile Include="MantleUserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CqrsMantleUserService.cs" />
+    <Compile Include="Repositories\DynamoDbMantleUserRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
+      <Project>{fc245625-4fcd-475a-83ee-9a3d0409964a}</Project>
+      <Name>Mantle.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{14843f74-b007-4357-9aea-4703d772b6ae}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Identity\Mantle.Identity.csproj">
+      <Project>{ffb4dd8f-f4f5-4350-9559-8b41f51b2f3d}</Project>
+      <Name>Mantle.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
+      <Name>Mantle</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mantle\Mantle.csproj">
-      <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
-      <Name>Mantle</Name>
-    </ProjectReference>
+    <Analyzer Include="..\packages\AWSSDK.DynamoDBv2.3.1.4.0\analyzers\dotnet\cs\AWSSDK.DynamoDBv2.CodeAnalysis.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,6 +17,9 @@ namespace Mantle.Identity.Azure.Repositories
     {
         private static readonly MapperConfiguration mapperConfiguration;
 
+        private bool doesDbExist;
+        private bool doesCollectionExist;
+
         private DocumentClient documentClient;
 
         static DocumentDbMantleUserRepository()
@@ -252,48 +255,57 @@ namespace Mantle.Identity.Azure.Repositories
 
         private async Task EnsureDatabaseExists()
         {
-            if (DocumentClient.CreateDatabaseQuery()
-                .Where(db => (db.Id == DocumentDbDatabaseId))
-                .AsEnumerable()
-                .None())
+            if (doesDbExist == false)
             {
-                if (AutoSetup)
+                if (DocumentClient.CreateDatabaseQuery()
+                    .Where(db => (db.Id == DocumentDbDatabaseId))
+                    .AsEnumerable()
+                    .None())
                 {
-                    var database = new Database {Id = DocumentDbDatabaseId};
+                    if (AutoSetup)
+                    {
+                        var database = new Database {Id = DocumentDbDatabaseId};
 
-                    await DocumentClient.CreateDatabaseAsync(database);
+                        await DocumentClient.CreateDatabaseAsync(database);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(
+                            $"DocumentDb database [{DocumentDbDatabaseId}] does not exist.");
+                    }
                 }
-                else
-                {
-                    throw new InvalidOperationException($"DocumentDb database [{DocumentDbDatabaseId}] " +
-                                                        "does not exist.");
-                }
+
+                doesDbExist = true;
             }
         }
 
         private async Task EnsureDocumentCollectionExists()
         {
-            await EnsureDatabaseExists();
-
-            var databaseUri = UriFactory.CreateDatabaseUri(DocumentDbDatabaseId);
-
-            if (DocumentClient.CreateDocumentCollectionQuery(databaseUri)
-                .Where(dc => (dc.Id == DocumentDbCollectionId))
-                .AsEnumerable()
-                .None())
+            if (doesCollectionExist == false)
             {
-                if (AutoSetup)
-                {
-                    var documentCollection = new DocumentCollection {Id = DocumentDbCollectionId};
+                await EnsureDatabaseExists();
 
-                    await DocumentClient.CreateDocumentCollectionAsync(databaseUri, documentCollection);
-                }
-                else
+                var databaseUri = UriFactory.CreateDatabaseUri(DocumentDbDatabaseId);
+
+                if (DocumentClient.CreateDocumentCollectionQuery(databaseUri)
+                    .Where(dc => (dc.Id == DocumentDbCollectionId))
+                    .AsEnumerable()
+                    .None())
                 {
-                    throw new InvalidOperationException("DocumentDb collection " +
-                                                        $"[{DocumentDbDatabaseId}/{DocumentDbCollectionId}] " +
-                                                        "does not exist.");
+                    if (AutoSetup)
+                    {
+                        var documentCollection = new DocumentCollection {Id = DocumentDbCollectionId};
+
+                        await DocumentClient.CreateDocumentCollectionAsync(databaseUri, documentCollection);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(
+                            $"DocumentDb document collection [{DocumentDbDatabaseId}/{DocumentDbCollectionId}] does not exist.");
+                    }
                 }
+
+                doesCollectionExist = true;
             }
         }
     }
