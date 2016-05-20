@@ -192,7 +192,7 @@ namespace Mantle.Hosting.Messaging.Workers
         }
 
         private void SubscribeToChannel(ISubscriberChannel<MessageEnvelope> channel,
-            CancellationToken cancellationToken)
+                                        CancellationToken cancellationToken)
         {
             while (true)
             {

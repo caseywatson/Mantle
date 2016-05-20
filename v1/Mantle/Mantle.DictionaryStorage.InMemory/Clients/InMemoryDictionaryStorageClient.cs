@@ -28,7 +28,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterWriteLock();
 
-                if (dictionary.ContainsKey(partitionId) && 
+                if (dictionary.ContainsKey(partitionId) &&
                     dictionary[partitionId].ContainsKey(entityId))
                     dictionary[partitionId].Remove(entityId);
             }
@@ -107,7 +107,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             {
                 dictionaryLock.EnterReadLock();
 
-                if (dictionary.ContainsKey(partitionId) && 
+                if (dictionary.ContainsKey(partitionId) &&
                     dictionary[partitionId].ContainsKey(entityId))
                     return new DictionaryStorageEntity<T>(entityId, partitionId, dictionary[partitionId][entityId]);
 

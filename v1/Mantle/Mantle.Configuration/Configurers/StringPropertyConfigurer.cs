@@ -15,7 +15,7 @@ namespace Mantle.Configuration.Configurers
         }
 
         public void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
-            ConfigurationSetting cfgSetting)
+                                 ConfigurationSetting cfgSetting)
         {
             cfgObject.Require(nameof(cfgObject));
             cfgProperty.Require(nameof(cfgProperty));

@@ -83,8 +83,8 @@ namespace Mantle.DictionaryStorage.Azure.Entities
                         outputProperty.PropertyInfo.SetValue(t, inputProperty.StringValue);
                     else if (inputProperty.StringValue != null)
                         outputProperty.PropertyInfo.SetValue(t,
-                            JsonConvert.DeserializeObject(inputProperty.StringValue,
-                                propertyType));
+                                                             JsonConvert.DeserializeObject(inputProperty.StringValue,
+                                                                                           propertyType));
                 }
             }
 

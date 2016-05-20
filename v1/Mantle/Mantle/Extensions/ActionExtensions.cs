@@ -35,7 +35,7 @@ namespace Mantle.Extensions
         }
 
         public static bool RaiseSafely<T1, T2, T3>(this Action<T1, T2, T3> action, T1 parameter1, T2 parameter2,
-            T3 parameter3)
+                                                   T3 parameter3)
         {
             if (action == null)
                 return false;
@@ -46,7 +46,7 @@ namespace Mantle.Extensions
         }
 
         public static bool RaiseSafely<T1, T2, T3, T4>(this Action<T1, T2, T3, T4> action, T1 parameter1, T2 parameter2,
-            T3 parameter3, T4 parameter4)
+                                                       T3 parameter3, T4 parameter4)
         {
             if (action == null)
                 return false;

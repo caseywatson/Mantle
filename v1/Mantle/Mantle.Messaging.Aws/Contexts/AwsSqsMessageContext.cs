@@ -15,10 +15,10 @@ namespace Mantle.Messaging.Aws.Contexts
         private readonly Func<Message, bool> tryRenewMessageLock;
 
         public AwsSqsMessageContext(Message sqsMessage, T message,
-            Func<Message, bool> tryAbandonMessage,
-            Func<Message, bool> tryCompleteMessage,
-            Func<Message, bool> tryDeadLetterMessage,
-            Func<Message, bool> tryRenewMessageLock)
+                                    Func<Message, bool> tryAbandonMessage,
+                                    Func<Message, bool> tryCompleteMessage,
+                                    Func<Message, bool> tryDeadLetterMessage,
+                                    Func<Message, bool> tryRenewMessageLock)
         {
             this.tryAbandonMessage = tryAbandonMessage;
             this.tryCompleteMessage = tryCompleteMessage;

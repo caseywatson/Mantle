@@ -8,7 +8,7 @@ namespace Mantle.Messaging.Contexts
         where T : class
     {
         public SubscriptionMessageContext(IMessageContext<MessageEnvelope> originalMessageContext, T message,
-            ISubscription<T> subscription)
+                                          ISubscription<T> subscription)
         {
             originalMessageContext.Require(nameof(originalMessageContext));
             message.Require(nameof(message));

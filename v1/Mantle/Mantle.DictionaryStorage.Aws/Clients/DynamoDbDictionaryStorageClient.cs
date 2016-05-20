@@ -134,7 +134,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
         {
-            var getItemResult = 
+            var getItemResult =
                 AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
 
             if (getItemResult.IsItemSet)
@@ -155,7 +155,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 KeyConditionExpression = $"{AttributeNames.PartitionId} = {partitionIdParameter}",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
-                    [partitionIdParameter] = new AttributeValue { S = partitionId }
+                    [partitionIdParameter] = new AttributeValue {S = partitionId}
                 }
             };
 

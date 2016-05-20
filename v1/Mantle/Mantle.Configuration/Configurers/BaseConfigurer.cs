@@ -32,8 +32,8 @@ namespace Mantle.Configuration.Configurers
                                 (t.GetConstructor(Type.EmptyTypes) != null)).ToList();
 
                 propertyConfigurers = localPropertyConfigurerTypes // This relies on all local property configurers
-                    .Select(Activator.CreateInstance)              // having default constructors.
-                    .Cast<IPropertyConfigurer>()                   // May need to rethink in the future.
+                    .Select(Activator.CreateInstance) // having default constructors.
+                    .Cast<IPropertyConfigurer>() // May need to rethink in the future.
                     .ToArray();
             }
 
@@ -55,8 +55,8 @@ namespace Mantle.Configuration.Configurers
         }
 
         protected virtual ConfigurableObject<T> ApplyConfigurationSettings(ConfigurableObject<T> cfgObject,
-            IEnumerable<ConfigurationSetting>
-                cfgSettings)
+                                                                           IEnumerable<ConfigurationSetting>
+                                                                               cfgSettings)
         {
             var cfgSettingsList = cfgSettings.ToList();
 
@@ -86,7 +86,7 @@ namespace Mantle.Configuration.Configurers
         }
 
         private void ApplyConfigurationSetting(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
-            ConfigurationSetting cfgSetting)
+                                               ConfigurationSetting cfgSetting)
         {
             var propertyInfo = cfgProperty.PropertyMetadata.PropertyInfo;
 
@@ -105,7 +105,7 @@ namespace Mantle.Configuration.Configurers
         }
 
         private IEnumerable<string> GetPrioritizedConventionalSettingNames(ConfigurableObject<T> cfgObject,
-            ConfigurableProperty cfgProperty)
+                                                                           ConfigurableProperty cfgProperty)
         {
             if (IsNullOrEmpty(cfgObject.Name) == false)
             {

@@ -60,7 +60,7 @@ namespace Mantle.Messaging.Azure.Channels
                 }
 
                 subscriptionClient = SubscriptionClient.CreateFromConnectionString(ServiceBusConnectionString,
-                    TopicName, SubscriptionName);
+                                                                                   TopicName, SubscriptionName);
             }
 
             return subscriptionClient;

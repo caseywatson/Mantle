@@ -32,9 +32,9 @@ namespace Mantle.Messaging.Msmq.Channels
             };
 
             MessageQueue.Send(msmqMessage,
-                (MessageQueue.Transactional
-                    ? MessageQueueTransactionType.Single
-                    : MessageQueueTransactionType.None));
+                              (MessageQueue.Transactional
+                                  ? MessageQueueTransactionType.Single
+                                  : MessageQueueTransactionType.None));
         }
     }
 }

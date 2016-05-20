@@ -7,6 +7,6 @@ namespace Mantle.Configuration.Interfaces
         bool CanConfigureProperty(PropertyInfo propertyInfo);
 
         void Configure<T>(ConfigurableObject<T> cfgObject, ConfigurableProperty cfgProperty,
-            ConfigurationSetting cfgSetting);
+                          ConfigurationSetting cfgSetting);
     }
 }

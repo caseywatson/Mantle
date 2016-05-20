@@ -59,7 +59,7 @@ namespace Mantle.Messaging.Aws.Channels
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
 
                 awsSnsClient = new AmazonSimpleNotificationServiceClient(AwsAccessKeyId, AwsSecretAccessKey,
-                    awsRegionEndpoint);
+                                                                         awsRegionEndpoint);
             }
 
             return awsSnsClient;

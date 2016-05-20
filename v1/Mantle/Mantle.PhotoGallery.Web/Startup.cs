@@ -1,7 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using Mantle.PhotoGallery.Web;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Mantle.PhotoGallery.Web.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
+
 namespace Mantle.PhotoGallery.Web
 {
     public partial class Startup

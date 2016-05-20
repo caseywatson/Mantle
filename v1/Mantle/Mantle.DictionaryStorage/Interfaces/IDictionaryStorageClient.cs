@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mantle.DictionaryStorage.Entities;
 
 namespace Mantle.DictionaryStorage.Interfaces

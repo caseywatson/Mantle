@@ -279,7 +279,7 @@ namespace Mantle.Configuration.Tests
                 new TestConfigurer<SimpleTestTarget>(new List<ConfigurationSetting>
                 {
                     new ConfigurationSetting(string.Format("{0}.SimpleTestTarget.StringProperty", targetName),
-                        testString)
+                                             testString)
                 });
 
             var testTarget = new SimpleTestTarget();

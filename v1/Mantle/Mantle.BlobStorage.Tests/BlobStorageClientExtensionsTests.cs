@@ -59,7 +59,7 @@ namespace Mantle.BlobStorage.Tests
                         It.Is<MemoryStream>(
                             s =>
                                 (s.ToArray()
-                                    .SequenceEqual(testByteArray))),
+                                .SequenceEqual(testByteArray))),
                         BlobName));
         }
 
@@ -79,7 +79,7 @@ namespace Mantle.BlobStorage.Tests
                         It.Is<MemoryStream>(
                             s =>
                                 (s.ToArray()
-                                    .SequenceEqual(testTextBytes))),
+                                .SequenceEqual(testTextBytes))),
                         BlobName));
         }
 

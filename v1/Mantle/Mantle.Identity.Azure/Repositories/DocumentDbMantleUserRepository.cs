@@ -17,10 +17,10 @@ namespace Mantle.Identity.Azure.Repositories
     {
         private static readonly MapperConfiguration mapperConfiguration;
 
-        private bool doesDbExist;
+        private DocumentClient documentClient;
         private bool doesCollectionExist;
 
-        private DocumentClient documentClient;
+        private bool doesDbExist;
 
         static DocumentDbMantleUserRepository()
         {

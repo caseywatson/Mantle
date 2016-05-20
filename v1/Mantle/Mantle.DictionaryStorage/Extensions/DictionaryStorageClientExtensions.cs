@@ -21,7 +21,11 @@ namespace Mantle.DictionaryStorage.Extensions
             partitionIdSelector.Require(nameof(partitionIdSelector));
 
             dictionaryStorageClient.InsertOrUpdateDictionaryStorageEntities(entities
-                .Select(e => new DictionaryStorageEntity<T>(entityIdSelector(e), partitionIdSelector(e), e)));
+                                                                                .Select(
+                                                                                    e =>
+                                                                                        new DictionaryStorageEntity<T>(
+                                                                                        entityIdSelector(e),
+                                                                                        partitionIdSelector(e), e)));
         }
 
         public static void InsertOrUpdateEntity<T>(this IDictionaryStorageClient<T> dictionaryStorageClient,
