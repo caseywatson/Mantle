@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Mantle.PhotoGallery.Web.Mantle.Identity;
 using Mantle.PhotoGallery.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -12,28 +13,28 @@ namespace Mantle.PhotoGallery.Web.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private MantleSignInManager _signInManager;
+        private MantleUserManager _userManager;
 
         public ManageController()
         {
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(MantleUserManager userManager, MantleSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public MantleSignInManager SignInManager
         {
-            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<MantleSignInManager>(); }
             private set { _signInManager = value; }
         }
 
-        public ApplicationUserManager UserManager
+        public MantleUserManager UserManager
         {
-            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<MantleUserManager>(); }
             private set { _userManager = value; }
         }
 

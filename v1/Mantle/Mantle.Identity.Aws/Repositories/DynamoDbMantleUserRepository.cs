@@ -26,8 +26,8 @@ namespace Mantle.Identity.Aws.Repositories
 
             AutoSetup = true;
             TableName = "MantleUsers";
-            TableReadCapacityUnits = 10;
-            TableWriteCapacityUnits = 10;
+            TableReadCapacityUnits = 5;
+            TableWriteCapacityUnits = 5;
         }
 
         [Configurable]
@@ -493,6 +493,14 @@ namespace Mantle.Identity.Aws.Repositories
             {
                 return false;
             }
+        }
+
+        private AttributeValue ToAttributeValue(string source)
+        {
+            return (string.IsNullOrEmpty(source)
+                ? new AttributeValue {NULL = true}
+                : new AttributeValue {S = source});
+
         }
     }
 }

@@ -7,18 +7,18 @@ using Mantle.Interfaces;
 
 namespace Mantle.Providers
 {
-    public class EnvironmentVariableProfileNamesProvider : IProfileNamesProvider
+    public class EnvironmentVariableProfileProvider : IProfileNamesProvider
     {
         private readonly string variableName;
 
-        public EnvironmentVariableProfileNamesProvider(string variableName = "MantleProfiles")
+        public EnvironmentVariableProfileProvider(string variableName = "MantleProfiles")
         {
             variableName.Require(nameof(variableName));
 
             this.variableName = variableName;
         }
 
-        public string[] GetProfileNames()
+        public string[] GetProfiles()
         {
             var variable = Environment.GetEnvironmentVariables()
                 .OfType<DictionaryEntry>()

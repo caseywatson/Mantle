@@ -1,4 +1,5 @@
 ﻿using System;
+using Mantle.Configuration.Configurers;
 using Mantle.Configuration.Interfaces;
 using Ninject;
 using Ninject.Activation;
@@ -25,6 +26,12 @@ namespace Mantle.Ninject
                 bindingSyntax.OnActivation(
                     t =>
                         configurer.Configure(t, bindingSyntax.BindingConfiguration.Metadata.Name));
+        }
+
+        public static IBindingOnSyntax<T> ConfigureUsing<T>(this IBindingOnSyntax<T> bindingSyntax,
+                                                            params IConfigurer<T>[] configurers)
+        {
+            return bindingSyntax.ConfigureUsing(new CascadingConfigurer<T>(configurers));
         }
 
         public static IBindingOnSyntax<T> ConfigureUsing<T>(this IBindingOnSyntax<T> bindingSyntax,

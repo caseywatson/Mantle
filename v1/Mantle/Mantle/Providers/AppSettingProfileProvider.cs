@@ -5,30 +5,30 @@ using Mantle.Interfaces;
 
 namespace Mantle.Providers
 {
-    public class AppSettingProfileNamesProvider : IProfileNamesProvider
+    public class AppSettingProfileProvider : IProfileNamesProvider
     {
         private readonly string settingName;
 
-        public AppSettingProfileNamesProvider(string settingName = "MantleProfiles")
+        public AppSettingProfileProvider(string settingName = "MantleProfiles")
         {
             settingName.Require(nameof(settingName));
 
             this.settingName = settingName;
         }
 
-        public string[] GetProfileNames()
+        public string[] GetProfiles()
         {
             var appSettings = ConfigurationManager.AppSettings;
 
             if (appSettings[settingName] == null)
                 throw new ConfigurationErrorsException($"Profiles [{settingName}] not configured.");
 
-            var profileNames = appSettings[settingName].ParseProfileNames().ToArray();
+            var profiles = appSettings[settingName].ParseProfileNames().ToArray();
 
-            if (profileNames.None())
+            if (profiles.None())
                 throw new ConfigurationErrorsException($"Profiles [{settingName}] not configured.");
 
-            return profileNames;
+            return profiles;
         }
     }
 }

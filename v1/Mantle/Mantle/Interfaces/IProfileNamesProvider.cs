@@ -2,6 +2,6 @@
 {
     public interface IProfileNamesProvider
     {
-        string[] GetProfileNames();
+        string[] GetProfiles();
     }
 }

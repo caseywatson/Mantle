@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using Amazon.SQS;
+using Amazon.SQS.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Aws.Constants;
@@ -75,7 +76,7 @@ namespace Mantle.Messaging.Aws.Channels
             {
                 return amazonSqsClient.GetQueueUrl(queueName).QueueUrl;
             }
-            catch (AmazonSQSException sqsException) when (sqsException.ErrorCode == AwsSqsErrorCodes.QueueDoesNotExist)
+            catch (QueueDoesNotExistException)
             {
                 return null;
             }

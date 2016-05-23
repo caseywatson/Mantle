@@ -134,7 +134,7 @@ namespace Mantle.BlobStorage.Aws.Clients
 
                 amazonS3Client = new AmazonS3Client(AwsAccessKeyId, AwsSecretAccessKey, regionEndpoint);
 
-                if (AutoSetup && amazonS3Client.ListBuckets().Buckets.Any(b => b.BucketName == BucketName))
+                if (AutoSetup && amazonS3Client.ListBuckets().Buckets.None(b => b.BucketName == BucketName))
                     amazonS3Client.PutBucket(BucketName);
             }
 

@@ -45,6 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.2.3.1-beta\lib\net45\AWSSDK.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AWSSDK.DynamoDBv2, Version=3.2.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.DynamoDBv2.3.2.3.1-beta\lib\net45\AWSSDK.DynamoDBv2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +86,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -157,9 +169,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -219,6 +228,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mantle\Constants\BlobStorageClientNames.cs" />
+    <Compile Include="Mantle\Constants\ChannelNames.cs" />
+    <Compile Include="Mantle\Constants\DictionaryStorageClientNames.cs" />
+    <Compile Include="Mantle\Identity\MantleSignInManager.cs" />
+    <Compile Include="Mantle\Identity\MantleUserManager.cs" />
+    <Compile Include="Mantle\Profiles\AwsDeployment\IdentityModule.cs" />
+    <Compile Include="Mantle\Profiles\AwsDeployment\MessagingModule.cs" />
+    <Compile Include="Mantle\Profiles\Aws\AwsModule.cs" />
+    <Compile Include="Mantle\Profiles\AzureDeployment\IdentityModule.cs" />
+    <Compile Include="Mantle\Profiles\AzureDeployment\MessagingModule.cs" />
+    <Compile Include="Mantle\Profiles\Default\IdentityModule.cs" />
+    <Compile Include="Mantle\Profiles\Default\MantleModule.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -301,6 +322,79 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.Aws\Mantle.Aws.csproj">
+      <Project>{fc245625-4fcd-475a-83ee-9a3d0409964a}</Project>
+      <Name>Mantle.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.BlobStorage.Aws\Mantle.BlobStorage.Aws.csproj">
+      <Project>{25d319c3-ce11-4ff2-9f0d-5a17adb2f1dd}</Project>
+      <Name>Mantle.BlobStorage.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.BlobStorage.Azure\Mantle.BlobStorage.Azure.csproj">
+      <Project>{b0eea28b-6cb1-45a0-9541-7de16b81c71d}</Project>
+      <Name>Mantle.BlobStorage.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.BlobStorage\Mantle.BlobStorage.csproj">
+      <Project>{83f5f9ff-341b-4e9e-8733-152952cafef7}</Project>
+      <Name>Mantle.BlobStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
+      <Project>{14843f74-b007-4357-9aea-4703d772b6ae}</Project>
+      <Name>Mantle.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage.Aws\Mantle.DictionaryStorage.Aws.csproj">
+      <Project>{a15275f4-95ea-413a-8c47-d7d77c9dee67}</Project>
+      <Name>Mantle.DictionaryStorage.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage.Azure\Mantle.DictionaryStorage.Azure.csproj">
+      <Project>{8c8be584-1d71-4576-921e-6a934e878780}</Project>
+      <Name>Mantle.DictionaryStorage.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage.Redis\Mantle.DictionaryStorage.Redis.csproj">
+      <Project>{0d941d8c-2e7d-4e1a-bc1c-848f55ed4d3a}</Project>
+      <Name>Mantle.DictionaryStorage.Redis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage\Mantle.DictionaryStorage.csproj">
+      <Project>{8edace4a-5f52-47f3-a5d0-5f72cf14cd74}</Project>
+      <Name>Mantle.DictionaryStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Identity.Aws\Mantle.Identity.Aws.csproj">
+      <Project>{5f47ca86-831b-4f82-aa02-b679c4d81d38}</Project>
+      <Name>Mantle.Identity.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Identity.Azure\Mantle.Identity.Azure.csproj">
+      <Project>{a52f1604-b9f7-4804-a227-9181791d3a86}</Project>
+      <Name>Mantle.Identity.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Identity\Mantle.Identity.csproj">
+      <Project>{ffb4dd8f-f4f5-4350-9559-8b41f51b2f3d}</Project>
+      <Name>Mantle.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj">
+      <Project>{27e60720-d2d2-48c1-be61-9f53f6684734}</Project>
+      <Name>Mantle.Messaging.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Azure\Mantle.Messaging.Azure.csproj">
+      <Project>{51c2a50e-f90d-49a7-9b15-1a3279c5b6e9}</Project>
+      <Name>Mantle.Messaging.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
+      <Project>{48f77c1a-cdb2-47d6-8bde-099d857de77f}</Project>
+      <Name>Mantle.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Ninject\Mantle.Ninject.csproj">
+      <Project>{05556b9f-4a46-4cc8-9f36-30c17f22df3a}</Project>
+      <Name>Mantle.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle\Mantle.csproj">
+      <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
+      <Name>Mantle</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.DynamoDBv2.3.2.3.1-beta\analyzers\dotnet\cs\AWSSDK.DynamoDBv2.CodeAnalysis.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Mantle.Extensions;
 using Microsoft.AspNet.Identity;
 
@@ -39,5 +41,10 @@ namespace Mantle.Identity
 
         public virtual string Id { get; set; } = Guid.NewGuid().ToString();
         public virtual string UserName { get; set; }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<MantleUser> manager)
+        {
+            return await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+        }
     }
 }
