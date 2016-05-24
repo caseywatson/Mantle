@@ -8,6 +8,10 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Modules
     {
         public override void Load()
         {
+            Bind<IPhotoCopyService>()
+                .To<PhotoCopyService>()
+                .InTransientScope();
+
             Bind<IPhotoThumbnailService>()
                 .To<PhotoThumbnailService>()
                 .InTransientScope();

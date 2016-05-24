@@ -12,18 +12,18 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Commands
             Id = Guid.NewGuid().ToString();
         }
 
-        public CopyPhotoCommand(string photoSource, Photo photo)
+        public CopyPhotoCommand(string photoSource, PhotoMetadata photoMetadata)
             : this()
         {
             photoSource.Require(nameof(photoSource));
-            photo.Require(nameof(photo));
+            photoMetadata.Require(nameof(photoMetadata));
 
             PhotoSource = photoSource;
-            Photo = photo;
+            PhotoMetadata = photoMetadata;
         }
 
         public string PhotoSource { get; set; }
-        public Photo Photo { get; set; }
+        public PhotoMetadata PhotoMetadata { get; set; }
 
         public string Id { get; set; }
     }

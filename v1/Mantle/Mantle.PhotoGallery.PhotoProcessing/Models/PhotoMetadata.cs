@@ -2,9 +2,9 @@
 
 namespace Mantle.PhotoGallery.PhotoProcessing.Models
 {
-    public class Photo
+    public class PhotoMetadata
     {
-        public Photo()
+        public PhotoMetadata()
         {
             Id = Guid.NewGuid().ToString();
             PhotoDateUtc = DateTime.UtcNow;

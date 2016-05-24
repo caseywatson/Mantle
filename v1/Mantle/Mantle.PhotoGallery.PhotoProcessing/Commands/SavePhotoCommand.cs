@@ -12,15 +12,15 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Commands
             Id = Guid.NewGuid().ToString();
         }
 
-        public SavePhotoCommand(Photo photo)
+        public SavePhotoCommand(PhotoMetadata photoMetadata)
             : this()
         {
-            photo.Require(nameof(photo));
+            photoMetadata.Require(nameof(photoMetadata));
 
-            Photo = photo;
+            PhotoMetadata = photoMetadata;
         }
 
-        public Photo Photo { get; set; }
+        public PhotoMetadata PhotoMetadata { get; set; }
 
         public string Id { get; set; }
     }

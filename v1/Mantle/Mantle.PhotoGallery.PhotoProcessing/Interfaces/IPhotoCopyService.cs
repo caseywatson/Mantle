@@ -4,6 +4,6 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Interfaces
 {
     public interface IPhotoCopyService
     {
-        void CopyPhoto(Photo photo, string photoSource);
+        void CopyPhoto(PhotoMetadata photoMetadata, string photoSource, string photoDestination);
     }
 }

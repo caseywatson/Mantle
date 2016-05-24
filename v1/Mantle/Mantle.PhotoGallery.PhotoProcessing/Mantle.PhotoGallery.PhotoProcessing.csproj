@@ -48,17 +48,25 @@
   <ItemGroup>
     <Compile Include="Commands\CopyPhotoCommand.cs" />
     <Compile Include="Commands\SavePhotoCommand.cs" />
+    <Compile Include="Constants\PhotoStorageServiceNames.cs" />
     <Compile Include="Interfaces\IPhotoCopyService.cs" />
+    <Compile Include="Interfaces\IPhotoStorageService.cs" />
     <Compile Include="Interfaces\IPhotoThumbnailService.cs" />
-    <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\PhotoMetadata.cs" />
     <Compile Include="Modules\ServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PhotoCopyService.cs" />
+    <Compile Include="Services\PhotoStorageService.cs" />
     <Compile Include="Services\PhotoThumbnailService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mantle.BlobStorage\Mantle.BlobStorage.csproj">
+      <Project>{83F5F9FF-341B-4E9E-8733-152952CAFEF7}</Project>
+      <Name>Mantle.BlobStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Configuration\Mantle.Configuration.csproj">
       <Project>{14843f74-b007-4357-9aea-4703d772b6ae}</Project>
       <Name>Mantle.Configuration</Name>
