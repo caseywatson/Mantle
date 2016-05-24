@@ -324,10 +324,17 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 [typeof(int?)] = o => new AttributeValue {N = ((int?) o).Value.ToString()},
                 [typeof(long)] = o => new AttributeValue {N = ((long) o).ToString()},
                 [typeof(long?)] = o => new AttributeValue {N = ((long?) o).Value.ToString()},
-                [typeof(string)] = o => new AttributeValue {S = (string) o},
+                [typeof(string)] = o => ToAttributeValue((string) o),
                 [typeof(TimeSpan)] = o => new AttributeValue {S = ((TimeSpan) o).ToString()},
                 [typeof(TimeSpan?)] = o => new AttributeValue {S = ((TimeSpan?) o).Value.ToString()}
             };
+        }
+
+        private AttributeValue ToAttributeValue(string source)
+        {
+            return (string.IsNullOrEmpty(source)
+                ? new AttributeValue {NULL = true}
+                : new AttributeValue {S = source});
         }
 
         private AmazonDynamoDBClient GetAmazonDynamoDbClient()

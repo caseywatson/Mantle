@@ -262,7 +262,7 @@ namespace Mantle.Identity.Aws.Repositories
         {
             return new Dictionary<string, AttributeValue>
             {
-                [nameof(user.Id)] = new AttributeValue {S = user.Id},
+                [nameof(user.Id)] = ToAttributeValue(user.Id),
                 [nameof(user.EmailConfirmed)] = new AttributeValue {BOOL = user.EmailConfirmed},
                 [nameof(user.LockoutEnabled)] = new AttributeValue {BOOL = user.LockoutEnabled},
                 [nameof(user.PhoneNumberConfirmed)] = new AttributeValue {BOOL = user.PhoneNumberConfirmed},
@@ -278,11 +278,11 @@ namespace Mantle.Identity.Aws.Repositories
                     L = user.Logins.Select(l => new AttributeValue {M = ToDocumentDictionary(l)}).ToList()
                 },
                 [nameof(user.Roles)] = new AttributeValue {SS = user.Roles},
-                [nameof(user.Email)] = new AttributeValue {S = user.Email},
-                [nameof(user.PasswordHash)] = new AttributeValue {S = user.PasswordHash},
-                [nameof(user.PhoneNumber)] = new AttributeValue {S = user.PhoneNumber},
-                [nameof(user.SecurityStamp)] = new AttributeValue {S = user.SecurityStamp},
-                [nameof(user.UserName)] = new AttributeValue {S = user.UserName}
+                [nameof(user.Email)] = ToAttributeValue(user.Email),
+                [nameof(user.PasswordHash)] = ToAttributeValue(user.PasswordHash),
+                [nameof(user.PhoneNumber)] = ToAttributeValue(user.PhoneNumber),
+                [nameof(user.SecurityStamp)] = ToAttributeValue(user.SecurityStamp),
+                [nameof(user.UserName)] = ToAttributeValue(user.UserName)
             };
         }
 
@@ -318,10 +318,10 @@ namespace Mantle.Identity.Aws.Repositories
         {
             return new Dictionary<string, AttributeValue>
             {
-                [nameof(claim.Id)] = new AttributeValue {S = claim.Id},
-                [nameof(claim.UserId)] = new AttributeValue {S = claim.UserId},
-                [nameof(claim.ClaimType)] = new AttributeValue {S = claim.ClaimType},
-                [nameof(claim.ClaimValue)] = new AttributeValue {S = claim.ClaimValue}
+                [nameof(claim.Id)] = ToAttributeValue(claim.Id),
+                [nameof(claim.UserId)] = ToAttributeValue(claim.UserId),
+                [nameof(claim.ClaimType)] = ToAttributeValue(claim.ClaimType),
+                [nameof(claim.ClaimValue)] = ToAttributeValue(claim.ClaimValue)
             };
         }
 
@@ -341,10 +341,10 @@ namespace Mantle.Identity.Aws.Repositories
         {
             return new Dictionary<string, AttributeValue>
             {
-                [nameof(login.Id)] = new AttributeValue {S = login.Id},
-                [nameof(login.UserId)] = new AttributeValue {S = login.UserId},
-                [nameof(login.LoginProvider)] = new AttributeValue {S = login.LoginProvider},
-                [nameof(login.ProviderKey)] = new AttributeValue {S = login.ProviderKey}
+                [nameof(login.Id)] = ToAttributeValue(login.Id),
+                [nameof(login.UserId)] = ToAttributeValue(login.UserId),
+                [nameof(login.LoginProvider)] = ToAttributeValue(login.LoginProvider),
+                [nameof(login.ProviderKey)] = ToAttributeValue(login.ProviderKey)
             };
         }
 
@@ -358,6 +358,13 @@ namespace Mantle.Identity.Aws.Repositories
             login.ProviderKey = docDictionary[nameof(login.ProviderKey)].S;
 
             return login;
+        }
+
+        private AttributeValue ToAttributeValue(string source)
+        {
+            return (string.IsNullOrEmpty(source)
+                ? new AttributeValue {NULL = true}
+                : new AttributeValue {S = source});
         }
 
         private AmazonDynamoDBClient GetAmazonDynamoDbClient()
@@ -493,14 +500,6 @@ namespace Mantle.Identity.Aws.Repositories
             {
                 return false;
             }
-        }
-
-        private AttributeValue ToAttributeValue(string source)
-        {
-            return (string.IsNullOrEmpty(source)
-                ? new AttributeValue {NULL = true}
-                : new AttributeValue {S = source});
-
         }
     }
 }
