@@ -260,7 +260,7 @@ namespace Mantle.Identity.Aws.Repositories
 
         private Dictionary<string, AttributeValue> ToDocumentDictionary(MantleUser user)
         {
-            return new Dictionary<string, AttributeValue>
+            var docDictionary = new Dictionary<string, AttributeValue>
             {
                 [nameof(user.Id)] = ToAttributeValue(user.Id),
                 [nameof(user.EmailConfirmed)] = new AttributeValue {BOOL = user.EmailConfirmed},
@@ -269,21 +269,39 @@ namespace Mantle.Identity.Aws.Repositories
                 [nameof(user.TwoFactorEnabled)] = new AttributeValue {BOOL = user.TwoFactorEnabled},
                 [nameof(user.LockoutEndDate)] = new AttributeValue {S = user.LockoutEndDate.ToString("o")},
                 [nameof(user.AccessFailedCount)] = new AttributeValue {N = user.AccessFailedCount.ToString()},
-                [nameof(user.Claims)] = new AttributeValue
-                {
-                    L = user.Claims.Select(c => new AttributeValue {M = ToDocumentDictionary(c)}).ToList()
-                },
-                [nameof(user.Logins)] = new AttributeValue
-                {
-                    L = user.Logins.Select(l => new AttributeValue {M = ToDocumentDictionary(l)}).ToList()
-                },
-                [nameof(user.Roles)] = new AttributeValue {SS = user.Roles},
                 [nameof(user.Email)] = ToAttributeValue(user.Email),
                 [nameof(user.PasswordHash)] = ToAttributeValue(user.PasswordHash),
                 [nameof(user.PhoneNumber)] = ToAttributeValue(user.PhoneNumber),
                 [nameof(user.SecurityStamp)] = ToAttributeValue(user.SecurityStamp),
                 [nameof(user.UserName)] = ToAttributeValue(user.UserName)
             };
+
+            if (user.Claims.None())
+                docDictionary[nameof(user.Claims)] = new AttributeValue {NULL = true};
+            else
+            {
+                docDictionary[nameof(user.Claims)] = new AttributeValue
+                {
+                    L = user.Claims.Select(c => new AttributeValue {M = ToDocumentDictionary(c)}).ToList()
+                };
+            }
+
+            if (user.Logins.None())
+                docDictionary[nameof(user.Logins)] = new AttributeValue {NULL = true};
+            else
+            {
+                docDictionary[nameof(user.Logins)] = new AttributeValue
+                {
+                    L = user.Logins.Select(l => new AttributeValue {M = ToDocumentDictionary(l)}).ToList()
+                };
+            }
+
+            if (user.Roles.None())
+                docDictionary[nameof(user.Roles)] = new AttributeValue {NULL = true};
+            else
+                docDictionary[nameof(user.Roles)] = new AttributeValue {SS = user.Roles};
+
+            return docDictionary;
         }
 
         private MantleUser ToMantleUser(Dictionary<string, AttributeValue> docDictionary)
@@ -297,13 +315,18 @@ namespace Mantle.Identity.Aws.Repositories
             user.PhoneNumberConfirmed = docDictionary[nameof(user.PhoneNumberConfirmed)].BOOL;
             user.TwoFactorEnabled = docDictionary[nameof(user.TwoFactorEnabled)].BOOL;
 
-            user.LockoutEndDate = DateTimeOffset.Parse(docDictionary[nameof(user.LockoutEnabled)].S);
+            user.LockoutEndDate = DateTimeOffset.Parse(docDictionary[nameof(user.LockoutEndDate)].S);
 
             user.AccessFailedCount = int.Parse(docDictionary[nameof(user.AccessFailedCount)].N);
 
-            user.Claims = docDictionary[nameof(user.Claims)].L.Select(av => ToMantleUserClaim(av.M)).ToList();
-            user.Logins = docDictionary[nameof(user.Logins)].L.Select(av => ToMantleUserLogin(av.M)).ToList();
-            user.Roles = docDictionary[nameof(user.Roles)].SS;
+            if (docDictionary[nameof(user.Claims)].NULL == false)
+                user.Claims = docDictionary[nameof(user.Claims)].L.Select(av => ToMantleUserClaim(av.M)).ToList();
+
+            if (docDictionary[nameof(user.Logins)].NULL == false)
+                user.Logins = docDictionary[nameof(user.Logins)].L.Select(av => ToMantleUserLogin(av.M)).ToList();
+
+            if (docDictionary[nameof(user.Roles)].NULL == false)
+                user.Roles = docDictionary[nameof(user.Roles)].SS;
 
             user.Email = docDictionary[nameof(user.Email)].S;
             user.PasswordHash = docDictionary[nameof(user.PasswordHash)].S;
