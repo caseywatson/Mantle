@@ -50,12 +50,11 @@ namespace Mantle.Messaging.Subscriptions
                 if (Configuration.AutoComplete)
                     context.TryToComplete();
             }
-            catch
+            catch when (Configuration.AutoAbandon)
             {
-                if (Configuration.AutoAbandon)
-                    context.TryToAbandon();
+                context.TryToAbandon();
 
-                throw;
+                return false;
             }
 
             return true;
@@ -72,15 +71,13 @@ namespace Mantle.Messaging.Subscriptions
             return true;
         }
 
-        private bool ExecutePostFilters(IMessageContext<T> messageContext)
+        private void ExecutePostFilters(IMessageContext<T> messageContext)
         {
             foreach (var filter in Configuration.Filters)
             {
                 if (filter.OnHandledMessage(messageContext) == false)
-                    return false;
+                    return;
             }
-
-            return true;
         }
     }
 }

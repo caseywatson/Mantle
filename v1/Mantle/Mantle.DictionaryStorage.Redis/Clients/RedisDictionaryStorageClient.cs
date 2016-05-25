@@ -126,11 +126,6 @@ namespace Mantle.DictionaryStorage.Redis.Clients
                                                   JsonConvert.DeserializeObject<T>(value));
         }
 
-        private bool DoesPartitionExist(string partitionId)
-        {
-            return Database.KeyExists(partitionId);
-        }
-
         private void ResetPartitionExpiration(string partitionId)
         {
             Database.KeyExpire(partitionId, ExpirationTimeSpan.Value, CommandFlags.FireAndForget);
