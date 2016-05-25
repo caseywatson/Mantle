@@ -261,9 +261,11 @@
     <Compile Include="Mantle\Constants\DictionaryStorageClientNames.cs" />
     <Compile Include="Mantle\Identity\MantleSignInManager.cs" />
     <Compile Include="Mantle\Identity\MantleUserManager.cs" />
+    <Compile Include="Mantle\Profiles\AwsDeployment\DictionaryStorageModule.cs" />
     <Compile Include="Mantle\Profiles\AwsDeployment\IdentityModule.cs" />
     <Compile Include="Mantle\Profiles\AwsDeployment\MessagingModule.cs" />
     <Compile Include="Mantle\Profiles\Aws\AwsModule.cs" />
+    <Compile Include="Mantle\Profiles\AzureDeployment\DictionaryStorageModule.cs" />
     <Compile Include="Mantle\Profiles\AzureDeployment\IdentityModule.cs" />
     <Compile Include="Mantle\Profiles\AzureDeployment\MessagingModule.cs" />
     <Compile Include="Mantle\Profiles\Default\IdentityModule.cs" />
@@ -415,6 +417,10 @@
     <ProjectReference Include="..\Mantle.Ninject\Mantle.Ninject.csproj">
       <Project>{05556b9f-4a46-4cc8-9f36-30c17f22df3a}</Project>
       <Name>Mantle.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.PhotoGallery.PhotoProcessing\Mantle.PhotoGallery.PhotoProcessing.csproj">
+      <Project>{21D7B1FB-E811-44A3-B120-BC5B3F01AF0B}</Project>
+      <Name>Mantle.PhotoGallery.PhotoProcessing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
