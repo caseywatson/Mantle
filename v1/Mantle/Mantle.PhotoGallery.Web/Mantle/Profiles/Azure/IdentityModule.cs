@@ -6,7 +6,7 @@ using Mantle.Identity.Services;
 using Mantle.Ninject;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.AzureDeployment
+namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Azure
 {
     public class IdentityModule : NinjectModule
     {

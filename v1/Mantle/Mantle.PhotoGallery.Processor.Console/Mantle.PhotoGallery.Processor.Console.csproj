@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7ED8ACAF-547C-428F-8D83-987D52B283A7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{F9163DD3-325D-4779-BE89-BDB2DD17D57E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mantle.PhotoGallery.Processor.Worker</RootNamespace>
-    <AssemblyName>Mantle.PhotoGallery.Processor.Worker</AssemblyName>
+    <RootNamespace>Mantle.PhotoGallery.Processor.Console</RootNamespace>
+    <AssemblyName>Mantle.PhotoGallery.Processor.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,32 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -64,10 +43,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -76,11 +51,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\ChannelNames.cs" />
+    <Compile Include="Constants\PhotoSources.cs" />
+    <Compile Include="Mantle\Default\MessagingModule.cs" />
+    <Compile Include="Mantle\Default\BlobStorageModule.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Workers\ProcessorWorker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mantle.BlobStorage.Aws\Mantle.BlobStorage.Aws.csproj">
+      <Project>{25d319c3-ce11-4ff2-9f0d-5a17adb2f1dd}</Project>
+      <Name>Mantle.BlobStorage.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.BlobStorage.Azure\Mantle.BlobStorage.Azure.csproj">
+      <Project>{b0eea28b-6cb1-45a0-9541-7de16b81c71d}</Project>
+      <Name>Mantle.BlobStorage.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.BlobStorage\Mantle.BlobStorage.csproj">
       <Project>{83f5f9ff-341b-4e9e-8733-152952cafef7}</Project>
       <Name>Mantle.BlobStorage</Name>
@@ -89,21 +78,49 @@
       <Project>{14843f74-b007-4357-9aea-4703d772b6ae}</Project>
       <Name>Mantle.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage.Aws\Mantle.DictionaryStorage.Aws.csproj">
+      <Project>{a15275f4-95ea-413a-8c47-d7d77c9dee67}</Project>
+      <Name>Mantle.DictionaryStorage.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage.Azure\Mantle.DictionaryStorage.Azure.csproj">
+      <Project>{8c8be584-1d71-4576-921e-6a934e878780}</Project>
+      <Name>Mantle.DictionaryStorage.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.DictionaryStorage.Redis\Mantle.DictionaryStorage.Redis.csproj">
+      <Project>{0d941d8c-2e7d-4e1a-bc1c-848f55ed4d3a}</Project>
+      <Name>Mantle.DictionaryStorage.Redis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.DictionaryStorage\Mantle.DictionaryStorage.csproj">
       <Project>{8edace4a-5f52-47f3-a5d0-5f72cf14cd74}</Project>
       <Name>Mantle.DictionaryStorage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mantle.Hosting.Messaging\Mantle.Hosting.Messaging.csproj">
-      <Project>{0B706DFE-5EA1-4C7F-A4A7-A0BFB7BE07E0}</Project>
-      <Name>Mantle.Hosting.Messaging</Name>
+    <ProjectReference Include="..\Mantle.Hosting.Console\Mantle.Hosting.Console.csproj">
+      <Project>{5e7b03aa-3cbd-47cb-bd7b-96252447f95a}</Project>
+      <Name>Mantle.Hosting.Console</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
-      <Project>{E2225D04-8C48-4295-8741-3019B668C06A}</Project>
+      <Project>{e2225d04-8c48-4295-8741-3019b668c06a}</Project>
       <Name>Mantle.Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Identity.Aws\Mantle.Identity.Aws.csproj">
+      <Project>{5f47ca86-831b-4f82-aa02-b679c4d81d38}</Project>
+      <Name>Mantle.Identity.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Identity.Azure\Mantle.Identity.Azure.csproj">
+      <Project>{a52f1604-b9f7-4804-a227-9181791d3a86}</Project>
+      <Name>Mantle.Identity.Azure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Identity\Mantle.Identity.csproj">
       <Project>{ffb4dd8f-f4f5-4350-9559-8b41f51b2f3d}</Project>
       <Name>Mantle.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Aws\Mantle.Messaging.Aws.csproj">
+      <Project>{27e60720-d2d2-48c1-be61-9f53f6684734}</Project>
+      <Name>Mantle.Messaging.Aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.Messaging.Azure\Mantle.Messaging.Azure.csproj">
+      <Project>{51c2a50e-f90d-49a7-9b15-1a3279c5b6e9}</Project>
+      <Name>Mantle.Messaging.Azure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle.Messaging\Mantle.Messaging.csproj">
       <Project>{48f77c1a-cdb2-47d6-8bde-099d857de77f}</Project>
@@ -118,11 +135,7 @@
       <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

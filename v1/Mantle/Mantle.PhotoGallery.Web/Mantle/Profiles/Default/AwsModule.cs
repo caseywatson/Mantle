@@ -2,7 +2,7 @@
 using Mantle.Aws.Interfaces;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Aws
+namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Default
 {
     public class AwsModule : NinjectModule
     {

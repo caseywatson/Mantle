@@ -52,7 +52,6 @@
     <Compile Include="Interfaces\IPhotoMetadataRepository.cs" />
     <Compile Include="Interfaces\IPhotoThumbnailService.cs" />
     <Compile Include="Models\PhotoMetadata.cs" />
-    <Compile Include="Modules\ServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\PhotoMetadataRepository.cs" />
     <Compile Include="Services\PhotoCopyService.cs" />

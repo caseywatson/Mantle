@@ -7,7 +7,7 @@ using Mantle.Ninject;
 using Mantle.PhotoGallery.PhotoProcessing.Models;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.AzureDeployment
+namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Azure
 {
     public class DictionaryStorageModule : NinjectModule
     {

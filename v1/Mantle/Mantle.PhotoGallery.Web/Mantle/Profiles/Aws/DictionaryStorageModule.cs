@@ -4,10 +4,10 @@ using Mantle.DictionaryStorage.Clients;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.DictionaryStorage.Redis.Clients;
 using Mantle.Ninject;
-using Ninject.Modules;
 using Mantle.PhotoGallery.PhotoProcessing.Models;
+using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.AwsDeployment
+namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Aws
 {
     public class DictionaryStorageModule : NinjectModule
     {

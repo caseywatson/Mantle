@@ -6,7 +6,7 @@ using Mantle.Identity.Services;
 using Mantle.Ninject;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.AwsDeployment
+namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Aws
 {
     public class IdentityModule : NinjectModule
     {
