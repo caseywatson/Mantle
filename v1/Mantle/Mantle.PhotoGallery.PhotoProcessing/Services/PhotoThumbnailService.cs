@@ -23,11 +23,11 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Services
         [Configurable]
         public int MaxThumbnailWidth { get; set; }
 
-        public MemoryStream GenerateThumbnail(MemoryStream originalImageStream)
+        public Stream GenerateThumbnail(Stream originalImageStream)
         {
             originalImageStream.Require(nameof(originalImageStream));
 
-            originalImageStream.Position = 0;
+            originalImageStream.TryToRewind();
 
             var originalImage = Image.FromStream(originalImageStream);
             var thumbnailSize = CalculateThumbnailSize(originalImage);

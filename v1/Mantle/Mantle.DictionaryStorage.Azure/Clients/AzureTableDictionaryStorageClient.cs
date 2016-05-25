@@ -38,7 +38,7 @@ namespace Mantle.DictionaryStorage.Azure.Clients
         [Configurable(IsRequired = true)]
         public string StorageConnectionString { get; set; }
 
-        public void DeleteEntity(string entityId, string partitionId)
+        public bool DeleteEntity(string entityId, string partitionId)
         {
             partitionId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
@@ -58,11 +58,15 @@ namespace Mantle.DictionaryStorage.Azure.Clients
                         TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
 
                     table.Execute(deleteOp);
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
-        public void DeletePartition(string partitionId)
+        public bool DeletePartition(string partitionId)
         {
             partitionId.Require(nameof(partitionId));
 
@@ -73,16 +77,25 @@ namespace Mantle.DictionaryStorage.Azure.Clients
                 var query = new TableQuery<AzureTableDictionaryStorageEntity<T>>()
                     .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionId));
 
-                foreach (var entitiesChunk in table.ExecuteQuery(query).Chunk(100))
+                var entities = table.ExecuteQuery(query).ToList();
+
+                if (entities.Any())
                 {
-                    var batchDeleteOp = new TableBatchOperation();
+                    foreach (var entitiesChunk in table.ExecuteQuery(query).Chunk(100))
+                    {
+                        var batchDeleteOp = new TableBatchOperation();
 
-                    foreach (var entity in entitiesChunk)
-                        batchDeleteOp.Delete(entity);
+                        foreach (var entity in entitiesChunk)
+                            batchDeleteOp.Delete(entity);
 
-                    table.ExecuteBatch(batchDeleteOp);
+                        table.ExecuteBatch(batchDeleteOp);
+                    }
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public bool DoesEntityExist(string entityId, string partitionId)

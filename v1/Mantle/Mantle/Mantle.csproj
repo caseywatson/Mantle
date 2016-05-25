@@ -60,6 +60,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Interfaces\IOrderable.cs" />
     <Compile Include="Interfaces\IProfileNamesProvider.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\ITypeTokenProvider.cs" />

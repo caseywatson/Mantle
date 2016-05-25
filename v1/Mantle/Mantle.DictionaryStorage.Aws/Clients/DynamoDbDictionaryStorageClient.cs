@@ -62,12 +62,14 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         public AmazonDynamoDBClient AmazonDynamoDbClient => GetAmazonDynamoDbClient();
 
-        public void DeleteEntity(string entityId, string partitionId)
+        public bool DeleteEntity(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
             AmazonDynamoDbClient.DeleteItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
+
+            return true;
         }
 
         public bool DoesEntityExist(string entityId, string partitionId)
@@ -102,7 +104,25 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             }
         }
 
-        public void DeletePartition(string partitionId)
+        public void InsertOrUpdateDictionaryStorageEntity(DictionaryStorageEntity<T> entity)
+        {
+            entity.Require(nameof(entity));
+
+            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(entity));
+        }
+
+        public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
+        {
+            var getItemResult =
+                AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
+
+            if (getItemResult.IsItemSet)
+                return ToDictionaryStorageEntity(getItemResult.Item);
+
+            return null;
+        }
+
+        public bool DeletePartition(string partitionId)
         {
             partitionId.Require(nameof(partitionId));
 
@@ -123,24 +143,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
                 AmazonDynamoDbClient.BatchWriteItem(batchRequest);
             }
-        }
 
-        public void InsertOrUpdateDictionaryStorageEntity(DictionaryStorageEntity<T> entity)
-        {
-            entity.Require(nameof(entity));
-
-            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(entity));
-        }
-
-        public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
-        {
-            var getItemResult =
-                AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
-
-            if (getItemResult.IsItemSet)
-                return ToDictionaryStorageEntity(getItemResult.Item);
-
-            return null;
+            return true;
         }
 
         private IEnumerable<Dictionary<string, AttributeValue>> LoadAllDocumentDictionaries(string partitionId)

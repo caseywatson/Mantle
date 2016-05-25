@@ -4,6 +4,6 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Interfaces
 {
     public interface IPhotoThumbnailService
     {
-        MemoryStream GenerateThumbnail(MemoryStream originalImage);
+        Stream GenerateThumbnail(Stream originalImageStream);
     }
 }

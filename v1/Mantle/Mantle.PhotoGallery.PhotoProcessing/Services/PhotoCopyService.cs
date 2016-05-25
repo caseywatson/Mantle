@@ -1,4 +1,5 @@
-﻿using Mantle.Extensions;
+﻿using Mantle.BlobStorage.Interfaces;
+using Mantle.Extensions;
 using Mantle.Interfaces;
 using Mantle.PhotoGallery.PhotoProcessing.Interfaces;
 using Mantle.PhotoGallery.PhotoProcessing.Models;
@@ -7,11 +8,11 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Services
 {
     public class PhotoCopyService : IPhotoCopyService
     {
-        private readonly IDirectory<IPhotoStorageService> photoStorageServices;
+        private readonly IDirectory<IBlobStorageClient> blobStorageClientDirectory;
 
-        public PhotoCopyService(IDirectory<IPhotoStorageService> photoStorageServices)
+        public PhotoCopyService(IDirectory<IBlobStorageClient> blobStorageClientDirectory)
         {
-            this.photoStorageServices = photoStorageServices;
+            this.blobStorageClientDirectory = blobStorageClientDirectory;
         }
 
         public void CopyPhoto(PhotoMetadata photoMetadata, string photoSource, string photoDestination)
@@ -20,13 +21,13 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Services
             photoSource.Require(nameof(photoSource));
             photoDestination.Require(nameof(photoDestination));
 
-            var sourcePhotoStorageService = photoStorageServices[photoSource];
-            var destinationPhotoStorageService = photoStorageServices[photoDestination];
-            var sourcePhotoStream = sourcePhotoStorageService.LoadPhoto(photoMetadata.Id);
+            var sourceBlobStorageClient = blobStorageClientDirectory[photoSource];
+            var destinationBlobStorageClient = blobStorageClientDirectory[photoDestination];
+            var photoStream = sourceBlobStorageClient.DownloadBlob(photoMetadata.Id);
 
-            sourcePhotoStream.TryToRewind();
+            photoStream.TryToRewind();
 
-            destinationPhotoStorageService.SavePhoto(photoMetadata.Id, sourcePhotoStream);
+            destinationBlobStorageClient.UploadBlob(photoStream, photoMetadata.Id);
         }
     }
 }

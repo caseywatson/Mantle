@@ -19,7 +19,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             dictionaryLock = new ReaderWriterLockSlim();
         }
 
-        public void DeleteEntity(string entityId, string partitionId)
+        public bool DeleteEntity(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
@@ -30,7 +30,13 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
 
                 if (dictionary.ContainsKey(partitionId) &&
                     dictionary[partitionId].ContainsKey(entityId))
+                {
                     dictionary[partitionId].Remove(entityId);
+
+                    return true;
+                }
+
+                return false;
             }
             finally
             {
@@ -38,7 +44,7 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
             }
         }
 
-        public void DeletePartition(string partitionId)
+        public bool DeletePartition(string partitionId)
         {
             partitionId.Require(nameof(partitionId));
 
@@ -47,9 +53,15 @@ namespace Mantle.DictionaryStorage.InMemory.Clients
                 dictionaryLock.EnterWriteLock();
 
                 if (dictionary.ContainsKey(partitionId))
+                {
                     dictionary.Remove(partitionId);
+
+                    return true;
+                }
+
+                return false;
             }
-            catch (Exception)
+            finally
             {
                 dictionaryLock.ExitWriteLock();
             }

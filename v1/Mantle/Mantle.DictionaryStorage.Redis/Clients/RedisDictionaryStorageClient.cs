@@ -40,19 +40,19 @@ namespace Mantle.DictionaryStorage.Redis.Clients
 
         public IDatabase Database => GetDatabase();
 
-        public void DeleteEntity(string entityId, string partitionId)
+        public bool DeleteEntity(string entityId, string partitionId)
         {
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            Database.HashDelete(partitionId, entityId);
+            return Database.HashDelete(partitionId, entityId);
         }
 
-        public void DeletePartition(string partitionId)
+        public bool DeletePartition(string partitionId)
         {
             partitionId.Require(nameof(partitionId));
 
-            Database.KeyDelete(partitionId);
+            return Database.KeyDelete(partitionId);
         }
 
         public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
