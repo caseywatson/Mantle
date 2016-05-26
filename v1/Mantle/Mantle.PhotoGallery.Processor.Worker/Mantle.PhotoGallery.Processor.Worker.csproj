@@ -78,6 +78,8 @@
   <ItemGroup>
     <Compile Include="Constants\ChannelNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subscribers\CopyPhotoSubscriber.cs" />
+    <Compile Include="Subscribers\SavePhotoSubscriber.cs" />
     <Compile Include="Workers\ProcessorWorker.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +115,10 @@
       <Project>{05556b9f-4a46-4cc8-9f36-30c17f22df3a}</Project>
       <Name>Mantle.Ninject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.PhotoGallery.PhotoProcessing\Mantle.PhotoGallery.PhotoProcessing.csproj">
+      <Project>{21D7B1FB-E811-44A3-B120-BC5B3F01AF0B}</Project>
+      <Name>Mantle.PhotoGallery.PhotoProcessing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
       <Name>Mantle</Name>
@@ -123,6 +129,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CopyPhotoCommand.cs" />
-    <Compile Include="Commands\SavePhotoCommand.cs" />
+    <Compile Include="Commands\CopyPhoto.cs" />
+    <Compile Include="Commands\SavePhoto.cs" />
     <Compile Include="Interfaces\IPhotoCopyService.cs" />
     <Compile Include="Interfaces\IPhotoMetadataRepository.cs" />
     <Compile Include="Interfaces\IPhotoThumbnailService.cs" />

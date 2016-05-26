@@ -5,14 +5,14 @@ using Mantle.PhotoGallery.PhotoProcessing.Models;
 
 namespace Mantle.PhotoGallery.PhotoProcessing.Commands
 {
-    public class SavePhotoCommand : ICommand
+    public class SavePhoto : ICommand
     {
-        public SavePhotoCommand()
+        public SavePhoto()
         {
             Id = Guid.NewGuid().ToString();
         }
 
-        public SavePhotoCommand(PhotoMetadata photoMetadata)
+        public SavePhoto(PhotoMetadata photoMetadata)
             : this()
         {
             photoMetadata.Require(nameof(photoMetadata));

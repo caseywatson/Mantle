@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mantle.Extensions;
 using Mantle.Messaging.Interfaces;
 
@@ -13,6 +9,8 @@ namespace Mantle.Messaging.Subscribers
     {
         public event Action<string> ErrorOccurred;
         public event Action<string> MessageOccurred;
+
+        public abstract void HandleMessage(IMessageContext<T> messageContext);
 
         protected void OnErrorOccurred(string message, params object[] parameters)
         {
@@ -29,7 +27,5 @@ namespace Mantle.Messaging.Subscribers
 
             MessageOccurred.RaiseSafely(string.Format(message, parameters));
         }
-
-        public abstract void HandleMessage(IMessageContext<T> messageContext);
     }
 }

@@ -51,9 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\BlobStorageClientNames.cs" />
     <Compile Include="Constants\PhotoSources.cs" />
     <Compile Include="Mantle\Default\MessagingModule.cs" />
     <Compile Include="Mantle\Default\BlobStorageModule.cs" />
+    <Compile Include="Mantle\Default\RepositoryModule.cs" />
+    <Compile Include="Mantle\Default\ServiceModule.cs" />
+    <Compile Include="Mantle\Default\SubscriberModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,12 +134,23 @@
       <Project>{05556b9f-4a46-4cc8-9f36-30c17f22df3a}</Project>
       <Name>Mantle.Ninject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.PhotoGallery.PhotoProcessing\Mantle.PhotoGallery.PhotoProcessing.csproj">
+      <Project>{21D7B1FB-E811-44A3-B120-BC5B3F01AF0B}</Project>
+      <Name>Mantle.PhotoGallery.PhotoProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mantle.PhotoGallery.Processor.Worker\Mantle.PhotoGallery.Processor.Worker.csproj">
+      <Project>{7ED8ACAF-547C-428F-8D83-987D52B283A7}</Project>
+      <Name>Mantle.PhotoGallery.Processor.Worker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
       <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Mantle\Aws\" />
+    <Folder Include="Mantle\Azure\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

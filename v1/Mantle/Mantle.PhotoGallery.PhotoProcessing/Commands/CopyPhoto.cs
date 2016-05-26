@@ -5,14 +5,14 @@ using Mantle.PhotoGallery.PhotoProcessing.Models;
 
 namespace Mantle.PhotoGallery.PhotoProcessing.Commands
 {
-    public class CopyPhotoCommand : ICommand
+    public class CopyPhoto : ICommand
     {
-        public CopyPhotoCommand()
+        public CopyPhoto()
         {
             Id = Guid.NewGuid().ToString();
         }
 
-        public CopyPhotoCommand(string photoSource, PhotoMetadata photoMetadata)
+        public CopyPhoto(string photoSource, PhotoMetadata photoMetadata)
             : this()
         {
             photoSource.Require(nameof(photoSource));

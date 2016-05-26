@@ -15,14 +15,28 @@ namespace Mantle.PhotoGallery.Processor.Console.Mantle.Default
             Bind<IBlobStorageClient>()
                 .To<AwsS3BlobStorageClient>()
                 .InTransientScope()
-                .Named(PhotoSources.Aws)
+                .Named(BlobStorageClientNames.Aws.PhotoStorage)
+                .ConfigureUsing(new ConnectionStringsConfigurer<AwsS3BlobStorageClient>(),
+                                new AppSettingsConfigurer<AwsS3BlobStorageClient>());
+
+            Bind<IBlobStorageClient>()
+                .To<AwsS3BlobStorageClient>()
+                .InTransientScope()
+                .Named(BlobStorageClientNames.Aws.ThumbnailStorage)
                 .ConfigureUsing(new ConnectionStringsConfigurer<AwsS3BlobStorageClient>(),
                                 new AppSettingsConfigurer<AwsS3BlobStorageClient>());
 
             Bind<IBlobStorageClient>()
                 .To<AzureBlobStorageClient>()
                 .InTransientScope()
-                .Named(PhotoSources.Azure)
+                .Named(BlobStorageClientNames.Azure.PhotoStorage)
+                .ConfigureUsing(new ConnectionStringsConfigurer<AzureBlobStorageClient>(),
+                                new AppSettingsConfigurer<AzureBlobStorageClient>());
+
+            Bind<IBlobStorageClient>()
+                .To<AzureBlobStorageClient>()
+                .InTransientScope()
+                .Named(BlobStorageClientNames.Azure.ThumbnailStorage)
                 .ConfigureUsing(new ConnectionStringsConfigurer<AzureBlobStorageClient>(),
                                 new AppSettingsConfigurer<AzureBlobStorageClient>());
         }
