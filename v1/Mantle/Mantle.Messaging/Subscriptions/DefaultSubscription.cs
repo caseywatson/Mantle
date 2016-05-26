@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Mantle.Extensions;
 using Mantle.Messaging.Contexts;
 using Mantle.Messaging.Interfaces;
@@ -15,9 +16,15 @@ namespace Mantle.Messaging.Subscriptions
             configuration.Validate();
 
             Configuration = configuration;
+
+            Configuration.Subscriber.ErrorOccurred += m => ErrorOccurred.RaiseSafely(m);
+            Configuration.Subscriber.MessageOccurred += m => MessageOccurred.RaiseSafely(m);
         }
 
         public ISubscriptionConfiguration<T> Configuration { get; }
+
+        public event Action<string> ErrorOccurred;
+        public event Action<string> MessageOccurred;
 
         public bool HandleMessage(IMessageContext<MessageEnvelope> messageContext)
         {

@@ -1,10 +1,11 @@
 ﻿using Mantle.Identity.Commands;
 using Mantle.Identity.Interfaces;
 using Mantle.Messaging.Interfaces;
+using Mantle.Messaging.Subscribers;
 
 namespace Mantle.Identity.Subscribers
 {
-    public class DeleteUserSubscriber : ISubscriber<DeleteUser>
+    public class DeleteUserSubscriber : BaseSubscriber<DeleteUser>
     {
         private readonly IMantleUserRepository<MantleUser> userRepository;
 
@@ -13,7 +14,7 @@ namespace Mantle.Identity.Subscribers
             this.userRepository = userRepository;
         }
 
-        public void HandleMessage(IMessageContext<DeleteUser> messageContext)
+        public override void HandleMessage(IMessageContext<DeleteUser> messageContext)
         {
             userRepository.DeleteUser(messageContext.Message.UserId);
         }
