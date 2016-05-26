@@ -60,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategies\DefaultDeadLetterStrategy.cs" />
     <Compile Include="Strategies\NullDeadLetterStrategy.cs" />
-    <Compile Include="Subscribers\BaseSubscriber.cs" />
     <Compile Include="Subscriptions\DefaultSubscription.cs" />
   </ItemGroup>
   <ItemGroup>

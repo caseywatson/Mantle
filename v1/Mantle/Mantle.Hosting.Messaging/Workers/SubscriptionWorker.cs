@@ -124,10 +124,6 @@ namespace Mantle.Hosting.Messaging.Workers
             subscription.Require(nameof(subscription));
 
             SetupSubscriptionType<T>();
-
-            subscription.ErrorOccurred += m => OnErrorOccurred(m);
-            subscription.MessageOccurred += m => OnMessageOccurred(m);
-
             messageHandlers[typeof(T)].Add(subscription.HandleMessage);
         }
 
