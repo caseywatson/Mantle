@@ -1,10 +1,11 @@
 ﻿using Mantle.Identity.Commands;
 using Mantle.Identity.Interfaces;
 using Mantle.Messaging.Interfaces;
+using Mantle.Messaging.Subscribers;
 
 namespace Mantle.Identity.Subscribers
 {
-    public class UpdateUserSubscriber : ISubscriber<UpdateUser>
+    public class UpdateUserSubscriber : BaseSubscriber<UpdateUser>
     {
         private readonly IMantleUserRepository<MantleUser> userRepository;
 
@@ -13,7 +14,7 @@ namespace Mantle.Identity.Subscribers
             this.userRepository = userRepository;
         }
 
-        public void HandleMessage(IMessageContext<UpdateUser> messageContext)
+        public override void HandleMessage(IMessageContext<UpdateUser> messageContext)
         {
             userRepository.UpdateUser(messageContext.Message.User);
         }
