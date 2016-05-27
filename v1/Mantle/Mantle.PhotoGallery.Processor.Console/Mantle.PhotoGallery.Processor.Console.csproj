@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="Constants\BlobStorageClientNames.cs" />
     <Compile Include="Constants\PhotoSources.cs" />
+    <Compile Include="Mantle\Aws\DictionaryStorageModule.cs" />
+    <Compile Include="Mantle\Aws\MessagingModule.cs" />
+    <Compile Include="Mantle\Azure\MessagingModule.cs" />
     <Compile Include="Mantle\Default\MessagingModule.cs" />
     <Compile Include="Mantle\Default\BlobStorageModule.cs" />
     <Compile Include="Mantle\Default\RepositoryModule.cs" />
@@ -147,10 +150,7 @@
       <Name>Mantle</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mantle\Aws\" />
-    <Folder Include="Mantle\Azure\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
