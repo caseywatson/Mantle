@@ -1,5 +1,4 @@
-﻿using System;
-using Mantle.Identity.Commands;
+﻿using Mantle.Identity.Commands;
 using Mantle.Identity.Interfaces;
 using Mantle.Messaging.Interfaces;
 using Mantle.Messaging.Subscribers;

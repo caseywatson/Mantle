@@ -27,7 +27,7 @@ namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Aws
 
             Bind<IDictionaryStorageClient<PhotoMetadata>>()
                 .To<LayeredDictionaryStorageClient<
-                    PhotoMetadata, 
+                    PhotoMetadata,
                     RedisDictionaryStorageClient<PhotoMetadata>,
                     DynamoDbDictionaryStorageClient<PhotoMetadata>>>()
                 .InTransientScope();

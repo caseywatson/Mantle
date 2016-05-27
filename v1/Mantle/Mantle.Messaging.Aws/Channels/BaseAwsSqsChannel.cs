@@ -4,7 +4,6 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Interfaces;
-using Mantle.Messaging.Aws.Constants;
 
 namespace Mantle.Messaging.Aws.Channels
 {

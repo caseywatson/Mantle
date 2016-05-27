@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Mantle.Extensions;
 using Mantle.Interfaces;
 using Ninject;
-using Ninject.Planning.Bindings;
 
 namespace Mantle.Ninject
 {

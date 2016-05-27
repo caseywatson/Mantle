@@ -13,11 +13,11 @@ namespace Mantle.PhotoGallery.Processor.Console
         private static void Main(string[] args)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var profileNames = ((args?.Length > 0) ? args : (new AppSettingProfileProvider().GetProfiles()));
-            var kernel = new StandardKernel(assembly.LoadProfileNinjectModules(profileNames).ToArray());
+            var profiles = ((args?.Length > 0) ? args : (new AppSettingProfileProvider().GetProfiles()));
+            var kernel = new StandardKernel(assembly.LoadProfileNinjectModules(profiles).ToArray());
             var dependencyResolver = new NinjectDependencyResolver(kernel);
 
-            MantleContext.Current = new MantleContext(dependencyResolver);
+            MantleContext.Current = new MantleContext(dependencyResolver, profiles);
 
             var workerHost = new ConsoleWorkerHost(dependencyResolver.Get<IWorker>());
 

@@ -53,7 +53,7 @@ namespace Mantle.DictionaryStorage.Clients
         }
     }
 
-    public class LayeredDictionaryStorageClient<TEntity> : 
+    public class LayeredDictionaryStorageClient<TEntity> :
         IDictionaryStorageClient<TEntity>, IDisposable
         where TEntity : class, new()
     {
@@ -120,13 +120,13 @@ namespace Mantle.DictionaryStorage.Clients
         {
             partitionId.Require(nameof(partitionId));
 
-            for (int i = 0; i < Layers.Count; i++)
+            for (var i = 0; i < Layers.Count; i++)
             {
                 var entities = Layers[i].LoadAllDictionaryStorageEntities(partitionId).ToList();
 
                 if (entities.Any())
                 {
-                    for (int ii = (i - 1); i >= 0; i--)
+                    for (var ii = (i - 1); i >= 0; i--)
                     {
                         Layers[ii].InsertOrUpdateDictionaryStorageEntities(entities);
                     }
@@ -142,13 +142,13 @@ namespace Mantle.DictionaryStorage.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            for (int i = 0; i < Layers.Count; i++)
+            for (var i = 0; i < Layers.Count; i++)
             {
                 var entity = Layers[i].LoadDictionaryStorageEntity(entityId, partitionId);
 
                 if (entity != null)
                 {
-                    for (int ii = (i - 1); i >= 0; i--)
+                    for (var ii = (i - 1); i >= 0; i--)
                     {
                         Layers[ii].InsertOrUpdateDictionaryStorageEntity(entity);
                     }

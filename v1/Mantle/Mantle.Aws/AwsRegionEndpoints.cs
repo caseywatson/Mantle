@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Amazon;
+﻿using Amazon;
 using Mantle.Aws.Interfaces;
 using Mantle.Extensions;
 

@@ -64,11 +64,13 @@ namespace Mantle.PhotoGallery.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Load(
-                Assembly.GetExecutingAssembly().LoadProfileNinjectModules(
-                    new AppSettingProfileProvider().GetProfiles()));
+            var assembly = Assembly.GetExecutingAssembly();
+            var profileProvider = new AppSettingProfileProvider();
+            var profiles = profileProvider.GetProfiles();
 
-            MantleContext.Current = new MantleContext(new NinjectDependencyResolver(kernel));
+            kernel.Load(assembly.LoadProfileNinjectModules(profiles));
+
+            MantleContext.Current = new MantleContext(new NinjectDependencyResolver(kernel), profiles);
         }
     }
 }
