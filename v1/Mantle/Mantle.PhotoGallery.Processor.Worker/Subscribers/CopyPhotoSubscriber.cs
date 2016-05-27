@@ -6,6 +6,7 @@ using Mantle.Messaging.Messages;
 using Mantle.Messaging.Subscribers;
 using Mantle.PhotoGallery.PhotoProcessing.Commands;
 using Mantle.PhotoGallery.PhotoProcessing.Interfaces;
+using Mantle.PhotoGallery.Processor.Worker.Constants;
 
 namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
 {
@@ -21,6 +22,8 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
         {
             this.photoCopyService = photoCopyService;
             this.publisherChannelDirectory = publisherChannelDirectory;
+
+            SaveImageCommandChannelName = ChannelNames.SaveImageCommandChannel;
         }
 
         [Configurable(IsRequired = true)]
