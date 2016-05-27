@@ -17,14 +17,14 @@ namespace Mantle.DictionaryStorage.Redis.Clients
 
         public RedisDictionaryStorageClient()
         {
-            DatabaseId = -1;
+            RedisDatabaseId = -1;
         }
 
         [Configurable(IsRequired = true)]
-        public string ConnectionString { get; set; }
+        public string RedisConnectionString { get; set; }
 
         [Configurable]
-        public int DatabaseId { get; set; }
+        public int RedisDatabaseId { get; set; }
 
         [Configurable]
         public TimeSpan? ExpirationTimeSpan { get; set; }
@@ -134,12 +134,12 @@ namespace Mantle.DictionaryStorage.Redis.Clients
         private IConnectionMultiplexer GetConnectionMultiplexer()
         {
             return connectionMultiplexer = connectionMultiplexer ??
-                                           StackExchange.Redis.ConnectionMultiplexer.Connect(ConnectionString);
+                                           StackExchange.Redis.ConnectionMultiplexer.Connect(RedisConnectionString);
         }
 
         private IDatabase GetDatabase()
         {
-            return GetConnectionMultiplexer().GetDatabase(DatabaseId);
+            return GetConnectionMultiplexer().GetDatabase(RedisDatabaseId);
         }
     }
 }

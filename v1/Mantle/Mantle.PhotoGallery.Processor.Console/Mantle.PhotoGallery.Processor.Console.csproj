@@ -54,8 +54,10 @@
     <Compile Include="Constants\BlobStorageClientNames.cs" />
     <Compile Include="Constants\PhotoSources.cs" />
     <Compile Include="Mantle\Aws\DictionaryStorageModule.cs" />
+    <Compile Include="Mantle\Aws\IdentityModule.cs" />
     <Compile Include="Mantle\Aws\MessagingModule.cs" />
     <Compile Include="Mantle\Azure\DictionaryStorageModule.cs" />
+    <Compile Include="Mantle\Azure\IdentityModule.cs" />
     <Compile Include="Mantle\Azure\MessagingModule.cs" />
     <Compile Include="Mantle\Default\MessagingModule.cs" />
     <Compile Include="Mantle\Default\BlobStorageModule.cs" />
