@@ -1,4 +1,4 @@
-﻿namespace Mantle.PhotoGallery.Processor.Console.Constants
+﻿namespace Mantle.PhotoGallery.PhotoProcessing.Constants
 {
     public static class PhotoSources
     {

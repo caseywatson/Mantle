@@ -51,8 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\BlobStorageClientNames.cs" />
-    <Compile Include="Constants\PhotoSources.cs" />
     <Compile Include="Mantle\Aws\DictionaryStorageModule.cs" />
     <Compile Include="Mantle\Aws\IdentityModule.cs" />
     <Compile Include="Mantle\Aws\MessagingModule.cs" />

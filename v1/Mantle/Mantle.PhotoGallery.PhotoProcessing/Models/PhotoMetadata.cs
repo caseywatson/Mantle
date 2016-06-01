@@ -14,6 +14,7 @@ namespace Mantle.PhotoGallery.PhotoProcessing.Models
         public string UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ContentType { get; set; }
         public DateTime PhotoDateUtc { get; set; }
     }
 }
