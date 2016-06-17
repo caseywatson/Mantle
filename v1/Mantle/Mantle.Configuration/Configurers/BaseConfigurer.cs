@@ -26,7 +26,7 @@ namespace Mantle.Configuration.Configurers
             if (propertyConfigurers == null)
             {
                 var localPropertyConfigurerTypes = Assembly.GetExecutingAssembly().GetTypes()
-                    .Where(t => (typeof(IPropertyConfigurer).IsAssignableFrom(t)) &&
+                    .Where(t => typeof(IPropertyConfigurer).IsAssignableFrom(t) &&
                                 (t.IsAbstract == false) &&
                                 (t.IsInterface == false) &&
                                 (t.GetConstructor(Type.EmptyTypes) != null)).ToList();
@@ -109,13 +109,17 @@ namespace Mantle.Configuration.Configurers
         {
             if (IsNullOrEmpty(cfgObject.Name) == false)
             {
-                yield return
-                    $"{cfgObject.Name}.{cfgObject.TypeMetadata.Type.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}"
-                    ;
-                yield return $"{cfgObject.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
+                yield return $"{cfgObject.Name}." +
+                             $"{cfgObject.TypeMetadata.Type.Name}." +
+                             $"{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
+
+                yield return $"{cfgObject.Name}." +
+                             $"{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
             }
 
-            yield return $"{cfgObject.TypeMetadata.Type.Name}.{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
+            yield return $"{cfgObject.TypeMetadata.Type.Name}." +
+                         $"{cfgProperty.PropertyMetadata.PropertyInfo.Name}";
+
             yield return cfgProperty.PropertyMetadata.PropertyInfo.Name;
         }
 

@@ -3,7 +3,7 @@ using Mantle.Providers;
 using Mantle.Serializers;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Default
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Default
 {
     public class MantleModule : NinjectModule
     {

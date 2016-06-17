@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mantle.Extensions;
+using Mantle.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
@@ -10,14 +11,14 @@ namespace Mantle.DictionaryStorage.Azure.Entities
     public class AzureTableDictionaryStorageEntity<T> : ITableEntity
         where T : class, new()
     {
-        private readonly TypeMetadata typeMetadata;
+        private readonly ITypeMetadata<T> typeMetadata;
 
         public AzureTableDictionaryStorageEntity()
         {
-            typeMetadata = new TypeMetadata(typeof(T));
+            typeMetadata = new TypeMetadata<T>();
         }
 
-        public AzureTableDictionaryStorageEntity(TypeMetadata typeMetadata)
+        public AzureTableDictionaryStorageEntity(ITypeMetadata<T> typeMetadata)
         {
             typeMetadata.Require(nameof(typeMetadata));
 

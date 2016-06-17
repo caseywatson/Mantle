@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mantle.Interfaces;
 
 namespace Mantle
 {
-    public class TypeMetadata<T> : TypeMetadata
+    public class TypeMetadata<T> : TypeMetadata, ITypeMetadata<T>
     {
         public TypeMetadata()
             : base(typeof(T))
@@ -12,32 +13,20 @@ namespace Mantle
         }
     }
 
-    public class TypeMetadata
+    public class TypeMetadata : ITypeMetadata
     {
-        public TypeMetadata()
-        {
-            Attributes = new List<Attribute>();
-            Properties = new List<PropertyMetadata>();
-        }
-
         public TypeMetadata(Type type)
-            : this()
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
-            Load(type);
-        }
-
-        public List<Attribute> Attributes { get; set; }
-        public List<PropertyMetadata> Properties { get; set; }
-        public Type Type { get; set; }
-
-        private void Load(Type type)
-        {
             Type = type;
-            Attributes.AddRange(type.GetCustomAttributes(false).OfType<Attribute>());
-            Properties.AddRange(type.GetProperties().Select(p => new PropertyMetadata(p)));
+            Attributes = type.GetCustomAttributes(false).OfType<Attribute>().ToList();
+            Properties = type.GetProperties().Select(p => new PropertyMetadata(p)).ToList();
         }
+
+        public IList<Attribute> Attributes { get; set; }
+        public IList<PropertyMetadata> Properties { get; set; }
+        public Type Type { get; set; }
     }
 }

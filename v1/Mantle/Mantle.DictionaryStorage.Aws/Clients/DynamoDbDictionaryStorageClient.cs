@@ -11,6 +11,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
+using Mantle.Interfaces;
 using Newtonsoft.Json;
 
 namespace Mantle.DictionaryStorage.Aws.Clients
@@ -21,18 +22,18 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
         private readonly Dictionary<Type, Func<AttributeValue, object>> fromDynamoDbAttributeValue;
         private readonly Dictionary<Type, Func<object, AttributeValue>> toDynamoDbAttributeValue;
-        private readonly TypeMetadata typeMetadata;
+        private readonly ITypeMetadata<T> typeMetadata;
 
         private AmazonDynamoDBClient dynamoDbClient;
 
-        public DynamoDbDictionaryStorageClient(IAwsRegionEndpoints awsRegionEndpoints)
+        public DynamoDbDictionaryStorageClient(IAwsRegionEndpoints awsRegionEndpoints,
+                                               ITypeMetadata<T> typeMetadata)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
+            this.typeMetadata = typeMetadata;
 
             fromDynamoDbAttributeValue = GetFromDynamoDbAttributeValueConversions();
             toDynamoDbAttributeValue = GetToDynamoDbAttributeValueConversions();
-
-            typeMetadata = new TypeMetadata<T>();
 
             AutoSetup = true;
             TableReadCapacityUnits = 10;
@@ -336,9 +337,9 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         private AttributeValue ToAttributeValue(string source)
         {
-            return (string.IsNullOrEmpty(source)
+            return string.IsNullOrEmpty(source)
                 ? new AttributeValue {NULL = true}
-                : new AttributeValue {S = source});
+                : new AttributeValue {S = source};
         }
 
         private AmazonDynamoDBClient GetAmazonDynamoDbClient()
@@ -419,7 +420,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             try
             {
-                return (dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE);
+                return dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE;
             }
             catch (ResourceNotFoundException)
             {

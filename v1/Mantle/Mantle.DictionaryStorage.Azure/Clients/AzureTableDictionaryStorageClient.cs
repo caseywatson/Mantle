@@ -5,6 +5,7 @@ using Mantle.DictionaryStorage.Azure.Entities;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
+using Mantle.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -13,14 +14,14 @@ namespace Mantle.DictionaryStorage.Azure.Clients
     public class AzureTableDictionaryStorageClient<T> : IDictionaryStorageClient<T>
         where T : class, new()
     {
-        private readonly TypeMetadata typeMetadata;
+        private readonly ITypeMetadata<T> typeMetadata;
 
         private CloudStorageAccount cloudStorageAccount;
         private CloudTableClient cloudTableClient;
 
-        public AzureTableDictionaryStorageClient()
+        public AzureTableDictionaryStorageClient(ITypeMetadata<T> typeMetadata)
         {
-            typeMetadata = new TypeMetadata(typeof(T));
+            this.typeMetadata = typeMetadata;
 
             AutoSetup = true;
         }
