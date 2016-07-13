@@ -5,7 +5,7 @@ using Mantle.Ninject;
 using Mantle.PhotoGallery.PhotoProcessing.Models;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Aws
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Aws
 {
     public class DictionaryStorageModule : NinjectModule
     {

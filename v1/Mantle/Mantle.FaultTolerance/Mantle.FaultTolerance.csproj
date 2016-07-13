@@ -40,12 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreakerPanel.cs" />
+    <Compile Include="Interfaces\IBreakerPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrialResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mantle\Mantle.csproj">

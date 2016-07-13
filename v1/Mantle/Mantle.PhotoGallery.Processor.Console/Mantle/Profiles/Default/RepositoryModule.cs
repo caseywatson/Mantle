@@ -2,7 +2,7 @@
 using Mantle.PhotoGallery.PhotoProcessing.Repositories;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Processor.Console.Mantle.Default
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Default
 {
     public class RepositoryModule : NinjectModule
     {

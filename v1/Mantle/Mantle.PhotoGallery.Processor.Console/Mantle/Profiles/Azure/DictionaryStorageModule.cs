@@ -1,5 +1,5 @@
 ﻿using Mantle.Configuration.Configurers;
-using Mantle.DictionaryStorage.Aws.Clients;
+using Mantle.DictionaryStorage.Azure.Clients;
 using Mantle.DictionaryStorage.Clients;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.DictionaryStorage.Redis.Clients;
@@ -7,7 +7,7 @@ using Mantle.Ninject;
 using Mantle.PhotoGallery.PhotoProcessing.Models;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Processor.Console.Mantle.Aws
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Azure
 {
     public class DictionaryStorageModule : NinjectModule
     {
@@ -19,17 +19,17 @@ namespace Mantle.PhotoGallery.Processor.Console.Mantle.Aws
                 .ConfigureUsing(new ConnectionStringsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>(),
                                 new AppSettingsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>());
 
-            Bind<DynamoDbDictionaryStorageClient<PhotoMetadata>>()
+            Bind<AzureTableDictionaryStorageClient<PhotoMetadata>>()
                 .ToSelf()
                 .InTransientScope()
-                .ConfigureUsing(new ConnectionStringsConfigurer<DynamoDbDictionaryStorageClient<PhotoMetadata>>(),
-                                new AppSettingsConfigurer<DynamoDbDictionaryStorageClient<PhotoMetadata>>());
+                .ConfigureUsing(new ConnectionStringsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>(),
+                                new AppSettingsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>());
 
             Bind<IDictionaryStorageClient<PhotoMetadata>>()
                 .To<LayeredDictionaryStorageClient<
                     PhotoMetadata,
                     RedisDictionaryStorageClient<PhotoMetadata>,
-                    DynamoDbDictionaryStorageClient<PhotoMetadata>>>()
+                    AzureTableDictionaryStorageClient<PhotoMetadata>>>()
                 .InTransientScope();
         }
     }

@@ -5,7 +5,7 @@ using Mantle.Messaging.Strategies;
 using Mantle.Ninject;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Processor.Console.Mantle.Default
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Default
 {
     public class MessagingModule : NinjectModule
     {

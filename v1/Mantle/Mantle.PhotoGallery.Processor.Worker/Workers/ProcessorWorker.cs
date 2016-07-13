@@ -13,7 +13,8 @@ namespace Mantle.PhotoGallery.Processor.Worker.Workers
         public ProcessorWorker(IDependencyResolver dependencyResolver) : base(dependencyResolver)
         {
             AddSubscriberChannel(
-                dependencyResolver.Get<ISubscriberChannel<MessageEnvelope>>(ChannelNames.ProcessorChannel));
+                dependencyResolver.Get<ISubscriberChannel<MessageEnvelope>>(
+                    ChannelNames.ProcessorChannel));
 
             SubscribeTo<CopyPhoto>();
             SubscribeTo<SavePhoto>();

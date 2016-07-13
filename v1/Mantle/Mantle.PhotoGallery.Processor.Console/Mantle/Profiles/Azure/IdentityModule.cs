@@ -5,7 +5,7 @@ using Mantle.Identity.Interfaces;
 using Mantle.Ninject;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Processor.Console.Mantle.Azure
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Azure
 {
     public class IdentityModule : NinjectModule
     {

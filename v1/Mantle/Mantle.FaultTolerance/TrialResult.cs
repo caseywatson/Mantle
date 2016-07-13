@@ -11,8 +11,10 @@ namespace Mantle.FaultTolerance
         }
 
         public Dictionary<TimeSpan, Exception> Exceptions { get; set; }
-        public bool WasSuccessful { get; set; }
+
         public int TotalAttempts { get; set; }
+
+        public bool WasSuccessful { get; set; }
     }
 
     public class TrialResult<T> : TrialResult

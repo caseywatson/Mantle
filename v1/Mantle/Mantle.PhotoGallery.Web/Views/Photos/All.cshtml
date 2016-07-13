@@ -1,13 +1,12 @@
 ﻿@model List<Mantle.PhotoGallery.Web.Models.PhotoViewModel>
 
 <h2>My photos</h2>
-<hr/>
 
 <table class="table">
     @foreach (var photo in Model)
     {
         <tr>
-            <td style="text-align: center; vertical-align: middle">
+            <td style="text-align: center; vertical-align: middle; white-space: nowrap; width: 1%">
                 <a href="@photo.PhotoUrl" class="thumbnail">
                     <img src="@photo.ThumbnailUrl" alt="@photo.Title" style="padding: 10px"/>
                 </a>
@@ -24,29 +23,13 @@
                         <span>@photo.Description</span>
                     }
                 </p>
-                <p>
-                    <table class="text-muted" style="border-width: 0; font-size: .75em">
-                        <tr>
-                            <th>Uploaded By</th>
-                            <td>&nbsp;</td>
-                            <td>@photo.UserName</td>
-                        </tr>
-                        <tr>
-                            <th>Upload Date (UTC)</th>
-                            <td>&nbsp;</td>
-                            <td>@photo.PhotoDateUtc.ToString()</td>
-                        </tr>
-                        <tr>
-                            <th>Source</th>
-                            <td>&nbsp;</td>
-                            <td>@photo.Source</td>
-                        </tr>
-                        <tr>
-                            <th>Photo Id</th>
-                            <td>&nbsp;</td>
-                            <td>@photo.Id</td>
-                        </tr>
-                    </table>
+                <p class="text-muted">
+                    <small>
+                        <b>Uploaded By: </b>@photo.UserName<br/>
+                        <b>Upload Date (UTC): </b>@photo.PhotoDateUtc<br/>
+                        <b>Source: </b>@photo.Source<br/>
+                        <b>Photo Id: </b>@photo.Id
+                    </small>
                 </p>
             </td>
         </tr>

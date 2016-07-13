@@ -6,7 +6,7 @@ using Mantle.Ninject;
 using Mantle.PhotoGallery.Processor.Worker.Constants;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Processor.Console.Mantle.Aws
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Aws
 {
     public class MessagingModule : NinjectModule
     {

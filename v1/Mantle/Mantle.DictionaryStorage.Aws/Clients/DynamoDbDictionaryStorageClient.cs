@@ -188,7 +188,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             {
                 var propertyInfo = property.PropertyInfo;
                 var propertyType = propertyInfo.PropertyType;
-                var propertyValue = propertyInfo.GetValue(entity);
+                var propertyValue = propertyInfo.GetValue(entity.Entity);
 
                 if (propertyValue == null)
                 {
@@ -384,13 +384,13 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                     {
                         new KeySchemaElement
                         {
-                            AttributeName = AttributeNames.EntityId,
-                            KeyType = KeyType.RANGE
+                            AttributeName = AttributeNames.PartitionId,
+                            KeyType = KeyType.HASH
                         },
                         new KeySchemaElement
                         {
-                            AttributeName = AttributeNames.PartitionId,
-                            KeyType = KeyType.HASH
+                            AttributeName = AttributeNames.EntityId,
+                            KeyType = KeyType.RANGE
                         }
                     },
                     ProvisionedThroughput = new ProvisionedThroughput

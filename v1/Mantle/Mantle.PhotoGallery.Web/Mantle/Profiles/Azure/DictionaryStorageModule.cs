@@ -5,6 +5,7 @@ using Mantle.DictionaryStorage.Interfaces;
 using Mantle.DictionaryStorage.Redis.Clients;
 using Mantle.Ninject;
 using Mantle.PhotoGallery.PhotoProcessing.Models;
+using Mantle.PhotoGallery.Web.Mantle.Constants;
 using Ninject.Modules;
 
 namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Azure
@@ -16,12 +17,14 @@ namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Azure
             Bind<RedisDictionaryStorageClient<PhotoMetadata>>()
                 .ToSelf()
                 .InTransientScope()
+                .Named(DictionaryStorageClientNames.PhotoMetadataCache)
                 .ConfigureUsing(new ConnectionStringsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>(),
                                 new AppSettingsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>());
 
             Bind<AzureTableDictionaryStorageClient<PhotoMetadata>>()
                 .ToSelf()
                 .InTransientScope()
+                .Named(DictionaryStorageClientNames.PhotoMetadata)
                 .ConfigureUsing(new ConnectionStringsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>(),
                                 new AppSettingsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>());
 

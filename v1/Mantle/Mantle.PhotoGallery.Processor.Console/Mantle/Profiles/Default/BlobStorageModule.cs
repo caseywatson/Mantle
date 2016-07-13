@@ -6,7 +6,7 @@ using Mantle.Ninject;
 using Mantle.PhotoGallery.PhotoProcessing.Constants;
 using Ninject.Modules;
 
-namespace Mantle.PhotoGallery.Processor.Console.Mantle.Default
+namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Default
 {
     public class BlobStorageModule : NinjectModule
     {

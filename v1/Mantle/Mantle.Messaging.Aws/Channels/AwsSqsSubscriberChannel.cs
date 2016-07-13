@@ -17,7 +17,7 @@ namespace Mantle.Messaging.Aws.Channels
         public AwsSqsSubscriberChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
             : base(awsRegionEndpoints, serializer)
         {
-            DefaultMessageReceiveTimeout = TimeSpan.FromSeconds(30);
+            DefaultMessageReceiveTimeout = TimeSpan.FromSeconds(20);
             MessageVisibilityTimeout = TimeSpan.FromSeconds(30);
         }
 
@@ -46,6 +46,8 @@ namespace Mantle.Messaging.Aws.Channels
         {
             timeout = (timeout ?? DefaultMessageReceiveTimeout);
 
+            var sqsClient = AmazonSqsClient;
+
             var receiveMessageRequest = new ReceiveMessageRequest
             {
                 QueueUrl = QueueUrl,
@@ -55,7 +57,7 @@ namespace Mantle.Messaging.Aws.Channels
 
             receiveMessageRequest.AttributeNames.Add(AwsSqsMessageAttributes.ApproximateReceiveCount);
 
-            var receiveMessageResponse = AmazonSqsClient.ReceiveMessage(receiveMessageRequest);
+            var receiveMessageResponse = sqsClient.ReceiveMessage(receiveMessageRequest);
             var message = receiveMessageResponse.Messages?.FirstOrDefault();
 
             if (message == null)

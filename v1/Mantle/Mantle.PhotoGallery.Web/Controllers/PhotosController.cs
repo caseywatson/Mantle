@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -62,6 +61,7 @@ namespace Mantle.PhotoGallery.Web.Controllers
             thumbnailStorageClient = storageClientDirectory[BlobStorageClientNames.ThumbnailStorage];
         }
 
+        [OutputCache(Duration = int.MaxValue, VaryByParam = "id")]
         public ActionResult Photo(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -80,6 +80,8 @@ namespace Mantle.PhotoGallery.Web.Controllers
             return File(photo, photoMetadata.ContentType);
         }
 
+
+        [OutputCache(Duration = int.MaxValue, VaryByParam = "id")]
         public ActionResult Thumbnail(string id)
         {
             if (string.IsNullOrEmpty(id))

@@ -126,13 +126,15 @@ namespace Mantle.DictionaryStorage.Clients
 
                 if (entities.Any())
                 {
-                    for (var ii = (i - 1); i >= 0; i--)
+                    for (var ii = (i - 1); i > 0; i--)
                     {
                         Layers[ii].InsertOrUpdateDictionaryStorageEntities(entities);
                     }
 
                     foreach (var iLayerEntity in entities)
                         yield return iLayerEntity;
+
+                    yield break;
                 }
             }
         }
@@ -148,7 +150,7 @@ namespace Mantle.DictionaryStorage.Clients
 
                 if (entity != null)
                 {
-                    for (var ii = (i - 1); i >= 0; i--)
+                    for (var ii = (i - 1); i > 0; i--)
                     {
                         Layers[ii].InsertOrUpdateDictionaryStorageEntity(entity);
                     }
