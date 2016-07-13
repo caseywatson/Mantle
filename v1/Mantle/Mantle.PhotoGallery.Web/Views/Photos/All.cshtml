@@ -1,6 +1,7 @@
 ﻿@model List<Mantle.PhotoGallery.Web.Models.PhotoViewModel>
 
 <h2>My photos</h2>
+<hr/>
 
 <table class="table">
     @foreach (var photo in Model)
@@ -25,6 +26,11 @@
                 </p>
                 <p>
                     <table class="text-muted" style="border-width: 0; font-size: .75em">
+                        <tr>
+                            <th>Uploaded By</th>
+                            <td>&nbsp;</td>
+                            <td>@photo.UserName</td>
+                        </tr>
                         <tr>
                             <th>Upload Date (UTC)</th>
                             <td>&nbsp;</td>

@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mantle.Hosting\Mantle.Hosting.csproj">
-      <Project>{E2225D04-8C48-4295-8741-3019B668C06A}</Project>
+      <Project>{e2225d04-8c48-4295-8741-3019b668c06a}</Project>
       <Name>Mantle.Hosting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">

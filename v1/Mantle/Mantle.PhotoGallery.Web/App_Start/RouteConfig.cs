@@ -12,7 +12,7 @@ namespace Mantle.PhotoGallery.Web
             routes.MapRoute(
                 "Default",
                 "{controller}/{action}/{id}",
-                new {controller = "Home", action = "Index", id = UrlParameter.Optional}
+                new {controller = "Photos", action = "All", id = UrlParameter.Optional}
                 );
         }
     }

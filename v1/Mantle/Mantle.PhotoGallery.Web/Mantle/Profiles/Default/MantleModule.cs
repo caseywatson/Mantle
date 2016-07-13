@@ -1,4 +1,8 @@
-﻿using Mantle.Interfaces;
+﻿using Mantle.Configuration.Configurers;
+using Mantle.Interfaces;
+using Mantle.Ninject;
+using Mantle.PhotoGallery.Web.Interfaces;
+using Mantle.PhotoGallery.Web.Metadata;
 using Mantle.Providers;
 using Mantle.Serializers;
 using Ninject.Modules;

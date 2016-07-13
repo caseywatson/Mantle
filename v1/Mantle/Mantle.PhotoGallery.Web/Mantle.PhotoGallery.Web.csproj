@@ -276,17 +276,18 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Attributes\MaxUploadSizeAttribute.cs" />
-    <Compile Include="Attributes\MustBeImageAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
+    <Compile Include="Mantle\Profiles\Default\DeploymentModule.cs" />
+    <Compile Include="Metadata\DeploymentMetadata.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IDeploymentMetadata.cs" />
     <Compile Include="Mantle\Constants\BlobStorageClientNames.cs" />
     <Compile Include="Mantle\Constants\ChannelNames.cs" />
+    <Compile Include="Enumerations\Platform.cs" />
     <Compile Include="Mantle\Identity\MantleSignInManager.cs" />
     <Compile Include="Mantle\Identity\MantleUserManager.cs" />
     <Compile Include="Mantle\Profiles\Aws\BlobStorageModule.cs" />
@@ -376,6 +377,7 @@
     <Content Include="Views\Photo\Upload.cshtml" />
     <Content Include="Views\Photos\Upload.cshtml" />
     <Content Include="Views\Photos\My.cshtml" />
+    <Content Include="Views\Photos\All.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
