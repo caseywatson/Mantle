@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
 using Mantle.FaultTolerance.Interfaces;
 
@@ -15,7 +16,12 @@ namespace Mantle.FaultTolerance
         {
             breakerDictionary = new Dictionary<string, DateTime>();
             panelLock = new ReaderWriterLockSlim();
+
+            DefaultBreakerResetTimeout = TimeSpan.FromMinutes(5);
         }
+
+        [Configurable]
+        public TimeSpan DefaultBreakerResetTimeout { get; set; }
 
         public bool IsBreakerTripped(string breakerName)
         {
@@ -25,22 +31,49 @@ namespace Mantle.FaultTolerance
             {
                 panelLock.EnterUpgradeableReadLock();
 
-                if (breakerDictionary.ContainsKey(breakerName) == false)
-                    return false;
-
-                if (breakerDictionary[breakerName] > DateTime.Now)
-                    return true;
-
-                try
+                if (breakerDictionary.ContainsKey(breakerName))
                 {
-                    panelLock.EnterWriteLock();
-                    breakerDictionary.Remove(breakerName);
+                    if (breakerDictionary[breakerName] > DateTime.Now)
+                        return true;
 
-                    return false;
+                    try
+                    {
+                        panelLock.EnterWriteLock();
+                        breakerDictionary.Remove(breakerName);
+                    }
+                    finally
+                    {
+                        panelLock.ExitWriteLock();
+                    }
                 }
-                finally
+
+                return false;
+            }
+            finally
+            {
+                panelLock.ExitUpgradeableReadLock();
+            }
+        }
+
+        public void ResetBreaker(string breakerName)
+        {
+            breakerName.Require(nameof(breakerName));
+
+            try
+            {
+                panelLock.EnterUpgradeableReadLock();
+
+                if (breakerDictionary.ContainsKey(breakerName))
                 {
-                    panelLock.ExitWriteLock();
+                    try
+                    {
+                        panelLock.EnterWriteLock();
+                        breakerDictionary.Remove(breakerName);
+                    }
+                    finally
+                    {
+                        panelLock.ExitWriteLock();
+                    }
                 }
             }
             finally
@@ -55,12 +88,12 @@ namespace Mantle.FaultTolerance
 
             try
             {
-                panelLock.EnterUpgradeableReadLock();
+                panelLock.EnterWriteLock();
+                breakerDictionary[breakerName] = DateTime.Now.Add(resetAfter ?? DefaultBreakerResetTimeout);
             }
-            catch (Exception)
+            finally
             {
-                
-                throw;
+                panelLock.ExitWriteLock();
             }
         }
     }
