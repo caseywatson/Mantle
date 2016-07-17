@@ -26,6 +26,8 @@ namespace Mantle.FaultTolerance.Extensions
                     try
                     {
                         toTry(target);
+
+                        return;
                     }
                     catch (Exception ex)
                     {
@@ -104,6 +106,8 @@ namespace Mantle.FaultTolerance.Extensions
                     try
                     {
                         toTry(target);
+
+                        return;
                     }
                     catch (Exception ex)
                     {
