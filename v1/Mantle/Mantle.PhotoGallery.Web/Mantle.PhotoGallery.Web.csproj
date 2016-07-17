@@ -431,6 +431,10 @@
       <Project>{8edace4a-5f52-47f3-a5d0-5f72cf14cd74}</Project>
       <Name>Mantle.DictionaryStorage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.FaultTolerance\Mantle.FaultTolerance.csproj">
+      <Project>{D1D8FF07-1AF7-4A50-993B-0477ED7AC3E5}</Project>
+      <Name>Mantle.FaultTolerance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle.Identity.Aws\Mantle.Identity.Aws.csproj">
       <Project>{5f47ca86-831b-4f82-aa02-b679c4d81d38}</Project>
       <Name>Mantle.Identity.Aws</Name>

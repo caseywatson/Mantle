@@ -1,13 +1,13 @@
 ﻿@model List<Mantle.PhotoGallery.Web.Models.PhotoViewModel>
 
-<h2>My photos</h2>
+<h2>All photos</h2>
 
 <table class="table">
     @foreach (var photo in Model)
     {
         <tr>
             <td style="text-align: center; vertical-align: middle; white-space: nowrap; width: 1%">
-                <a href="@photo.PhotoUrl" class="thumbnail">
+                <a href="@photo.PhotoUrl">
                     <img src="@photo.ThumbnailUrl" alt="@photo.Title" style="padding: 10px"/>
                 </a>
             </td>

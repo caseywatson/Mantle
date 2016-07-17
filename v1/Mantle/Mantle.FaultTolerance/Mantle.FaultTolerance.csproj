@@ -68,6 +68,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Interfaces\IBreakerPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrialException.cs" />
     <Compile Include="TrialResult.cs" />
   </ItemGroup>
   <ItemGroup>
