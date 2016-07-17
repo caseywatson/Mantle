@@ -12,7 +12,7 @@ namespace Mantle.FaultTolerance.Extensions
                                                                             int initialIntervalInSeconds = 2,
                                                                             int maxAttempts = 4)
         {
-            toTry.Require(nameof(target));
+            toTry.Require(nameof(toTry));
 
             var stopwatch = new Stopwatch();
             var trialResult = new TrialResult();
@@ -53,7 +53,7 @@ namespace Mantle.FaultTolerance.Extensions
                                                                                         int initialIntervalInSeconds = 2,
                                                                                         int maxAttempts = 4)
         {
-            toTry.Require(nameof(target));
+            toTry.Require(nameof(toTry));
 
             var stopwatch = new Stopwatch();
             var trialResult = new TrialResult<TResult>();
@@ -92,7 +92,7 @@ namespace Mantle.FaultTolerance.Extensions
                                                                       int intervalInSeconds = 2,
                                                                       int maxAttempts = 4)
         {
-            toTry.Require(nameof(target));
+            toTry.Require(nameof(toTry));
 
             var stopwatch = new Stopwatch();
             var trialResult = new TrialResult();
@@ -133,7 +133,7 @@ namespace Mantle.FaultTolerance.Extensions
                                                                                   int intervalInSeconds = 2,
                                                                                   int maxAttempts = 4)
         {
-            toTry.Require(nameof(target));
+            toTry.Require(nameof(toTry));
 
             var stopwatch = new Stopwatch();
             var trialResult = new TrialResult<TResult>();
