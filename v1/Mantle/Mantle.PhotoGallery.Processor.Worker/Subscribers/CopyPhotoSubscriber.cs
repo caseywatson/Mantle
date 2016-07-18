@@ -38,8 +38,17 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
 
             if (message.PhotoSource != PhotoDestination)
             {
+                OnMessageOccurred($"Copying photo [{message.PhotoMetadata.Id}] from [{message.PhotoSource}] " +
+                                  $"to [{PhotoDestination}]...");
+
                 photoCopyService.CopyPhoto(message.PhotoMetadata, message.PhotoSource, PhotoDestination);
+
+                OnMessageOccurred($"Copying photo [{message.PhotoMetadata.Id}] from [{message.PhotoSource}] " +
+                                  $"to [{PhotoDestination}]. Sending [SavePhoto] command...");
+
                 GetPublisherChannel().Publish(new SavePhoto(message.PhotoMetadata));
+
+                OnMessageOccurred($"Photo [{message.PhotoMetadata.Id}] [SavePhoto] command sent.");
             }
         }
 

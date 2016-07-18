@@ -39,7 +39,12 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
             var photoMetadata = messageContext.Message.PhotoMetadata;
 
             CreateThumbnail(photoMetadata);
+
+            OnMessageOccurred($"Updating photo [{photoMetadata.Id}] metadata...");
+
             photoMetadataRepository.InsertOrUpdatePhotoMetadata(photoMetadata);
+
+            OnMessageOccurred($"Photo [{photoMetadata.Id}] updated.");
         }
 
         private void CreateThumbnail(PhotoMetadata photoMetadata)
@@ -50,9 +55,15 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
                 throw new InvalidOperationException(
                     $"Photo [{photoMetadata.Id}] not found. Unable to create thumbnail image.");
 
+            OnMessageOccurred($"Creating photo [{photoMetadata.Id}] thumbnail...");
+
             var thumbnail = photoThumbnailService.GenerateThumbnail(photo);
 
+            OnMessageOccurred($"Created photo [{photoMetadata.Id}] thumbnail. Saving thumbnail...");
+
             GetThumbnailStorageClient().UploadBlob(thumbnail, photoMetadata.Id);
+
+            OnMessageOccurred($"Saved photo [{photoMetadata.Id}] thumbnail.");
         }
 
         private IBlobStorageClient GetPhotoStorageClient()
