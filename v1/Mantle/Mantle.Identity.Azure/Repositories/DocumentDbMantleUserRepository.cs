@@ -36,6 +36,8 @@ namespace Mantle.Identity.Azure.Repositories
 
         public DocumentDbMantleUserRepository(ITransientFaultStrategy transientFaultStrategy)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
+
             AutoSetup = true;
             DocumentDbDatabaseId = "MantleUsers";
             DocumentDbCollectionId = "MantleUsers";
