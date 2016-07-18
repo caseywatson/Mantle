@@ -86,6 +86,10 @@
       <Project>{8EDACE4A-5F52-47F3-A5D0-5F72CF14CD74}</Project>
       <Name>Mantle.DictionaryStorage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.FaultTolerance\Mantle.FaultTolerance.csproj">
+      <Project>{d1d8ff07-1af7-4a50-993b-0477ed7ac3e5}</Project>
+      <Name>Mantle.FaultTolerance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{CE605888-E0D5-4195-9115-45CC9A3B0548}</Project>
       <Name>Mantle</Name>

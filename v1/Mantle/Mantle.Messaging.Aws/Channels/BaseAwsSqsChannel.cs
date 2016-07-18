@@ -3,6 +3,7 @@ using System.Configuration;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Mantle.Aws.Interfaces;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 
 namespace Mantle.Messaging.Aws.Channels
@@ -11,12 +12,16 @@ namespace Mantle.Messaging.Aws.Channels
         where T : class
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
+        private readonly ITransientFaultStrategy transientFaultStrategy;
 
         private AmazonSQSClient awsSqsClient;
 
-        protected BaseAwsSqsChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
+        protected BaseAwsSqsChannel(IAwsRegionEndpoints awsRegionEndpoints,
+                                    ISerializer<T> serializer,
+                                    ITransientFaultStrategy transientFaultStrategy)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
+            this.transientFaultStrategy = transientFaultStrategy;
 
             Serializer = serializer;
         }
@@ -48,7 +53,8 @@ namespace Mantle.Messaging.Aws.Channels
                 if (awsRegionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
 
-                awsSqsClient = new AmazonSQSClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
+                awsSqsClient = transientFaultStrategy.Try(
+                    () => new AmazonSQSClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint));
 
                 SetupQueue(awsSqsClient);
             }
@@ -58,12 +64,12 @@ namespace Mantle.Messaging.Aws.Channels
 
         private void SetupQueue(AmazonSQSClient amazonSqsClient)
         {
-            QueueUrl = GetQueueUrlByName(amazonSqsClient, QueueName);
+            QueueUrl = transientFaultStrategy.Try(() => GetQueueUrlByName(amazonSqsClient, QueueName));
 
             if (QueueUrl == null)
             {
                 if (AutoSetup)
-                    QueueUrl = amazonSqsClient.CreateQueue(QueueName).QueueUrl;
+                    QueueUrl = transientFaultStrategy.Try(() => amazonSqsClient.CreateQueue(QueueName).QueueUrl);
                 else
                     throw new ConfigurationErrorsException($"AWS SQS queue [{QueueName}] does not exist.");
             }

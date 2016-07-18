@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Amazon.SQS.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Aws.Constants;
 using Mantle.Messaging.Aws.Contexts;
@@ -14,9 +15,15 @@ namespace Mantle.Messaging.Aws.Channels
     public class AwsSqsSubscriberChannel<T> : BaseAwsSqsChannel<T>, ISubscriberChannel<T>
         where T : class
     {
-        public AwsSqsSubscriberChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
-            : base(awsRegionEndpoints, serializer)
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
+        public AwsSqsSubscriberChannel(IAwsRegionEndpoints awsRegionEndpoints,
+                                       ISerializer<T> serializer,
+                                       ITransientFaultStrategy transientFaultStrategy)
+            : base(awsRegionEndpoints, serializer, transientFaultStrategy)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
+
             DefaultMessageReceiveTimeout = TimeSpan.FromSeconds(20);
             MessageVisibilityTimeout = TimeSpan.FromSeconds(30);
         }
@@ -57,7 +64,9 @@ namespace Mantle.Messaging.Aws.Channels
 
             receiveMessageRequest.AttributeNames.Add(AwsSqsMessageAttributes.ApproximateReceiveCount);
 
-            var receiveMessageResponse = sqsClient.ReceiveMessage(receiveMessageRequest);
+            var receiveMessageResponse = transientFaultStrategy.Try(
+                () => sqsClient.ReceiveMessage(receiveMessageRequest));
+
             var message = receiveMessageResponse.Messages?.FirstOrDefault();
 
             if (message == null)
@@ -81,7 +90,9 @@ namespace Mantle.Messaging.Aws.Channels
         {
             try
             {
-                AmazonSqsClient.ChangeMessageVisibility(QueueUrl, sqsMessage.ReceiptHandle, 0);
+                transientFaultStrategy.Try(
+                    () => AmazonSqsClient.ChangeMessageVisibility(QueueUrl, sqsMessage.ReceiptHandle, 0));
+
                 return true;
             }
             catch
@@ -94,7 +105,9 @@ namespace Mantle.Messaging.Aws.Channels
         {
             try
             {
-                AmazonSqsClient.DeleteMessage(QueueUrl, sqsMessage.ReceiptHandle);
+                transientFaultStrategy.Try(
+                    () => AmazonSqsClient.DeleteMessage(QueueUrl, sqsMessage.ReceiptHandle));
+
                 return true;
             }
             catch
@@ -107,10 +120,11 @@ namespace Mantle.Messaging.Aws.Channels
         {
             try
             {
-                AmazonSqsClient.ChangeMessageVisibility(
-                    QueueUrl,
-                    sqsMessage.ReceiptHandle,
-                    ((int) (MessageVisibilityTimeout.TotalSeconds)));
+                transientFaultStrategy.Try(
+                    () => AmazonSqsClient.ChangeMessageVisibility(
+                        QueueUrl,
+                        sqsMessage.ReceiptHandle,
+                        ((int) (MessageVisibilityTimeout.TotalSeconds))));
 
                 return true;
             }

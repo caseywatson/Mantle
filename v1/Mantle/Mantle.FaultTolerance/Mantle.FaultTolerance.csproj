@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mantle.FaultTolerance</RootNamespace>
     <AssemblyName>Mantle.FaultTolerance</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,9 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BreakerPanel.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Interfaces\IBreakerPanel.cs" />
+    <Compile Include="Interfaces\ITransientFaultStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strategies\ExponentialBackoffTransientFaultStrategy.cs" />
+    <Compile Include="Strategies\FixedIntervalTransientFaultStrategy.cs" />
+    <Compile Include="Strategies\NoTransientFaultStrategy.cs" />
     <Compile Include="TrialException.cs" />
     <Compile Include="TrialResult.cs" />
   </ItemGroup>

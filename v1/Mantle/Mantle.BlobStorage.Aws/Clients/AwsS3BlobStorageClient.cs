@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Security;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.BlobStorage.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 
 namespace Mantle.BlobStorage.Aws.Clients
 {
     public class AwsS3BlobStorageClient : IBlobStorageClient, IDisposable
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
+        private readonly ITransientFaultStrategy transientFaultStrategy;
 
         private AmazonS3Client amazonS3Client;
 
@@ -48,7 +49,8 @@ namespace Mantle.BlobStorage.Aws.Clients
             if (DoesBucketExist() == false)
                 return false;
 
-            return AmazonS3Client.ListObjects(BucketName, blobName).S3Objects.Any(o => o.Key == blobName);
+            return transientFaultStrategy.Try(
+                () => AmazonS3Client.ListObjects(BucketName, blobName).S3Objects.Any(o => o.Key == blobName));
         }
 
         public void DeleteBlob(string blobName)
@@ -61,7 +63,7 @@ namespace Mantle.BlobStorage.Aws.Clients
             if (BlobExists(blobName) == false)
                 throw new InvalidOperationException($"AWS S3 object [{BucketName}/{blobName}] does not exist.");
 
-            AmazonS3Client.DeleteObject(BucketName, blobName);
+            transientFaultStrategy.Try(() => AmazonS3Client.DeleteObject(BucketName, blobName));
         }
 
         public Stream DownloadBlob(string blobName)
@@ -75,7 +77,7 @@ namespace Mantle.BlobStorage.Aws.Clients
                 throw new InvalidOperationException($"AWS S3 object [{BucketName}/{blobName}] does not exist.");
 
             var outputStream = new MemoryStream();
-            var getObjectResponse = AmazonS3Client.GetObject(BucketName, blobName);
+            var getObjectResponse = transientFaultStrategy.Try(() => AmazonS3Client.GetObject(BucketName, blobName));
 
             getObjectResponse.ResponseStream.CopyTo(outputStream);
             outputStream.TryToRewind();
@@ -88,7 +90,7 @@ namespace Mantle.BlobStorage.Aws.Clients
             if (DoesBucketExist() == false)
                 throw new InvalidOperationException($"AWS S3 bucket [{BucketName}] does not exist.");
 
-            return AmazonS3Client.ListObjects(BucketName).S3Objects.Select(o => o.Key);
+            return transientFaultStrategy.Try(() => AmazonS3Client.ListObjects(BucketName).S3Objects.Select(o => o.Key));
         }
 
         public void UploadBlob(Stream source, string blobName)
@@ -111,7 +113,7 @@ namespace Mantle.BlobStorage.Aws.Clients
                 Key = blobName
             };
 
-            AmazonS3Client.PutObject(putObjectRequest);
+            transientFaultStrategy.Try(() => AmazonS3Client.PutObject(putObjectRequest));
         }
 
         public void Dispose()
@@ -119,9 +121,10 @@ namespace Mantle.BlobStorage.Aws.Clients
             amazonS3Client?.Dispose();
         }
 
-        private bool DoesBucketExist()
+        private bool DoesBucketExist(AmazonS3Client amazonS3Client = null)
         {
-            return AmazonS3Client.ListBuckets().Buckets.Any(b => b.BucketName == BucketName);
+            return transientFaultStrategy.Try(
+                () => (amazonS3Client ?? AmazonS3Client).ListBuckets().Buckets.Any(b => b.BucketName == BucketName));
         }
 
         private AmazonS3Client GetAmazonS3Client()
@@ -133,10 +136,11 @@ namespace Mantle.BlobStorage.Aws.Clients
                 if (regionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
 
-                amazonS3Client = new AmazonS3Client(AwsAccessKeyId, AwsSecretAccessKey, regionEndpoint);
+                amazonS3Client = transientFaultStrategy.Try(
+                    () => new AmazonS3Client(AwsAccessKeyId, AwsSecretAccessKey, regionEndpoint));
 
-                if (AutoSetup && amazonS3Client.ListBuckets().Buckets.None(b => b.BucketName == BucketName))
-                    amazonS3Client.PutBucket(BucketName);
+                if (AutoSetup && DoesBucketExist(amazonS3Client))
+                    transientFaultStrategy.Try(() => amazonS3Client.PutBucket(BucketName));
             }
 
             return amazonS3Client;

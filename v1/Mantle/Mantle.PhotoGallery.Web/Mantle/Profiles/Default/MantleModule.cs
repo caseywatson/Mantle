@@ -1,8 +1,8 @@
 ﻿using Mantle.Configuration.Configurers;
+using Mantle.FaultTolerance.Interfaces;
+using Mantle.FaultTolerance.Strategies;
 using Mantle.Interfaces;
 using Mantle.Ninject;
-using Mantle.PhotoGallery.Web.Interfaces;
-using Mantle.PhotoGallery.Web.Metadata;
 using Mantle.Providers;
 using Mantle.Serializers;
 using Ninject.Modules;
@@ -24,6 +24,11 @@ namespace Mantle.PhotoGallery.Web.Mantle.Profiles.Default
             Bind(typeof(ITypeMetadata<>))
                 .To(typeof(TypeMetadata<>))
                 .InSingletonScope();
+
+            Bind<ITransientFaultStrategy>()
+                .To<ExponentialBackoffTransientFaultStrategy>()
+                .InTransientScope()
+                .ConfigureUsing(new AppSettingsConfigurer<ExponentialBackoffTransientFaultStrategy>());
 
             Bind<ITypeTokenProvider>()
                 .To<AssemblyQualifiedNameTypeTokenProvider>()

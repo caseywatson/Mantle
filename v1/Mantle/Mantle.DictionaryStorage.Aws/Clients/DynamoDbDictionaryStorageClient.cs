@@ -11,6 +11,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Newtonsoft.Json;
 
@@ -22,14 +23,17 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
         private readonly Dictionary<Type, Func<AttributeValue, object>> fromDynamoDbAttributeValue;
         private readonly Dictionary<Type, Func<object, AttributeValue>> toDynamoDbAttributeValue;
+        private readonly ITransientFaultStrategy transientFaultStrategy;
         private readonly ITypeMetadata<T> typeMetadata;
 
         private AmazonDynamoDBClient dynamoDbClient;
 
         public DynamoDbDictionaryStorageClient(IAwsRegionEndpoints awsRegionEndpoints,
+                                               ITransientFaultStrategy transientFaultStrategy,
                                                ITypeMetadata<T> typeMetadata)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
+            this.transientFaultStrategy = transientFaultStrategy;
             this.typeMetadata = typeMetadata;
 
             fromDynamoDbAttributeValue = GetFromDynamoDbAttributeValueConversions();
@@ -68,7 +72,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            AmazonDynamoDbClient.DeleteItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
+            transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.DeleteItem(TableName, ToDocumentKeyDictionary(entityId, partitionId)));
 
             return true;
         }
@@ -78,12 +83,14 @@ namespace Mantle.DictionaryStorage.Aws.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            return AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId)).IsItemSet;
+            return transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId)).IsItemSet);
         }
 
         public IEnumerable<DictionaryStorageEntity<T>> LoadAllDictionaryStorageEntities(string partitionId)
         {
-            return LoadAllDocumentDictionaries(partitionId).Select(ToDictionaryStorageEntity);
+            return transientFaultStrategy.Try(
+                () => LoadAllDocumentDictionaries(partitionId).Select(ToDictionaryStorageEntity));
         }
 
         public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> entities)
@@ -101,7 +108,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                     [TableName] = writeRequests
                 });
 
-                AmazonDynamoDbClient.BatchWriteItem(batchRequest);
+                transientFaultStrategy.Try(() => AmazonDynamoDbClient.BatchWriteItem(batchRequest));
             }
         }
 
@@ -109,13 +116,13 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             entity.Require(nameof(entity));
 
-            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(entity));
+            transientFaultStrategy.Try(() => AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(entity)));
         }
 
         public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
         {
-            var getItemResult =
-                AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId));
+            var getItemResult = transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.GetItem(TableName, ToDocumentKeyDictionary(entityId, partitionId)));
 
             if (getItemResult.IsItemSet)
                 return ToDictionaryStorageEntity(getItemResult.Item);
@@ -142,7 +149,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                     [TableName] = writeRequests
                 });
 
-                AmazonDynamoDbClient.BatchWriteItem(batchRequest);
+                transientFaultStrategy.Try(() => AmazonDynamoDbClient.BatchWriteItem(batchRequest));
             }
 
             return true;
@@ -164,7 +171,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 }
             };
 
-            return AmazonDynamoDbClient.Query(queryRequest).Items;
+            return transientFaultStrategy.Try(() => AmazonDynamoDbClient.Query(queryRequest).Items);
         }
 
         private Dictionary<string, AttributeValue> ToDocumentKeyDictionary(string entityId, string partitionId)
@@ -351,7 +358,8 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                 if (awsRegionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a knnown AWS region.");
 
-                dynamoDbClient = new AmazonDynamoDBClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
+                dynamoDbClient = transientFaultStrategy.Try(
+                    () => new AmazonDynamoDBClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint));
 
                 if (AutoSetup)
                     SetupTable(dynamoDbClient);
@@ -362,7 +370,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
 
         private void SetupTable(AmazonDynamoDBClient dynamoDbClient)
         {
-            if (DoesTableExist(dynamoDbClient) == false)
+            if (transientFaultStrategy.Try(() => DoesTableExist(dynamoDbClient)) == false)
             {
                 var createTableRequest = new CreateTableRequest
                 {
@@ -400,7 +408,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
                     }
                 };
 
-                dynamoDbClient.CreateTable(createTableRequest);
+                transientFaultStrategy.Try(() => dynamoDbClient.CreateTable(createTableRequest));
                 WaitUntilTableExists(dynamoDbClient);
             }
         }
@@ -409,7 +417,7 @@ namespace Mantle.DictionaryStorage.Aws.Clients
         {
             while (true)
             {
-                if (DoesTableExist(dynamoDbClient))
+                if (transientFaultStrategy.Try(() => DoesTableExist(dynamoDbClient)))
                     return;
 
                 Thread.Sleep(5000);

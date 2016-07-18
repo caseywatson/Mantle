@@ -1,10 +1,19 @@
-﻿using Microsoft.ServiceBus.Messaging;
+﻿using Mantle.FaultTolerance.Interfaces;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Mantle.Messaging.Azure.Channels
 {
     public abstract class BaseAzureServiceBusQueueChannel : BaseAzureServiceBusChannel
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
         private QueueClient queueClient;
+
+        protected BaseAzureServiceBusQueueChannel(ITransientFaultStrategy transientFaultStrategy)
+            : base(transientFaultStrategy)
+        {
+            this.transientFaultStrategy = transientFaultStrategy;
+        }
 
         public abstract bool AutoSetup { get; set; }
         public abstract string QueueName { get; set; }
@@ -17,11 +26,12 @@ namespace Mantle.Messaging.Azure.Channels
             {
                 if (AutoSetup)
                 {
-                    if (NamespaceManager.QueueExists(QueueName) == false)
-                        NamespaceManager.CreateQueue(QueueName);
+                    if (transientFaultStrategy.Try(() => NamespaceManager.QueueExists(QueueName)) == false)
+                        transientFaultStrategy.Try(() => NamespaceManager.CreateQueue(QueueName));
                 }
 
-                queueClient = QueueClient.CreateFromConnectionString(ServiceBusConnectionString, QueueName);
+                queueClient = transientFaultStrategy.Try(
+                    () => QueueClient.CreateFromConnectionString(ServiceBusConnectionString, QueueName));
             }
 
             return queueClient;

@@ -16,7 +16,6 @@ using Mantle.PhotoGallery.Web.Interfaces;
 using Mantle.PhotoGallery.Web.Mantle.Constants;
 using Mantle.PhotoGallery.Web.Models;
 using Microsoft.AspNet.Identity;
-using Mantle.FaultTolerance.Extensions;
 
 namespace Mantle.PhotoGallery.Web.Controllers
 {
@@ -73,7 +72,7 @@ namespace Mantle.PhotoGallery.Web.Controllers
             if (photoMetadata == null)
                 return HttpNotFound();
 
-            var photo = photoStorageClient.TryUsingExponentialBackoffFaultStrategy(c => c.DownloadBlob(id));
+            var photo = photoStorageClient.DownloadBlob(id);
 
             if (photo == null)
                 return HttpNotFound();

@@ -4,18 +4,20 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Identity.Azure.Entities;
 using Mantle.Identity.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
 
 namespace Mantle.Identity.Azure.Repositories
 {
     public class DocumentDbMantleUserRepository : IDisposable, IMantleUserRepository<MantleUser>
     {
         private static readonly MapperConfiguration mapperConfiguration;
+
+        private readonly ITransientFaultStrategy transientFaultStrategy;
 
         private DocumentClient documentClient;
         private bool doesCollectionExist;
@@ -32,7 +34,7 @@ namespace Mantle.Identity.Azure.Repositories
             });
         }
 
-        public DocumentDbMantleUserRepository()
+        public DocumentDbMantleUserRepository(ITransientFaultStrategy transientFaultStrategy)
         {
             AutoSetup = true;
             DocumentDbDatabaseId = "MantleUsers";
@@ -79,7 +81,8 @@ namespace Mantle.Identity.Azure.Repositories
 
             var documentDbUser = mapperConfiguration.CreateMapper().Map<DocumentDbMantleUser>(user);
 
-            await DocumentClient.UpsertDocumentAsync(documentCollectionUri, documentDbUser);
+            await transientFaultStrategy.Try(
+                () => DocumentClient.UpsertDocumentAsync(documentCollectionUri, documentDbUser));
         }
 
         public void DeleteUser(string userId)
@@ -98,11 +101,11 @@ namespace Mantle.Identity.Azure.Repositories
             var documentCollectionUri =
                 UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
 
-            var documentDbUser =
-                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+            var documentDbUser = transientFaultStrategy.Try(
+                () => DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
                     .Where(d => (d.Id == userId))
                     .AsEnumerable()
-                    .FirstOrDefault();
+                    .FirstOrDefault());
 
             if (documentDbUser == null)
                 throw new InvalidOperationException($"User [{userId}] not found.");
@@ -110,7 +113,7 @@ namespace Mantle.Identity.Azure.Repositories
             var documentUri =
                 UriFactory.CreateDocumentUri(DocumentDbDatabaseId, DocumentDbCollectionId, userId);
 
-            await DocumentClient.DeleteDocumentAsync(documentUri);
+            await transientFaultStrategy.Try(() => DocumentClient.DeleteDocumentAsync(documentUri));
         }
 
         public MantleUser FindUserByEmail(string email)
@@ -129,11 +132,11 @@ namespace Mantle.Identity.Azure.Repositories
             var documentCollectionUri =
                 UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
 
-            var documentDbUser =
-                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+            var documentDbUser = transientFaultStrategy.Try(
+                () => DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
                     .Where(d => (d.Email == email))
                     .AsEnumerable()
-                    .FirstOrDefault();
+                    .FirstOrDefault());
 
             if (documentDbUser == null)
                 return null;
@@ -157,11 +160,11 @@ namespace Mantle.Identity.Azure.Repositories
             var documentCollectionUri =
                 UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
 
-            var documentDbUser =
-                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+            var documentDbUser = transientFaultStrategy.Try(
+                () => DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
                     .Where(d => (d.Id == id))
                     .AsEnumerable()
-                    .FirstOrDefault();
+                    .FirstOrDefault());
 
             if (documentDbUser == null)
                 return null;
@@ -185,11 +188,11 @@ namespace Mantle.Identity.Azure.Repositories
             var documentCollectionUri =
                 UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
 
-            var documentDbUser =
-                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+            var documentDbUser = transientFaultStrategy.Try(
+                () => DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
                     .Where(d => (d.UserName == name))
                     .AsEnumerable()
-                    .FirstOrDefault();
+                    .FirstOrDefault());
 
             if (documentDbUser == null)
                 return null;
@@ -213,12 +216,12 @@ namespace Mantle.Identity.Azure.Repositories
             var documentCollectionUri =
                 UriFactory.CreateDocumentCollectionUri(DocumentDbDatabaseId, DocumentDbCollectionId);
 
-            var documentDbUser =
-                DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
+            var documentDbUser = transientFaultStrategy.Try(
+                () => DocumentClient.CreateDocumentQuery<DocumentDbMantleUser>(documentCollectionUri)
                     .SelectMany(u => (u.Logins.Where(l => (l.LoginProvider == loginInfo.LoginProvider) &&
                                                           (l.ProviderKey == loginInfo.ProviderKey)))
                                     .Select(l => u))
-                    .FirstOrDefault();
+                    .FirstOrDefault());
 
             if (documentDbUser == null)
                 return null;
@@ -244,7 +247,8 @@ namespace Mantle.Identity.Azure.Repositories
 
             var documentDbUser = mapperConfiguration.CreateMapper().Map<DocumentDbMantleUser>(user);
 
-            await DocumentClient.UpsertDocumentAsync(documentCollectionUri, documentDbUser);
+            await transientFaultStrategy.Try(
+                () => DocumentClient.UpsertDocumentAsync(documentCollectionUri, documentDbUser));
         }
 
         private DocumentClient GetDocumentClient()
@@ -257,16 +261,16 @@ namespace Mantle.Identity.Azure.Repositories
         {
             if (doesDbExist == false)
             {
-                if (DocumentClient.CreateDatabaseQuery()
+                if (transientFaultStrategy.Try(() => DocumentClient.CreateDatabaseQuery()
                     .Where(db => (db.Id == DocumentDbDatabaseId))
                     .AsEnumerable()
-                    .None())
+                    .None()))
                 {
                     if (AutoSetup)
                     {
                         var database = new Database {Id = DocumentDbDatabaseId};
 
-                        await DocumentClient.CreateDatabaseAsync(database);
+                        await transientFaultStrategy.Try(() => DocumentClient.CreateDatabaseAsync(database));
                     }
                     else
                     {
@@ -287,16 +291,17 @@ namespace Mantle.Identity.Azure.Repositories
 
                 var databaseUri = UriFactory.CreateDatabaseUri(DocumentDbDatabaseId);
 
-                if (DocumentClient.CreateDocumentCollectionQuery(databaseUri)
+                if (transientFaultStrategy.Try(() => DocumentClient.CreateDocumentCollectionQuery(databaseUri)
                     .Where(dc => (dc.Id == DocumentDbCollectionId))
                     .AsEnumerable()
-                    .None())
+                    .None()))
                 {
                     if (AutoSetup)
                     {
                         var documentCollection = new DocumentCollection {Id = DocumentDbCollectionId};
 
-                        await DocumentClient.CreateDocumentCollectionAsync(databaseUri, documentCollection);
+                        await transientFaultStrategy.Try(
+                            () => DocumentClient.CreateDocumentCollectionAsync(databaseUri, documentCollection));
                     }
                     else
                     {

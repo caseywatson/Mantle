@@ -9,6 +9,7 @@ using Amazon.DynamoDBv2.Model;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Identity.Interfaces;
 using Microsoft.AspNet.Identity;
 
@@ -17,6 +18,7 @@ namespace Mantle.Identity.Aws.Repositories
     public class DynamoDbMantleUserRepository : IMantleUserRepository<MantleUser>, IDisposable
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
+        private readonly ITransientFaultStrategy transientFaultStrategy;
 
         private AmazonDynamoDBClient dynamoDbClient;
 
@@ -62,7 +64,7 @@ namespace Mantle.Identity.Aws.Repositories
         {
             user.Require(nameof(user));
 
-            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(user));
+            transientFaultStrategy.Try(() => AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(user)));
         }
 
         public async Task CreateUserAsync(MantleUser user)
@@ -76,20 +78,22 @@ namespace Mantle.Identity.Aws.Repositories
         {
             userId.Require(nameof(userId));
 
-            AmazonDynamoDbClient.DeleteItem(TableName, new Dictionary<string, AttributeValue>
-            {
-                [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
-            });
+            transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.DeleteItem(TableName, new Dictionary<string, AttributeValue>
+                {
+                    [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
+                }));
         }
 
         public async Task DeleteUserAsync(string userId)
         {
             userId.Require(nameof(userId));
 
-            await AmazonDynamoDbClient.DeleteItemAsync(TableName, new Dictionary<string, AttributeValue>
-            {
-                [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
-            });
+            await (transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.DeleteItemAsync(TableName, new Dictionary<string, AttributeValue>
+                {
+                    [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
+                })));
         }
 
         public MantleUser FindUserByEmail(string email)
@@ -111,7 +115,8 @@ namespace Mantle.Identity.Aws.Repositories
                 Select = Select.ALL_PROJECTED_ATTRIBUTES
             };
 
-            var userDocDictionary = AmazonDynamoDbClient.Query(queryRequest).Items?.FirstOrDefault();
+            var userDocDictionary = transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.Query(queryRequest).Items?.FirstOrDefault());
 
             if (userDocDictionary == null)
                 return null;
@@ -138,7 +143,9 @@ namespace Mantle.Identity.Aws.Repositories
                 Select = Select.ALL_PROJECTED_ATTRIBUTES
             };
 
-            var queryResponse = await AmazonDynamoDbClient.QueryAsync(queryRequest);
+            var queryResponse = await (transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.QueryAsync(queryRequest)));
+
             var userDocDictionary = queryResponse.Items?.FirstOrDefault();
 
             if (userDocDictionary == null)
@@ -151,11 +158,11 @@ namespace Mantle.Identity.Aws.Repositories
         {
             id.Require(nameof(id));
 
-            var getItemResult =
-                AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
+            var getItemResult = transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.GetItem(TableName, new Dictionary<string, AttributeValue>
                 {
                     [nameof(MantleUser.Id)] = new AttributeValue {S = id}
-                });
+                }));
 
             if (getItemResult.IsItemSet)
                 return ToMantleUser(getItemResult.Item);
@@ -167,11 +174,11 @@ namespace Mantle.Identity.Aws.Repositories
         {
             id.Require(nameof(id));
 
-            var getItemResult =
-                await AmazonDynamoDbClient.GetItemAsync(TableName, new Dictionary<string, AttributeValue>
+            var getItemResult = await (transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.GetItemAsync(TableName, new Dictionary<string, AttributeValue>
                 {
                     [nameof(MantleUser.Id)] = new AttributeValue {S = id}
-                });
+                })));
 
             if (getItemResult.IsItemSet)
                 return ToMantleUser(getItemResult.Item);
@@ -208,7 +215,8 @@ namespace Mantle.Identity.Aws.Repositories
                 Select = Select.ALL_PROJECTED_ATTRIBUTES
             };
 
-            var userDocDictionary = AmazonDynamoDbClient.Query(queryRequest).Items?.FirstOrDefault();
+            var userDocDictionary = transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.Query(queryRequest).Items?.FirstOrDefault());
 
             if (userDocDictionary == null)
                 return null;
@@ -235,7 +243,9 @@ namespace Mantle.Identity.Aws.Repositories
                 Select = Select.ALL_PROJECTED_ATTRIBUTES
             };
 
-            var queryResponse = await AmazonDynamoDbClient.QueryAsync(queryRequest);
+            var queryResponse = await (transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.QueryAsync(queryRequest)));
+
             var userDocDictionary = queryResponse.Items?.FirstOrDefault();
 
             if (userDocDictionary == null)
@@ -248,14 +258,15 @@ namespace Mantle.Identity.Aws.Repositories
         {
             user.Require(nameof(user));
 
-            AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(user));
+            transientFaultStrategy.Try(() => AmazonDynamoDbClient.PutItem(TableName, ToDocumentDictionary(user)));
         }
 
         public async Task UpdateUserAsync(MantleUser user)
         {
             user.Require(nameof(user));
 
-            await AmazonDynamoDbClient.PutItemAsync(TableName, ToDocumentDictionary(user));
+            await (transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.PutItemAsync(TableName, ToDocumentDictionary(user))));
         }
 
         private Dictionary<string, AttributeValue> ToDocumentDictionary(MantleUser user)
@@ -399,7 +410,8 @@ namespace Mantle.Identity.Aws.Repositories
                 if (awsRegionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a knnown AWS region.");
 
-                dynamoDbClient = new AmazonDynamoDBClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint);
+                dynamoDbClient = transientFaultStrategy.Try(
+                    () => new AmazonDynamoDBClient(AwsAccessKeyId, AwsSecretAccessKey, awsRegionEndpoint));
 
                 if (AutoSetup)
                     SetupTable(dynamoDbClient);
@@ -410,7 +422,7 @@ namespace Mantle.Identity.Aws.Repositories
 
         private void SetupTable(AmazonDynamoDBClient dynamoDbClient)
         {
-            if (DoesTableExist(dynamoDbClient) == false)
+            if (transientFaultStrategy.Try(() => DoesTableExist(dynamoDbClient)) == false)
             {
                 var createTableRequest = new CreateTableRequest
                 {
@@ -453,7 +465,7 @@ namespace Mantle.Identity.Aws.Repositories
                     }
                 };
 
-                dynamoDbClient.CreateTable(createTableRequest);
+                transientFaultStrategy.Try(() => dynamoDbClient.CreateTable(createTableRequest));
                 WaitUntilTableExists(dynamoDbClient);
             }
         }
@@ -506,7 +518,7 @@ namespace Mantle.Identity.Aws.Repositories
         {
             while (true)
             {
-                if (DoesTableExist(dynamoDbClient))
+                if (transientFaultStrategy.Try(() => DoesTableExist(dynamoDbClient)))
                     return;
 
                 Thread.Sleep(5000);

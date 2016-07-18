@@ -5,6 +5,7 @@ using System.Linq;
 using Mantle.BlobStorage.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -12,8 +13,15 @@ namespace Mantle.BlobStorage.Azure.Clients
 {
     public class AzureBlobStorageClient : IBlobStorageClient
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
         private CloudBlobClient cloudBlobClient;
         private CloudStorageAccount cloudStorageAccount;
+
+        public AzureBlobStorageClient(ITransientFaultStrategy transientFaultStrategy)
+        {
+            this.transientFaultStrategy = transientFaultStrategy;
+        }
 
         public CloudBlobClient CloudBlobClient => GetCloudBlobClient();
 
@@ -31,10 +39,10 @@ namespace Mantle.BlobStorage.Azure.Clients
 
             var container = CloudBlobClient.GetContainerReference(ContainerName);
 
-            if (container.Exists() == false)
+            if (transientFaultStrategy.Try(() => container.Exists()) == false)
                 return false;
 
-            return container.GetBlockBlobReference(blobName).Exists();
+            return transientFaultStrategy.Try(() => container.GetBlockBlobReference(blobName).Exists());
         }
 
         public void DeleteBlob(string blobName)
@@ -43,15 +51,15 @@ namespace Mantle.BlobStorage.Azure.Clients
 
             var container = CloudBlobClient.GetContainerReference(ContainerName);
 
-            if (container.Exists() == false)
+            if (transientFaultStrategy.Try(() => container.Exists()) == false)
                 throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
             var blob = container.GetBlockBlobReference(blobName);
 
-            if (blob.Exists() == false)
+            if (transientFaultStrategy.Try(() => blob.Exists()) == false)
                 throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
 
-            blob.Delete();
+            transientFaultStrategy.Try(() => blob.Delete());
         }
 
         public Stream DownloadBlob(string blobName)
@@ -60,17 +68,17 @@ namespace Mantle.BlobStorage.Azure.Clients
 
             var container = CloudBlobClient.GetContainerReference(ContainerName);
 
-            if (container.Exists() == false)
+            if (transientFaultStrategy.Try(() => container.Exists()) == false)
                 throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
             var blob = container.GetBlockBlobReference(blobName);
 
-            if (blob.Exists() == false)
+            if (transientFaultStrategy.Try(() => blob.Exists()) == false)
                 throw new InvalidOperationException($"Blob [{ContainerName}/{blobName}] does not exist.");
 
             var stream = new MemoryStream();
 
-            blob.DownloadToStream(stream);
+            transientFaultStrategy.Try(() => blob.DownloadToStream(stream));
             stream.TryToRewind();
 
             return stream;
@@ -80,11 +88,11 @@ namespace Mantle.BlobStorage.Azure.Clients
         {
             var container = CloudBlobClient.GetContainerReference(ContainerName);
 
-            if (container.Exists() == false)
+            if (transientFaultStrategy.Try(() => container.Exists()) == false)
                 throw new InvalidOperationException($"Container [{ContainerName}] does not exist.");
 
-            foreach (var blob in container.ListBlobs().OfType<CloudBlockBlob>())
-                yield return blob.Name;
+            return transientFaultStrategy.Try(
+                () => container.ListBlobs().OfType<CloudBlockBlob>().Select(b => b.Name).ToList());
         }
 
         public void UploadBlob(Stream source, string blobName)
@@ -99,11 +107,11 @@ namespace Mantle.BlobStorage.Azure.Clients
 
             var container = CloudBlobClient.GetContainerReference(ContainerName);
 
-            container.CreateIfNotExists();
+            transientFaultStrategy.Try(() => container.CreateIfNotExists());
 
             var blob = container.GetBlockBlobReference(blobName);
 
-            blob.UploadFromStream(source);
+            transientFaultStrategy.Try(() => blob.UploadFromStream(source));
         }
 
         private CloudBlobClient GetCloudBlobClient()

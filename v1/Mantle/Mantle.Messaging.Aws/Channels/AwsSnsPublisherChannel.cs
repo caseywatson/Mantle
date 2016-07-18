@@ -4,6 +4,7 @@ using Amazon.SimpleNotificationService;
 using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 
@@ -14,13 +15,17 @@ namespace Mantle.Messaging.Aws.Channels
     {
         private readonly IAwsRegionEndpoints awsRegionEndpoints;
         private readonly ISerializer<T> serializer;
+        private readonly ITransientFaultStrategy transientFaultStrategy;
 
         private AmazonSimpleNotificationServiceClient awsSnsClient;
 
-        public AwsSnsPublisherChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
+        public AwsSnsPublisherChannel(IAwsRegionEndpoints awsRegionEndpoints,
+                                      ISerializer<T> serializer,
+                                      ITransientFaultStrategy transientFaultStrategy)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
             this.serializer = serializer;
+            this.transientFaultStrategy = transientFaultStrategy;
         }
 
         [Configurable(IsRequired = true)]
@@ -46,7 +51,8 @@ namespace Mantle.Messaging.Aws.Channels
         {
             message.Require(nameof(message));
 
-            AmazonSimpleNotificationServiceClient.Publish(TopicArn, serializer.Serialize(message));
+            transientFaultStrategy.Try(
+                () => AmazonSimpleNotificationServiceClient.Publish(TopicArn, serializer.Serialize(message)));
         }
 
         private AmazonSimpleNotificationServiceClient GetAwsSnsClient()
@@ -58,8 +64,9 @@ namespace Mantle.Messaging.Aws.Channels
                 if (awsRegionEndpoint == null)
                     throw new ConfigurationErrorsException($"[{AwsRegionName}] is not a known AWS region.");
 
-                awsSnsClient = new AmazonSimpleNotificationServiceClient(AwsAccessKeyId, AwsSecretAccessKey,
-                                                                         awsRegionEndpoint);
+                awsSnsClient = transientFaultStrategy.Try(
+                    () => new AmazonSimpleNotificationServiceClient(AwsAccessKeyId, AwsSecretAccessKey,
+                                                                    awsRegionEndpoint));
             }
 
             return awsSnsClient;

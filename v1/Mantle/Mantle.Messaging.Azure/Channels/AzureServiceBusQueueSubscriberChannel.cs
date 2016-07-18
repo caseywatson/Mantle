@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Mantle.Configuration.Attributes;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Messaging.Azure.Context;
 using Mantle.Messaging.Interfaces;
 
@@ -9,6 +10,14 @@ namespace Mantle.Messaging.Azure.Channels
     public class AzureServiceBusQueueSubscriberChannel<T> : BaseAzureServiceBusQueueChannel, ISubscriberChannel<T>
         where T : class
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
+        public AzureServiceBusQueueSubscriberChannel(ITransientFaultStrategy transientFaultStrategy)
+            : base(transientFaultStrategy)
+        {
+            this.transientFaultStrategy = transientFaultStrategy;
+        }
+
         [Configurable]
         public override bool AutoSetup { get; set; }
 
@@ -21,8 +30,8 @@ namespace Mantle.Messaging.Azure.Channels
         public IMessageContext<T> Receive(TimeSpan? timeout = null)
         {
             var message = ((timeout.HasValue)
-                ? (QueueClient.Receive(timeout.Value))
-                : (QueueClient.Receive()));
+                ? (transientFaultStrategy.Try(() => QueueClient.Receive(timeout.Value)))
+                : (transientFaultStrategy.Try(() => QueueClient.Receive())));
 
             if (message == null)
                 return null;
@@ -32,7 +41,7 @@ namespace Mantle.Messaging.Azure.Channels
 
         public async Task<IMessageContext<T>> ReceiveAsync()
         {
-            var message = await QueueClient.ReceiveAsync();
+            var message = await transientFaultStrategy.Try(() => QueueClient.ReceiveAsync());
 
             if (message == null)
                 return null;

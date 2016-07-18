@@ -5,6 +5,7 @@ using Mantle.Configuration.Attributes;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -13,10 +14,14 @@ namespace Mantle.DictionaryStorage.Redis.Clients
     public class RedisDictionaryStorageClient<T> : IDictionaryStorageClient<T>
         where T : class, new()
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
         private IConnectionMultiplexer connectionMultiplexer;
 
-        public RedisDictionaryStorageClient()
+        public RedisDictionaryStorageClient(ITransientFaultStrategy transientFaultStrategy)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
+
             RedisDatabaseId = -1;
         }
 
@@ -45,14 +50,14 @@ namespace Mantle.DictionaryStorage.Redis.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            return Database.HashDelete(partitionId, entityId);
+            return transientFaultStrategy.Try(() => Database.HashDelete(partitionId, entityId));
         }
 
         public bool DeletePartition(string partitionId)
         {
             partitionId.Require(nameof(partitionId));
 
-            return Database.KeyDelete(partitionId);
+            return transientFaultStrategy.Try(() => Database.KeyDelete(partitionId));
         }
 
         public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
@@ -69,7 +74,7 @@ namespace Mantle.DictionaryStorage.Redis.Clients
                     .Select(e => new HashEntry(e.EntityId, JsonConvert.SerializeObject(e.Entity)))
                     .ToArray();
 
-                Database.HashSet(dsEntityGroup.Key, hashEntries);
+                transientFaultStrategy.Try(() => Database.HashSet(dsEntityGroup.Key, hashEntries));
 
                 if (ExpirationTimeSpan != null)
                     ResetPartitionExpiration(dsEntityGroup.Key);
@@ -80,8 +85,8 @@ namespace Mantle.DictionaryStorage.Redis.Clients
         {
             entity.Require(nameof(entity));
 
-            Database.HashSet(entity.PartitionId, entity.EntityId,
-                             JsonConvert.SerializeObject(entity.Entity), When.Always);
+            transientFaultStrategy.Try(() => Database.HashSet(entity.PartitionId, entity.EntityId,
+                                                              JsonConvert.SerializeObject(entity.Entity)));
 
             if (ExpirationTimeSpan != null)
                 ResetPartitionExpiration(entity.PartitionId);
@@ -92,7 +97,7 @@ namespace Mantle.DictionaryStorage.Redis.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            return Database.HashExists(partitionId, entityId);
+            return transientFaultStrategy.Try(() => Database.HashExists(partitionId, entityId));
         }
 
         public IEnumerable<DictionaryStorageEntity<T>> LoadAllDictionaryStorageEntities(string partitionId)
@@ -102,7 +107,9 @@ namespace Mantle.DictionaryStorage.Redis.Clients
             if ((ExpirationTimeSpan != null) && UseSlidingExpiration)
                 ResetPartitionExpiration(partitionId);
 
-            foreach (var hashEntry in Database.HashGetAll(partitionId))
+            var hashEntries = transientFaultStrategy.Try(() => Database.HashGetAll(partitionId).ToList());
+
+            foreach (var hashEntry in hashEntries)
             {
                 yield return new DictionaryStorageEntity<T>(hashEntry.Name, partitionId,
                                                             JsonConvert.DeserializeObject<T>(hashEntry.Value));
@@ -114,7 +121,7 @@ namespace Mantle.DictionaryStorage.Redis.Clients
             entityId.Require(nameof(entityId));
             partitionId.Require(nameof(partitionId));
 
-            var value = (string) Database.HashGet(partitionId, entityId);
+            var value = (string) (transientFaultStrategy.Try(() => Database.HashGet(partitionId, entityId)));
 
             if (value == null)
                 return null;
@@ -128,18 +135,21 @@ namespace Mantle.DictionaryStorage.Redis.Clients
 
         private void ResetPartitionExpiration(string partitionId)
         {
-            Database.KeyExpire(partitionId, ExpirationTimeSpan.Value, CommandFlags.FireAndForget);
+            transientFaultStrategy.Try(
+                () => Database.KeyExpire(partitionId, ExpirationTimeSpan.Value, CommandFlags.FireAndForget));
         }
 
         private IConnectionMultiplexer GetConnectionMultiplexer()
         {
             return connectionMultiplexer = connectionMultiplexer ??
-                                           StackExchange.Redis.ConnectionMultiplexer.Connect(RedisConnectionString);
+                                           transientFaultStrategy.Try(
+                                               () => StackExchange.Redis.ConnectionMultiplexer.Connect(
+                                                   RedisConnectionString));
         }
 
         private IDatabase GetDatabase()
         {
-            return GetConnectionMultiplexer().GetDatabase(RedisDatabaseId);
+            return transientFaultStrategy.Try(() => GetConnectionMultiplexer().GetDatabase(RedisDatabaseId));
         }
     }
 }

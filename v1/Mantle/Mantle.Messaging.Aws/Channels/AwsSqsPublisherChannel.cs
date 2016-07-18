@@ -1,6 +1,7 @@
 ﻿using Mantle.Aws.Interfaces;
 using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 
@@ -9,9 +10,14 @@ namespace Mantle.Messaging.Aws.Channels
     public class AwsSqsPublisherChannel<T> : BaseAwsSqsChannel<T>, IPublisherChannel<T>
         where T : class
     {
-        public AwsSqsPublisherChannel(IAwsRegionEndpoints awsRegionEndpoints, ISerializer<T> serializer)
-            : base(awsRegionEndpoints, serializer)
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
+        public AwsSqsPublisherChannel(IAwsRegionEndpoints awsRegionEndpoints,
+                                      ISerializer<T> serializer,
+                                      ITransientFaultStrategy transientFaultStrategy)
+            : base(awsRegionEndpoints, serializer, transientFaultStrategy)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
         }
 
         [Configurable]
@@ -33,7 +39,7 @@ namespace Mantle.Messaging.Aws.Channels
         {
             message.Require(nameof(message));
 
-            AmazonSqsClient.SendMessage(QueueUrl, Serializer.Serialize(message));
+            transientFaultStrategy.Try(() => AmazonSqsClient.SendMessage(QueueUrl, Serializer.Serialize(message)));
         }
     }
 }

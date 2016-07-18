@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Mantle.Configuration.Attributes;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Azure.Context;
 using Mantle.Messaging.Interfaces;
@@ -10,9 +11,13 @@ namespace Mantle.Messaging.Azure.Channels
     public class AzureStorageQueueSubscriberChannel<T> : BaseAzureStorageQueueChannel<T>, ISubscriberChannel<T>
         where T : class
     {
-        public AzureStorageQueueSubscriberChannel(ISerializer<T> serializer)
-            : base(serializer)
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
+        public AzureStorageQueueSubscriberChannel(ISerializer<T> serializer,
+                                                  ITransientFaultStrategy transientFaultStrategy)
+            : base(serializer, transientFaultStrategy)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
         }
 
         [Configurable]
@@ -27,8 +32,8 @@ namespace Mantle.Messaging.Azure.Channels
         public IMessageContext<T> Receive(TimeSpan? timeout = null)
         {
             var message = ((timeout.HasValue)
-                ? (CloudQueue.GetMessage(timeout))
-                : (CloudQueue.GetMessage()));
+                ? (transientFaultStrategy.Try(() => CloudQueue.GetMessage(timeout)))
+                : (transientFaultStrategy.Try(() => CloudQueue.GetMessage())));
 
             if (message == null)
                 return null;
@@ -39,7 +44,7 @@ namespace Mantle.Messaging.Azure.Channels
 
         public async Task<IMessageContext<T>> ReceiveAsync()
         {
-            var message = await CloudQueue.GetMessageAsync();
+            var message = await transientFaultStrategy.Try(() => CloudQueue.GetMessageAsync());
 
             if (message == null)
                 return null;

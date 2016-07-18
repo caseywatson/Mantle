@@ -1,5 +1,6 @@
 ﻿using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Messaging.Interfaces;
 using Microsoft.ServiceBus.Messaging;
 
@@ -8,6 +9,14 @@ namespace Mantle.Messaging.Azure.Channels
     public class AzureServiceBusQueuePublisherChannel<T> : BaseAzureServiceBusQueueChannel, IPublisherChannel<T>
         where T : class
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
+        public AzureServiceBusQueuePublisherChannel(ITransientFaultStrategy transientFaultStrategy)
+            : base(transientFaultStrategy)
+        {
+            this.transientFaultStrategy = transientFaultStrategy;
+        }
+
         [Configurable]
         public override bool AutoSetup { get; set; }
 
@@ -21,7 +30,7 @@ namespace Mantle.Messaging.Azure.Channels
         {
             message.Require(nameof(message));
 
-            QueueClient.Send(new BrokeredMessage(message));
+            transientFaultStrategy.Try(() => QueueClient.Send(new BrokeredMessage(message)));
         }
     }
 }

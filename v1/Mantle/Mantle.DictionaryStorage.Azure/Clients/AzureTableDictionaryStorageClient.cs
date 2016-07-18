@@ -5,6 +5,7 @@ using Mantle.DictionaryStorage.Azure.Entities;
 using Mantle.DictionaryStorage.Entities;
 using Mantle.DictionaryStorage.Interfaces;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -14,13 +15,16 @@ namespace Mantle.DictionaryStorage.Azure.Clients
     public class AzureTableDictionaryStorageClient<T> : IDictionaryStorageClient<T>
         where T : class, new()
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
         private readonly ITypeMetadata<T> typeMetadata;
 
         private CloudStorageAccount cloudStorageAccount;
         private CloudTableClient cloudTableClient;
 
-        public AzureTableDictionaryStorageClient(ITypeMetadata<T> typeMetadata)
+        public AzureTableDictionaryStorageClient(ITransientFaultStrategy transientFaultStrategy,
+                                                 ITypeMetadata<T> typeMetadata)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
             this.typeMetadata = typeMetadata;
 
             AutoSetup = true;
@@ -46,19 +50,19 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
             var table = CloudTableClient.GetTableReference(TableName);
 
-            if (table.Exists())
+            if (transientFaultStrategy.Try(() => table.Exists()))
             {
                 var retrieveOp =
                     TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
 
-                var retrieveResult = table.Execute(retrieveOp);
+                var retrieveResult = transientFaultStrategy.Try(() => table.Execute(retrieveOp));
 
                 if (retrieveResult.Result != null)
                 {
                     var deleteOp =
                         TableOperation.Delete(retrieveResult.Result as AzureTableDictionaryStorageEntity<T>);
 
-                    table.Execute(deleteOp);
+                    transientFaultStrategy.Try(() => table.Execute(deleteOp));
 
                     return true;
                 }
@@ -73,23 +77,25 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
             var table = CloudTableClient.GetTableReference(TableName);
 
-            if (table.Exists())
+            if (transientFaultStrategy.Try(() => table.Exists()))
             {
                 var query = new TableQuery<AzureTableDictionaryStorageEntity<T>>()
                     .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionId));
 
-                var entities = table.ExecuteQuery(query).ToList();
+                var entities = transientFaultStrategy.Try(() => table.ExecuteQuery(query).ToList());
 
                 if (entities.Any())
                 {
-                    foreach (var entitiesChunk in table.ExecuteQuery(query).Chunk(100))
+                    var entityChunks = transientFaultStrategy.Try(() => table.ExecuteQuery(query).Chunk(100).ToList());
+
+                    foreach (var entityChunk in entityChunks)
                     {
                         var batchDeleteOp = new TableBatchOperation();
 
-                        foreach (var entity in entitiesChunk)
+                        foreach (var entity in entityChunk)
                             batchDeleteOp.Delete(entity);
 
-                        table.ExecuteBatch(batchDeleteOp);
+                        transientFaultStrategy.Try(() => table.ExecuteBatch(batchDeleteOp));
                     }
 
                     return true;
@@ -106,12 +112,12 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
             var table = CloudTableClient.GetTableReference(TableName);
 
-            if (table.Exists() == false)
+            if (transientFaultStrategy.Try(() => table.Exists()) == false)
                 return false;
 
             var op = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
 
-            return table.Execute(op).Result != null;
+            return (transientFaultStrategy.Try(() => table.Execute(op).Result) != null);
         }
 
         public void InsertOrUpdateDictionaryStorageEntities(IEnumerable<DictionaryStorageEntity<T>> dsEntities)
@@ -121,9 +127,9 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             var table = CloudTableClient.GetTableReference(TableName);
 
             if (AutoSetup)
-                table.CreateIfNotExists();
+                transientFaultStrategy.Try(() => table.CreateIfNotExists());
 
-            var storageEntityGroups = dsEntities
+            var groups = dsEntities
                 .Select(e => new AzureTableDictionaryStorageEntity<T>(typeMetadata)
                 {
                     Data = e.Entity,
@@ -132,16 +138,18 @@ namespace Mantle.DictionaryStorage.Azure.Clients
                 })
                 .GroupBy(e => e.PartitionKey);
 
-            foreach (var storageEntityGroup in storageEntityGroups)
+            foreach (var group in groups)
             {
-                foreach (var chunk in storageEntityGroup.Chunk(100))
+                var chunks = transientFaultStrategy.Try(() => group.Chunk(100).ToList());
+
+                foreach (var chunk in chunks)
                 {
                     var batchOp = new TableBatchOperation();
 
                     foreach (var storageEntity in chunk)
                         batchOp.InsertOrReplace(storageEntity);
 
-                    table.ExecuteBatch(batchOp);
+                    transientFaultStrategy.Try(() => table.ExecuteBatch(batchOp));
                 }
             }
         }
@@ -159,11 +167,11 @@ namespace Mantle.DictionaryStorage.Azure.Clients
             var table = CloudTableClient.GetTableReference(TableName);
 
             if (AutoSetup)
-                table.CreateIfNotExists();
+                transientFaultStrategy.Try(() => table.CreateIfNotExists());
 
             var op = TableOperation.InsertOrReplace(storageEntity);
 
-            table.Execute(op);
+            transientFaultStrategy.Try(() => table.Execute(op));
         }
 
         public IEnumerable<DictionaryStorageEntity<T>> LoadAllDictionaryStorageEntities(string partitionId)
@@ -172,12 +180,14 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
             var table = CloudTableClient.GetTableReference(TableName);
 
-            if (table.Exists())
+            if (transientFaultStrategy.Try(() => table.Exists()))
             {
                 var query = new TableQuery<AzureTableDictionaryStorageEntity<T>>()
                     .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionId));
 
-                foreach (var queryResult in table.ExecuteQuery(query))
+                var queryResults = transientFaultStrategy.Try(() => table.ExecuteQuery(query).ToList());
+
+                foreach (var queryResult in queryResults)
                     yield return new DictionaryStorageEntity<T>(queryResult.RowKey, partitionId, queryResult.Data);
             }
         }
@@ -189,11 +199,13 @@ namespace Mantle.DictionaryStorage.Azure.Clients
 
             var table = CloudTableClient.GetTableReference(TableName);
 
-            if (table.Exists() == false)
+            if (transientFaultStrategy.Try(() => table.Exists()) == false)
                 return null;
 
             var op = TableOperation.Retrieve<AzureTableDictionaryStorageEntity<T>>(partitionId, entityId);
-            var storageEntity = table.Execute(op).Result as AzureTableDictionaryStorageEntity<T>;
+
+            var storageEntity = transientFaultStrategy.Try(
+                () => table.Execute(op).Result as AzureTableDictionaryStorageEntity<T>);
 
             if (storageEntity?.Data == null)
                 return null;

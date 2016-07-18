@@ -1,4 +1,5 @@
-﻿using Mantle.Interfaces;
+﻿using Mantle.FaultTolerance.Interfaces;
+using Mantle.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
 
@@ -8,13 +9,18 @@ namespace Mantle.Messaging.Azure.Channels
     {
         protected readonly ISerializer<T> Serializer;
 
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
         private CloudQueue cloudQueue;
         private CloudQueueClient cloudQueueClient;
         private CloudStorageAccount cloudStorageAccount;
 
-        protected BaseAzureStorageQueueChannel(ISerializer<T> serializer)
+        protected BaseAzureStorageQueueChannel(ISerializer<T> serializer,
+                                               ITransientFaultStrategy transientFaultStrategy)
         {
             Serializer = serializer;
+
+            this.transientFaultStrategy = transientFaultStrategy;
         }
 
         public abstract bool AutoSetup { get; set; }
@@ -32,10 +38,10 @@ namespace Mantle.Messaging.Azure.Channels
         {
             if (cloudQueue == null)
             {
-                cloudQueue = CloudQueueClient.GetQueueReference(QueueName);
+                cloudQueue = transientFaultStrategy.Try(() => CloudQueueClient.GetQueueReference(QueueName));
 
                 if (AutoSetup)
-                    cloudQueue.CreateIfNotExists();
+                    transientFaultStrategy.Try(() => cloudQueue.CreateIfNotExists());
             }
 
             return cloudQueue;

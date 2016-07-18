@@ -1,5 +1,6 @@
 ﻿using Mantle.Configuration.Attributes;
 using Mantle.Extensions;
+using Mantle.FaultTolerance.Interfaces;
 using Mantle.Interfaces;
 using Mantle.Messaging.Interfaces;
 using Microsoft.WindowsAzure.Storage.Queue;
@@ -9,9 +10,13 @@ namespace Mantle.Messaging.Azure.Channels
     public class AzureStorageQueuePublisherChannel<T> : BaseAzureStorageQueueChannel<T>, IPublisherChannel<T>
         where T : class
     {
-        public AzureStorageQueuePublisherChannel(ISerializer<T> serializer)
-            : base(serializer)
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
+        public AzureStorageQueuePublisherChannel(ISerializer<T> serializer,
+                                                 ITransientFaultStrategy transientFaultStrategy)
+            : base(serializer, transientFaultStrategy)
         {
+            this.transientFaultStrategy = transientFaultStrategy;
         }
 
         [Configurable]
@@ -27,7 +32,7 @@ namespace Mantle.Messaging.Azure.Channels
         {
             message.Require(nameof(message));
 
-            CloudQueue.AddMessage(new CloudQueueMessage(Serializer.Serialize(message)));
+            transientFaultStrategy.Try(() => CloudQueue.AddMessage(new CloudQueueMessage(Serializer.Serialize(message))));
         }
     }
 }

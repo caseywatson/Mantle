@@ -1,10 +1,18 @@
-﻿using Microsoft.ServiceBus;
+﻿using Mantle.FaultTolerance.Interfaces;
+using Microsoft.ServiceBus;
 
 namespace Mantle.Messaging.Azure.Channels
 {
     public abstract class BaseAzureServiceBusChannel
     {
+        private readonly ITransientFaultStrategy transientFaultStrategy;
+
         private NamespaceManager namespaceManager;
+
+        protected BaseAzureServiceBusChannel(ITransientFaultStrategy transientFaultStrategy)
+        {
+            this.transientFaultStrategy = transientFaultStrategy;
+        }
 
         public abstract string ServiceBusConnectionString { get; set; }
 
@@ -13,7 +21,9 @@ namespace Mantle.Messaging.Azure.Channels
         private NamespaceManager GetNamespaceManager()
         {
             return (namespaceManager = (namespaceManager ??
-                                        NamespaceManager.CreateFromConnectionString(ServiceBusConnectionString)));
+                                        transientFaultStrategy.Try(
+                                            () =>
+                                                NamespaceManager.CreateFromConnectionString(ServiceBusConnectionString))));
         }
     }
 }

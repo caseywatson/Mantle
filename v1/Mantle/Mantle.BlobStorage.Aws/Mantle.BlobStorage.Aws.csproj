@@ -84,6 +84,10 @@
       <Project>{14843f74-b007-4357-9aea-4703d772b6ae}</Project>
       <Name>Mantle.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mantle.FaultTolerance\Mantle.FaultTolerance.csproj">
+      <Project>{D1D8FF07-1AF7-4A50-993B-0477ED7AC3E5}</Project>
+      <Name>Mantle.FaultTolerance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mantle\Mantle.csproj">
       <Project>{ce605888-e0d5-4195-9115-45cc9a3b0548}</Project>
       <Name>Mantle</Name>
