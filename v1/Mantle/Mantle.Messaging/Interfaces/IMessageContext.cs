@@ -4,6 +4,7 @@
         where T : class
     {
         int? DeliveryCount { get; }
+        string Id { get; }
         T Message { get; }
 
         bool IsAbandoned { get; }

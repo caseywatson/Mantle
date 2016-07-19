@@ -12,12 +12,26 @@ namespace Mantle.Messaging.Subscribers
 
         public abstract void HandleMessage(IMessageContext<T> messageContext);
 
+        protected void OnErrorOccurred(IMessageContext<T> messageContext, string message, params object[] parameters)
+        {
+            messageContext.Require(nameof(messageContext));
+
+            OnErrorOccurred($"[{messageContext.Id}]: {string.Format(message, parameters)}");
+        }
+
         protected void OnErrorOccurred(string message, params object[] parameters)
         {
             message.Require(nameof(message));
             parameters.Require(nameof(parameters));
 
             ErrorOccurred.RaiseSafely(string.Format(message, parameters));
+        }
+
+        protected void OnMessageOccurred(IMessageContext<T> messageContext, string message, params object[] parameters)
+        {
+            messageContext.Require(nameof(messageContext));
+
+            OnMessageOccurred($"[{messageContext.Id}]: {string.Format(message, parameters)}");
         }
 
         protected void OnMessageOccurred(string message, params object[] parameters)

@@ -13,12 +13,15 @@ namespace Mantle.Messaging.Azure.Context
             message.Require(nameof(message));
 
             BrokeredMessage = brokeredMessage;
+            Id = brokeredMessage.MessageId;
             Message = message;
         }
 
         public BrokeredMessage BrokeredMessage { get; }
 
         public int? DeliveryCount => BrokeredMessage.DeliveryCount;
+
+        public string Id { get; }
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }

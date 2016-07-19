@@ -13,6 +13,7 @@ namespace Mantle.Messaging.Msmq.Contexts
             message.Require(nameof(message));
             msmqMessage.Require(nameof(msmqMessage));
 
+            Id = msmqMessage.Id;
             Message = message;
             MsmqMessage = msmqMessage;
             MsmqTransaction = msmqTransaction;
@@ -28,6 +29,8 @@ namespace Mantle.Messaging.Msmq.Contexts
         }
 
         public int? DeliveryCount { get; } = null;
+
+        public string Id { get; }
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }

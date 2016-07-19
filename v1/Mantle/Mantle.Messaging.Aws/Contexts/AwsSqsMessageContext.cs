@@ -25,6 +25,7 @@ namespace Mantle.Messaging.Aws.Contexts
             this.tryDeadLetterMessage = tryDeadLetterMessage;
             this.tryRenewMessageLock = tryRenewMessageLock;
 
+            Id = sqsMessage.MessageId;
             SqsMessage = sqsMessage;
             Message = message;
 
@@ -35,6 +36,8 @@ namespace Mantle.Messaging.Aws.Contexts
         public Message SqsMessage { get; }
 
         public int? DeliveryCount { get; }
+
+        public string Id { get; }
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }

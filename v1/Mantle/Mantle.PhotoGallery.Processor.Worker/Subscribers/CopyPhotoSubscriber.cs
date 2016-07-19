@@ -1,4 +1,5 @@
-﻿using Mantle.Configuration.Attributes;
+﻿using System;
+using Mantle.Configuration.Attributes;
 using Mantle.Interfaces;
 using Mantle.Messaging.Extensions;
 using Mantle.Messaging.Interfaces;
@@ -36,19 +37,33 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
         {
             var message = messageContext.Message;
 
-            if (message.PhotoSource != PhotoDestination)
+            try
             {
-                OnMessageOccurred($"Copying photo [{message.PhotoMetadata.Id}] from [{message.PhotoSource}] " +
-                                  $"to [{PhotoDestination}]...");
+                if (message.PhotoSource != PhotoDestination)
+                {
+                    OnMessageOccurred(messageContext,
+                                      $"[{nameof(CopyPhotoSubscriber)}]: Copying photo [{message.PhotoMetadata.Id}] from " +
+                                      $"[{message.PhotoSource}] to [{PhotoDestination}]...");
 
-                photoCopyService.CopyPhoto(message.PhotoMetadata, message.PhotoSource, PhotoDestination);
+                    photoCopyService.CopyPhoto(message.PhotoMetadata, message.PhotoSource, PhotoDestination);
+                    messageContext.TryToRenewLock();
 
-                OnMessageOccurred($"Copying photo [{message.PhotoMetadata.Id}] from [{message.PhotoSource}] " +
-                                  $"to [{PhotoDestination}]. Sending [SavePhoto] command...");
+                    OnMessageOccurred(messageContext,
+                                      $"[{nameof(CopyPhotoSubscriber)}]: Copying photo [{message.PhotoMetadata.Id}] from " +
+                                      $"[{message.PhotoSource}] to [{PhotoDestination}]. Sending [SavePhoto] command...");
 
-                GetPublisherChannel().Publish(new SavePhoto(message.PhotoMetadata));
+                    GetPublisherChannel().Publish(new SavePhoto(message.PhotoMetadata));
 
-                OnMessageOccurred($"Photo [{message.PhotoMetadata.Id}] [SavePhoto] command sent.");
+                    OnMessageOccurred(messageContext,
+                                      $"[{nameof(CopyPhotoSubscriber)}]: Photo [{message.PhotoMetadata.Id}] [SavePhoto] command sent.");
+                }
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred(messageContext,
+                                $"[{nameof(CopyPhotoSubscriber)}]: An error occurred while processing a message: [{ex.Message}]");
+
+                throw;
             }
         }
 

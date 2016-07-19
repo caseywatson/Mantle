@@ -24,6 +24,8 @@ namespace Mantle.Messaging.Contexts
 
         public int? DeliveryCount => OriginalMessageContext.DeliveryCount;
 
+        public string Id => OriginalMessageContext.Id;
+
         public T Message { get; }
 
         public bool TryToAbandon() => (IsAbandoned = OriginalMessageContext.TryToAbandon());

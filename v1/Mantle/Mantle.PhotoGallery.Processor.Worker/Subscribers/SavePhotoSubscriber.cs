@@ -6,7 +6,6 @@ using Mantle.Messaging.Interfaces;
 using Mantle.Messaging.Subscribers;
 using Mantle.PhotoGallery.PhotoProcessing.Commands;
 using Mantle.PhotoGallery.PhotoProcessing.Interfaces;
-using Mantle.PhotoGallery.PhotoProcessing.Models;
 
 namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
 {
@@ -36,34 +35,55 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
 
         public override void HandleMessage(IMessageContext<SavePhoto> messageContext)
         {
-            var photoMetadata = messageContext.Message.PhotoMetadata;
+            try
+            {
+                var photoMetadata = messageContext.Message.PhotoMetadata;
 
-            CreateThumbnail(photoMetadata);
+                CreateThumbnail(messageContext);
+                messageContext.TryToRenewLock();
 
-            OnMessageOccurred($"Updating photo [{photoMetadata.Id}] metadata...");
+                OnMessageOccurred(messageContext,
+                                  $"[{nameof(SavePhotoSubscriber)}]: Updating photo [{photoMetadata.Id}] metadata...");
 
-            photoMetadataRepository.InsertOrUpdatePhotoMetadata(photoMetadata);
+                photoMetadataRepository.InsertOrUpdatePhotoMetadata(photoMetadata);
 
-            OnMessageOccurred($"Photo [{photoMetadata.Id}] updated.");
+                OnMessageOccurred(messageContext,
+                                  $"[{nameof(SavePhotoSubscriber)}]: Photo [{photoMetadata.Id}] updated.");
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred(messageContext,
+                                $"[{nameof(SavePhotoSubscriber)}]: An error occurred while processing a message: [{ex.Message}]");
+
+                throw;
+            }
         }
 
-        private void CreateThumbnail(PhotoMetadata photoMetadata)
+        private void CreateThumbnail(IMessageContext<SavePhoto> messageContext)
         {
+            var photoMetadata = messageContext.Message.PhotoMetadata;
+
             var photo = GetPhotoStorageClient().DownloadBlob(photoMetadata.Id);
 
             if (photo == null)
-                throw new InvalidOperationException(
-                    $"Photo [{photoMetadata.Id}] not found. Unable to create thumbnail image.");
+            {
+                throw new InvalidOperationException($"Photo [{photoMetadata.Id}] not found. " +
+                                                    "Unable to create thumbnail image.");
+            }
 
-            OnMessageOccurred($"Creating photo [{photoMetadata.Id}] thumbnail...");
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(SavePhotoSubscriber)}]: Creating photo [{photoMetadata.Id}] thumbnail...");
 
             var thumbnail = photoThumbnailService.GenerateThumbnail(photo);
 
-            OnMessageOccurred($"Created photo [{photoMetadata.Id}] thumbnail. Saving thumbnail...");
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(SavePhotoSubscriber)}]: Created photo [{photoMetadata.Id}] thumbnail. " +
+                              "Saving thumbnail...");
 
             GetThumbnailStorageClient().UploadBlob(thumbnail, photoMetadata.Id);
 
-            OnMessageOccurred($"Saved photo [{photoMetadata.Id}] thumbnail.");
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(SavePhotoSubscriber)}]: Saved photo [{photoMetadata.Id}] thumbnail.");
         }
 
         private IBlobStorageClient GetPhotoStorageClient()

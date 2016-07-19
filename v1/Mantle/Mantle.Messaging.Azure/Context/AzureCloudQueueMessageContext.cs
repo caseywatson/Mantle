@@ -16,16 +16,16 @@ namespace Mantle.Messaging.Azure.Context
 
             CloudQueue = cloudQueue;
             CloudQueueMessage = cloudQueueMessage;
+            Id = cloudQueueMessage.Id;
             Message = message;
         }
 
         public CloudQueue CloudQueue { get; }
         public CloudQueueMessage CloudQueueMessage { get; }
 
-        public int? DeliveryCount
-        {
-            get { return null; }
-        }
+        public int? DeliveryCount => null;
+
+        public string Id { get; set; }
 
         public bool IsAbandoned { get; private set; }
         public bool IsCompleted { get; private set; }

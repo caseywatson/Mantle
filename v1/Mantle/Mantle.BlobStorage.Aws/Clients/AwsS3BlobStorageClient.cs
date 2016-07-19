@@ -20,9 +20,11 @@ namespace Mantle.BlobStorage.Aws.Clients
 
         private AmazonS3Client amazonS3Client;
 
-        public AwsS3BlobStorageClient(IAwsRegionEndpoints awsRegionEndpoints)
+        public AwsS3BlobStorageClient(IAwsRegionEndpoints awsRegionEndpoints,
+                                      ITransientFaultStrategy transientFaultStrategy)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
+            this.transientFaultStrategy = transientFaultStrategy;
         }
 
         [Configurable]
