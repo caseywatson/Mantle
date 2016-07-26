@@ -118,19 +118,19 @@ namespace Mantle.DictionaryStorage.Redis.Clients
 
         public DictionaryStorageEntity<T> LoadDictionaryStorageEntity(string entityId, string partitionId)
         {
-            entityId.Require(nameof(entityId));
-            partitionId.Require(nameof(partitionId));
+                entityId.Require(nameof(entityId));
+                partitionId.Require(nameof(partitionId));
 
-            var value = (string) (transientFaultStrategy.Try(() => Database.HashGet(partitionId, entityId)));
+                var value = (string)(transientFaultStrategy.Try(() => Database.HashGet(partitionId, entityId)));
 
-            if (value == null)
-                return null;
+                if (value == null)
+                    return null;
 
-            if ((ExpirationTimeSpan != null) && UseSlidingExpiration)
-                ResetPartitionExpiration(partitionId);
+                if ((ExpirationTimeSpan != null) && UseSlidingExpiration)
+                    ResetPartitionExpiration(partitionId);
 
-            return new DictionaryStorageEntity<T>(entityId, partitionId,
-                                                  JsonConvert.DeserializeObject<T>(value));
+                return new DictionaryStorageEntity<T>(entityId, partitionId,
+                                                      JsonConvert.DeserializeObject<T>(value));
         }
 
         private void ResetPartitionExpiration(string partitionId)

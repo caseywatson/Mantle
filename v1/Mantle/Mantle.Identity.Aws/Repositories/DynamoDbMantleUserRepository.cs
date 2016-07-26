@@ -22,9 +22,11 @@ namespace Mantle.Identity.Aws.Repositories
 
         private AmazonDynamoDBClient dynamoDbClient;
 
-        public DynamoDbMantleUserRepository(IAwsRegionEndpoints awsRegionEndpoints)
+        public DynamoDbMantleUserRepository(IAwsRegionEndpoints awsRegionEndpoints,
+                                            ITransientFaultStrategy transientFaultStrategy)
         {
             this.awsRegionEndpoints = awsRegionEndpoints;
+            this.transientFaultStrategy = transientFaultStrategy;
 
             AutoSetup = true;
             TableName = "MantleUsers";
@@ -89,11 +91,11 @@ namespace Mantle.Identity.Aws.Repositories
         {
             userId.Require(nameof(userId));
 
-            await (transientFaultStrategy.Try(
+            await transientFaultStrategy.Try(
                 () => AmazonDynamoDbClient.DeleteItemAsync(TableName, new Dictionary<string, AttributeValue>
                 {
                     [nameof(MantleUser.Id)] = new AttributeValue {S = userId}
-                })));
+                }));
         }
 
         public MantleUser FindUserByEmail(string email)
@@ -143,8 +145,8 @@ namespace Mantle.Identity.Aws.Repositories
                 Select = Select.ALL_PROJECTED_ATTRIBUTES
             };
 
-            var queryResponse = await (transientFaultStrategy.Try(
-                () => AmazonDynamoDbClient.QueryAsync(queryRequest)));
+            var queryResponse = await transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.QueryAsync(queryRequest));
 
             var userDocDictionary = queryResponse.Items?.FirstOrDefault();
 
@@ -174,11 +176,11 @@ namespace Mantle.Identity.Aws.Repositories
         {
             id.Require(nameof(id));
 
-            var getItemResult = await (transientFaultStrategy.Try(
+            var getItemResult = await transientFaultStrategy.Try(
                 () => AmazonDynamoDbClient.GetItemAsync(TableName, new Dictionary<string, AttributeValue>
                 {
                     [nameof(MantleUser.Id)] = new AttributeValue {S = id}
-                })));
+                }));
 
             if (getItemResult.IsItemSet)
                 return ToMantleUser(getItemResult.Item);
@@ -243,8 +245,8 @@ namespace Mantle.Identity.Aws.Repositories
                 Select = Select.ALL_PROJECTED_ATTRIBUTES
             };
 
-            var queryResponse = await (transientFaultStrategy.Try(
-                () => AmazonDynamoDbClient.QueryAsync(queryRequest)));
+            var queryResponse = await transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.QueryAsync(queryRequest));
 
             var userDocDictionary = queryResponse.Items?.FirstOrDefault();
 
@@ -265,8 +267,8 @@ namespace Mantle.Identity.Aws.Repositories
         {
             user.Require(nameof(user));
 
-            await (transientFaultStrategy.Try(
-                () => AmazonDynamoDbClient.PutItemAsync(TableName, ToDocumentDictionary(user))));
+            await transientFaultStrategy.Try(
+                () => AmazonDynamoDbClient.PutItemAsync(TableName, ToDocumentDictionary(user)));
         }
 
         private Dictionary<string, AttributeValue> ToDocumentDictionary(MantleUser user)
@@ -396,9 +398,9 @@ namespace Mantle.Identity.Aws.Repositories
 
         private AttributeValue ToAttributeValue(string source)
         {
-            return (string.IsNullOrEmpty(source)
+            return string.IsNullOrEmpty(source)
                 ? new AttributeValue {NULL = true}
-                : new AttributeValue {S = source});
+                : new AttributeValue {S = source};
         }
 
         private AmazonDynamoDBClient GetAmazonDynamoDbClient()
@@ -529,7 +531,7 @@ namespace Mantle.Identity.Aws.Repositories
         {
             try
             {
-                return (dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE);
+                return dynamoDbClient.DescribeTable(TableName).Table?.TableStatus == TableStatus.ACTIVE;
             }
             catch (ResourceNotFoundException)
             {

@@ -49,7 +49,7 @@ namespace Mantle.PhotoGallery.Processor.Worker.Subscribers
                     messageContext.TryToRenewLock();
 
                     OnMessageOccurred(messageContext,
-                                      $"[{nameof(CopyPhotoSubscriber)}]: Copying photo [{message.PhotoMetadata.Id}] from " +
+                                      $"[{nameof(CopyPhotoSubscriber)}]: Copied photo [{message.PhotoMetadata.Id}] from " +
                                       $"[{message.PhotoSource}] to [{PhotoDestination}]. Sending [SavePhoto] command...");
 
                     GetPublisherChannel().Publish(new SavePhoto(message.PhotoMetadata));

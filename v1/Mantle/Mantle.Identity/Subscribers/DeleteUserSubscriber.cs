@@ -16,7 +16,15 @@ namespace Mantle.Identity.Subscribers
 
         public override void HandleMessage(IMessageContext<DeleteUser> messageContext)
         {
+            OnMessageOccurred(messageContext,
+                             $"[{nameof(CreateUserSubscriber)}]: Deleting user " +
+                             $"[{messageContext.Message.UserId}]...");
+
             userRepository.DeleteUser(messageContext.Message.UserId);
+
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(CreateUserSubscriber)}]: Deleted user " +
+                              $"[{messageContext.Message.UserId}].");
         }
     }
 }

@@ -13,24 +13,32 @@ namespace Mantle.PhotoGallery.Processor.Console.Mantle.Profiles.Azure
     {
         public override void Load()
         {
-            Bind<RedisDictionaryStorageClient<PhotoMetadata>>()
-                .ToSelf()
-                .InTransientScope()
-                .ConfigureUsing(new ConnectionStringsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>(),
-                                new AppSettingsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>());
+            //Bind<RedisDictionaryStorageClient<PhotoMetadata>>()
+            //    .ToSelf()
+            //    .InTransientScope()
+            //    .Named(DictionaryStorageClientNames.PhotoMetadataCache)
+            //    .ConfigureUsing(new ConnectionStringsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>(),
+            //                    new AppSettingsConfigurer<RedisDictionaryStorageClient<PhotoMetadata>>());
 
-            Bind<AzureTableDictionaryStorageClient<PhotoMetadata>>()
-                .ToSelf()
+            //Bind<AzureTableDictionaryStorageClient<PhotoMetadata>>()
+            //    .ToSelf()
+            //    .InTransientScope()
+            //    .Named(DictionaryStorageClientNames.PhotoMetadata)
+            //    .ConfigureUsing(new ConnectionStringsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>(),
+            //                    new AppSettingsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>());
+
+            //Bind<IDictionaryStorageClient<PhotoMetadata>>()
+            //    .To<LayeredDictionaryStorageClient<
+            //        PhotoMetadata,
+            //        RedisDictionaryStorageClient<PhotoMetadata>,
+            //        AzureTableDictionaryStorageClient<PhotoMetadata>>>()
+            //    .InTransientScope();
+
+            Bind<IDictionaryStorageClient<PhotoMetadata>>()
+                .To<AzureTableDictionaryStorageClient<PhotoMetadata>>()
                 .InTransientScope()
                 .ConfigureUsing(new ConnectionStringsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>(),
                                 new AppSettingsConfigurer<AzureTableDictionaryStorageClient<PhotoMetadata>>());
-
-            Bind<IDictionaryStorageClient<PhotoMetadata>>()
-                .To<LayeredDictionaryStorageClient<
-                    PhotoMetadata,
-                    RedisDictionaryStorageClient<PhotoMetadata>,
-                    AzureTableDictionaryStorageClient<PhotoMetadata>>>()
-                .InTransientScope();
         }
     }
 }

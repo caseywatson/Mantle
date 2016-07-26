@@ -16,7 +16,17 @@ namespace Mantle.Identity.Subscribers
 
         public override void HandleMessage(IMessageContext<CreateUser> messageContext)
         {
+            var user = messageContext.Message.User;
+
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(CreateUserSubscriber)}]: Creating user " +
+                              $"[{user.Id}/{user.UserName}]...");
+
             userRepository.CreateUser(messageContext.Message.User);
+
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(CreateUserSubscriber)}]: Created user " +
+                              $"[{user.Id}/{user.UserName}].");
         }
     }
 }

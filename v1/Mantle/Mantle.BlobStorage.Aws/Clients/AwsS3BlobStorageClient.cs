@@ -141,7 +141,7 @@ namespace Mantle.BlobStorage.Aws.Clients
                 amazonS3Client = transientFaultStrategy.Try(
                     () => new AmazonS3Client(AwsAccessKeyId, AwsSecretAccessKey, regionEndpoint));
 
-                if (AutoSetup && DoesBucketExist(amazonS3Client))
+                if (AutoSetup && (DoesBucketExist(amazonS3Client) == false))
                     transientFaultStrategy.Try(() => amazonS3Client.PutBucket(BucketName));
             }
 

@@ -16,7 +16,17 @@ namespace Mantle.Identity.Subscribers
 
         public override void HandleMessage(IMessageContext<UpdateUser> messageContext)
         {
-            userRepository.UpdateUser(messageContext.Message.User);
+            var user = messageContext.Message.User;
+
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(CreateUserSubscriber)}]: Updating user " +
+                              $"[{user.Id}/{user.UserName}]...");
+
+            userRepository.UpdateUser(user);
+
+            OnMessageOccurred(messageContext,
+                              $"[{nameof(CreateUserSubscriber)}]: Updated user " +
+                              $"[{user.Id}/{user.UserName}].");
         }
     }
 }

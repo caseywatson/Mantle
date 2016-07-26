@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Mantle
+@using Mantle.PhotoGallery.Web.Interfaces
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Highly Available Photo Gallery</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -46,7 +48,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink("Highly Available Photo Gallery", "All", "Photos", new {area = ""}, new {@class = "navbar-brand"})
+            @{
+                var deploymentName = MantleContext.Current.DependencyResolver.Get<IDeploymentMetadata>().Name;
+            }
+
+            @Html.ActionLink($"Highly Available Photo Gallery ({deploymentName})", "All", "Photos", new {area = ""}, new {@class = "navbar-brand"})
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
