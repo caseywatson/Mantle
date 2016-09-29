@@ -35,5 +35,19 @@ namespace Mantle.Extensions
 
             return (source.Any(condition) == false);
         }
+
+        public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source)
+        {
+            source.Require(nameof(source));
+
+            return (source.OrderBy(i => i));
+        }
+
+        public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source)
+        {
+            source.Require(nameof(source));
+
+            return (source.OrderByDescending(i => i));
+        }
     }
 }
