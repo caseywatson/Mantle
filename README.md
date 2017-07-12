@@ -1,5 +1,6 @@
 ![Mantle Logo](http://imgur.com/KKqjEvi.png "Mantle Logo")
-Mantle
+
+# Mantle
 ======
 
 Mantle is a framework for building massively scalable .NET-based applications that can be hosted either on-premises or on a variety of public cloud providers including Microsoft Azure and Amazon AWS.
